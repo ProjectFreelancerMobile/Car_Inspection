@@ -1,0 +1,190 @@
+ext.deps = [:]
+def versions = [:]
+versions.android_gradle_plugin = '3.3.0-alpha04'
+versions.realm_plugin       = "5.4.1"
+//Support
+versions.arch               = "2.0.0-beta01"
+versions.support            = "1.0.0-beta01"
+versions.work               = "1.0.0-alpha04"
+versions.supportAnko        = "0.10.5"
+versions.kotlin             = "1.2.60"
+versions.mutidex            = "2.0.0"
+versions.navigation         = "1.0.0-alpha03"
+versions.constraint_layout  = "2.0.0-alpha1"
+versions.fabric             = "1.25.4"
+versions.crashlytics        = "2.9.3"
+//Libraries :Core
+versions.dagger             = "2.16"
+versions.logger             = "2.2.0"
+versions.glide              = "4.8.0-SNAPSHOT"
+versions.rxkotlin           = "2.2.0"
+versions.rxandroid          = "2.0.2"
+versions.eventbus           = "3.1.1"
+versions.retrofit           = "2.4.0"
+versions.okHttp             = "3.11.0"
+versions.okHttpLogging      = "2.0.7"
+//Utils
+versions.utilcode           = "1.17.1"
+versions.rich               = "2.2.1"
+versions.kotlinify          = "1.3.1"
+versions.realm_extensions   = "2.2.0"
+//Libraries: Development
+versions.leakCanary         = "1.6.1"
+versions.blockcanary        = "1.5.0"
+versions.stetho             = "1.5.0"
+versions.realmStetho        = "2.1.0"
+//Libraries :App
+versions.jodatime           = "2.10"
+
+def deps = [:]
+
+def support = [:]
+support.annotations         = "androidx.annotation:annotation:$versions.support"
+support.app_compat          = "androidx.appcompat:appcompat:$versions.support"
+support.recyclerview        = "androidx.recyclerview:recyclerview:$versions.support"
+support.design              = "com.google.android.material:material:$versions.support"
+support.constraint_layout   = "androidx.constraintlayout:constraintlayout:$versions.constraint_layout"
+deps.support = support
+
+def core = [:]
+core.rx_kotlin              = "io.reactivex.rxjava2:rxkotlin:$versions.rxkotlin"
+core.rx_android             = "io.reactivex.rxjava2:rxandroid:$versions.rxandroid"
+core.eventbus               = "org.greenrobot:eventbus:$versions.eventbus"
+core.logger                 = "com.orhanobut:logger:$versions.logger"
+core.crashlytics            = "com.crashlytics.sdk.android:crashlytics:$versions.crashlytics"
+deps.core = core
+
+def libCore =[:]
+libCore.ok_httpLogging      = "com.github.ihsanbal:LoggingInterceptor:$versions.okHttpLogging"
+libCore.glide_recycler      = "com.github.bumptech.glide:recyclerview-integration:$versions.glide"
+deps.libCore = libCore
+
+def utils =[:]
+utils.utilcode              = "com.blankj:utilcode:$versions.utilcode"
+utils.ktx                   = "androidx.core:core-ktx:$versions.support"
+utils.anko_commons          = "org.jetbrains.anko:anko-commons:$versions.supportAnko"
+//utils.kotlinify             = "com.github.GilGoldzweig.kotlinify:reactive:$versions.kotlinify"
+//utils.rich                  = "com.github.WindSekirun:RichUtilsKt:$versions.rich"
+utils.realm_extensions      = "com.github.vicpinm:krealmextensions:$versions.realm_extensions"
+deps.utils = utils
+
+def room = [:]
+room.runtime                = "androidx.room:room-runtime::$versions.arch"
+room.compiler               = "androidx.room:room-compiler:$versions.arch"
+room.rxjava2                = "androidx.room:room-rxjava2:$versions.arch"
+room.testing                = "androidx.room:room-testing:$versions.arch"
+deps.room = room
+
+def lifecycle = [:]
+lifecycle.runtime           = "androidx.lifecycle:lifecycle-runtime:$versions.arch"
+lifecycle.extensions        = "androidx.lifecycle:lifecycle-extensions:$versions.arch"
+lifecycle.java8             = "androidx.lifecycle:lifecycle-common-java8:$versions.arch"
+deps.lifecycle = lifecycle
+
+def arch_core = [:]
+arch_core.testing           = "androidx.core:core-testing:$versions.arch"
+deps.arch_core = arch_core
+
+def retrofit = [:]
+retrofit.runtime            = "com.squareup.retrofit2:retrofit:$versions.retrofit"
+retrofit.gson               = "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+retrofit.simplexml          = "com.squareup.retrofit2:converter-simplexml:$versions.retrofit"
+retrofit.rxjava             = "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
+retrofit.okhttp             = "com.squareup.okhttp3:okhttp:$versions.okHttp"
+deps.retrofit = retrofit
+
+def glide = [:]
+glide.glide                 = "com.github.bumptech.glide:glide:$versions.glide"
+glide.integration           = "com.github.bumptech.glide:okhttp3-integration:$versions.glide"
+deps.glide = glide
+
+def dagger = [:]
+dagger.runtime              = "com.google.dagger:dagger:$versions.dagger"
+dagger.android              = "com.google.dagger:dagger-android:$versions.dagger"
+dagger.android_support      = "com.google.dagger:dagger-android-support:$versions.dagger"
+deps.dagger = dagger
+
+def work = [:]
+work.runtime                = "android.arch.work:work-runtime-ktx:$versions.work"
+work.testing                = "android.arch.work:work-testing-ktx:$versions.work"
+work.firebase               = "android.arch.work:work-firebase-ktx:$versions.work"
+deps.work = work
+
+def navigation = [:]
+navigation.runtime          = "android.arch.navigation:navigation-runtime-ktx:$versions.navigation"
+navigation.fragment         = "android.arch.navigation:navigation-fragment-ktx:$versions.navigation"
+navigation.ui               = "android.arch.navigation:navigation-ui-ktx:$versions.navigation"
+deps.navigation = navigation
+
+def library = [:]
+library.jodatime            = "joda-time:joda-time:$versions.jodatime"
+deps.library = library
+
+def compiler = [:]
+compiler.glide              = "com.github.bumptech.glide:compiler:$versions.glide"
+compiler.lifecycle          = "androidx.lifecycle:lifecycle-compiler:$versions.arch"
+compiler.dagger_compiler    = "com.google.dagger:dagger-compiler:$versions.dagger"
+compiler.android_compiler   = "com.google.dagger:dagger-android-processor:$versions.dagger"
+deps.compiler = compiler
+
+def test = [:]
+test.leakcanary             = "com.squareup.leakcanary:leakcanary-android:$versions.leakCanary"
+test.leakcanaryfragment     = "com.squareup.leakcanary:leakcanary-support-fragment:$versions.leakCanary"
+test.leakcanary_no_op       = "com.squareup.leakcanary:leakcanary-android-no-op:$versions.leakCanary"
+test.blockDebug             = "com.github.markzhai:blockcanary-android:$versions.blockcanary"
+test.blockRelease           = "com.github.markzhai:blockcanary-no-op:$versions.blockcanary"
+deps.test = test
+
+def kotlin = [:]
+kotlin.stdlib               = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+kotlin.test                 = "org.jetbrains.kotlin:kotlin-test-junit:$versions.kotlin"
+deps.kotlin = kotlin
+
+deps.android_gradle_plugin  = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
+deps.kotlin_plugin          = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+deps.kotlin_allopen         = "org.jetbrains.kotlin:kotlin-allopen:$versions.kotlin"
+deps.realm_plugin           = "io.realm:realm-gradle-plugin:$versions.realm_plugin"
+deps.realm_processor        = "io.realm:realm-annotations-processor:$versions.realm_plugin"
+deps.safe_args_plugin       = "androidx.navigation:navigation-safe-args-gradle-plugin:$versions.navigation"
+deps.fabric_plugin          = "io.fabric.tools:gradle:$versions.fabric"
+deps.multidex               = "androidx.multidex:multidex:$versions.mutidex"
+deps.google_service         = "com.google.gms:google-services:4.0.0"
+ext.deps = deps
+
+def build_versions = [:]
+build_versions.appId       = "com.acuteksolutions.blendtv"
+build_versions.minSdk       = 19
+build_versions.compileSdk   = 28
+build_versions.targetSdk    = 28
+build_versions.versionCode  = 1
+build_versions.versionName  = "1.0.0"
+ext.build_versions = build_versions
+
+def key_store = [:]
+key_store.keystore          = "$rootProject.projectDir/buildsystem/keystore.jks"
+key_store.keystorePass      = "acutek1234"
+key_store.alias             = "acutek solution"
+key_store.aliasPass         = "acutek1234"
+key_store.proguard_rules    = "$rootProject.projectDir/buildsystem/proguard_rules.pro"
+key_store.proguard_support  = "$rootProject.projectDir/buildsystem/proguard_support.pro"
+key_store.proguard_core     = "$rootProject.projectDir/buildsystem/proguard-core.pro"
+key_store.proguard_library  = "$rootProject.projectDir/buildsystem/proguard_library.pro"
+ext.key_store = key_store
+
+@SuppressWarnings("GrMethodMayBeStatic")
+def addRepos(RepositoryHandler handler) {
+    handler.google()
+    handler.jcenter()
+    handler.maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots'
+        url 'https://jitpack.io'
+    }
+    handler.maven {
+        name 'glide-snapshot'
+        url 'http://oss.sonatype.org/content/repositories/snapshots'
+    }
+    handler.maven {
+        url 'https://maven.fabric.io/public'
+    }
+}
+ext.addRepos = this.&addRepos
