@@ -12,7 +12,6 @@ import javax.inject.Singleton
  * Email:Huynhvantoan.itc@gmail.com
  */
 
-@Suppress("unused")
 @Singleton
 @Component(modules = [(AndroidSupportInjectionModule::class),
     (NetworkModule::class),

@@ -152,7 +152,7 @@ deps.google_service         = "com.google.gms:google-services:4.0.0"
 ext.deps = deps
 
 def build_versions = [:]
-build_versions.appId       = "com.acuteksolutions.blendtv"
+build_versions.appId       = "com.car_inspection"
 build_versions.minSdk       = 19
 build_versions.compileSdk   = 28
 build_versions.targetSdk    = 28
