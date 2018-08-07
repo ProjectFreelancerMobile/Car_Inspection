@@ -16,11 +16,6 @@
 
 package com.toan_itc.core.architecture
 
-import android.view.ViewGroup
-import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.widget.AsyncDifferConfig
-import androidx.recyclerview.widget.ListAdapter
-
 /**
  * A generic RecyclerView adapter that uses Data Binding & DiffUtil.
  *

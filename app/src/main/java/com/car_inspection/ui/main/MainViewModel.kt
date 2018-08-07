@@ -1,7 +1,7 @@
 package com.car_inspection.ui.main
 
-import androidx.lifecycle.ViewModel
+import com.toan_itc.core.base.BaseViewModel
 
-class MainViewModel : ViewModel() {
+class MainViewModel : BaseViewModel() {
     // TODO: Implement the ViewModel
 }

@@ -6,9 +6,8 @@ import com.toan_itc.core.architecture.AppExecutors
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
 /**
- * Created by ToanDev on 05/04/18.
+ * Created by ToanDev on 07/08/18.
  * Email:Huynhvantoan.itc@gmail.com
  */
 
