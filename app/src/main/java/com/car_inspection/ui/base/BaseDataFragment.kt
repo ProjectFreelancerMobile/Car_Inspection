@@ -5,8 +5,7 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
-import com.acuteksolutions.blendtv.R
-import com.acuteksolutions.blendtv.event.ErrorEvent
+import com.car_inspection.R
 import com.google.android.material.snackbar.Snackbar
 import com.orhanobut.logger.Logger
 import com.toan_itc.core.base.BaseViewModel
@@ -59,13 +58,6 @@ abstract class BaseDataFragment<VM : BaseViewModel> : CoreBaseDataFragment<VM>()
                 tv.gravity = Gravity.CENTER_HORIZONTAL
             }
             snackBar.show()
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onErrorMessageEvent(errorEvent: ErrorEvent) {
-        errorEvent.errorMessage?.let {
-            showSnackBar(it)
         }
     }
 }

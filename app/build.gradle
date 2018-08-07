@@ -64,17 +64,6 @@ android {
             //buildConfigField "String", "ACUCORE_PATH", '"https://tuk-api.acuteksolutions.com/api/v1.1.2/sc/"'
             buildConfigField "String", "ACUCORE_PATH", '"https://master-api.blendtv.net/api/v1.1.2/"'
             buildConfigField "String", "CLIENT_ID", '"cloud:acumw_android_device"'
-            buildConfigField "String", "DEVICE_ID", '"toanthesingle"'
-            buildConfigField "String", "WEB_SOCKET_PATH", '"ws://lv-acutool.acuteksolutions.com/devices/dcs"'
-            buildConfigField "String", "RSS_URL", '"http://lv-acutool.acuteksolutions.com/rssfeedserver/"'
-            buildConfigField "String", "DTV_DB_URL", '"http://tuk-apk.acuteksolutions.com/bulktv/release/db_debug.xml"'
-            buildConfigField "String", "MOVIES_IMAGE_PATH", '"http://lv-bsdev.acuteksolutions.com"'
-            buildConfigField "String", "VOD_IMAGE_URL", '"http://bsdev.acuteksolutions.com/restapi/rest/{regionId}/images/"'
-            buildConfigField "String", "APP_UPDATE_URL", '"http://tuk-apk.acuteksolutions.com/bulktv/release/update_debug.xml"'
-            buildConfigField "String", "STREAM_APP_UPDATE_URL", '"http://tuk-apk.acuteksolutions.com/bulktv/stage/stream/%1$s"'
-            buildConfigField "String", "VAST_URL_SPOTX", '"http://search.spotxchange.com/vast/2.0/208097?VPI=MP4&app[bundle]=com.bulzihost.bulziTV&player_height=360&player_width=640&device[devicetype]=7&device[make]=Acutek%20Solutions%20UHotel%20Platform&device[model]=ATS-9010WQP&app[name]=uAD&ip_addr=REPLACE_ME&channelOperator=hyve&provider=cox&deviceid=REPLACE_ME&locationid=REPLACE_ME"'
-            buildConfigField "String", "VAST_URL", '"http://lv-uads.acuteksolutions.com/uads/www/delivery/fc.php?script=bannerTypeHtml:vastInlineBannerTypeHtml:vastInlineHtml&zones=preroll:0.0-0%3D1&nz=1&source=&r=R0.05822725687175989&block=1&format=vast2&charset=UTF-8"'
-            buildConfigField "String", "PMS_URL", '"http://lv-api.acuteksolutions.com"'
             dimension "content"
         }
         uHotelRelease {
@@ -82,16 +71,6 @@ android {
             //buildConfigField "String", "ACUCORE_PATH", '"https://tuk-api.acuteksolutions.com/api/v1.1.2/sc/"'
             buildConfigField "String", "CLIENT_ID", '"cloud:acumw_android_device"'
             buildConfigField "String", "DEVICE_ID", '"toanthesingle"'
-            buildConfigField "String", "WEB_SOCKET_PATH", '"ws://lv-acutool.acuteksolutions.com/devices/dcs"'
-            buildConfigField "String", "RSS_URL", '"http://lv-acutool.acuteksolutions.com/rssfeedserver/"'
-            buildConfigField "String", "DTV_DB_URL", '"http://tuk-apk.acuteksolutions.com/bulktv/release/db_debug.xml"'
-            buildConfigField "String", "MOVIES_IMAGE_PATH", '"http://lv-bsdev.acuteksolutions.com"'
-            buildConfigField "String", "VOD_IMAGE_URL", '"http://bsdev.acuteksolutions.com/restapi/rest/{regionId}/images/"'
-            buildConfigField "String", "APP_UPDATE_URL", '"http://tuk-apk.acuteksolutions.com/bulktv/release/update_debug.xml"'
-            buildConfigField "String", "STREAM_APP_UPDATE_URL", '"http://tuk-apk.acuteksolutions.com/bulktv/stage/stream/%1$s"'
-            buildConfigField "String", "VAST_URL_SPOTX", '"http://search.spotxchange.com/vast/2.0/208097?VPI=MP4&app[bundle]=com.bulzihost.bulziTV&player_height=360&player_width=640&device[devicetype]=7&device[make]=Acutek%20Solutions%20UHotel%20Platform&device[model]=ATS-9010WQP&app[name]=uAD&ip_addr=REPLACE_ME&channelOperator=hyve&provider=cox&deviceid=REPLACE_ME&locationid=REPLACE_ME"'
-            buildConfigField "String", "VAST_URL", '"http://lv-uads.acuteksolutions.com/uads/www/delivery/fc.php?script=bannerTypeHtml:vastInlineBannerTypeHtml:vastInlineHtml&zones=preroll:0.0-0%3D1&nz=1&source=&r=R0.05822725687175989&block=1&format=vast2&charset=UTF-8"'
-            buildConfigField "String", "PMS_URL", '"http://lv-api.acuteksolutions.com"'
             dimension "content"
         }
     }

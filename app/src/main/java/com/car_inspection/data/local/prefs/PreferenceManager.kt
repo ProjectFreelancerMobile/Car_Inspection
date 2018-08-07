@@ -52,7 +52,7 @@ object PreferenceManager{
     fun getBoolean(key: String, defaultValue: Boolean = false) =
             requiredOrThrow(sharedPreferences.getBoolean(key, defaultValue))
 
-    fun getString(key: String, defaultValue: String = ""): String =
+    fun getString(key: String?, defaultValue: String = ""): String =
             requiredOrThrow(sharedPreferences.getString(key, defaultValue))
 
     fun getStringSet(key: String, defaultValue: Set<String>): MutableSet<String>? =

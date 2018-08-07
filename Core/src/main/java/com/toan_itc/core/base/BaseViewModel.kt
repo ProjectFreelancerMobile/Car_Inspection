@@ -1,6 +1,5 @@
 package com.toan_itc.core.base
 
-import androidx.databinding.Observable
 import androidx.lifecycle.ViewModel
 import com.orhanobut.logger.Logger
 import com.toan_itc.core.base.event.Event
@@ -13,7 +12,7 @@ import org.greenrobot.eventbus.EventBus
  * Email:Huynhvantoan.itc@gmail.com
  */
 
-abstract class BaseViewModel : ViewModel(), Observable {
+abstract class BaseViewModel : ViewModel(){
     private var mCompositeDisposable: CompositeDisposable?=null
 
     override fun onCleared() {

@@ -7,6 +7,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.toan_itc.core.BR
 import javax.inject.Inject
 
 abstract class CoreBaseDataActivity<VM : ViewModel, DB : ViewDataBinding> : AppCompatActivity() {
