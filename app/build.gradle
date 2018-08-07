@@ -144,6 +144,9 @@ kotlin {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':Core')
+    implementation 'com.android.support:design:27.1.1'
+//picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
     // Kotlin
     implementation deps.kotlin.stdlib
     implementation deps.multidex

@@ -1,3 +1,76 @@
 <resources>
     <string name="app_name">Car_Inspection</string>
+    <!-- FONT STRING -->
+    <string name="font_awesome">font_awesome.ttf</string>
+    <string name="font_regular">opensans_regular.ttf</string>
+    <string name="font_bold">opensans_bold.ttf</string>
+    <string name="font_semibold">opensans_semi_bold.ttf</string>
+    <string name="font_semibolditalic">opensans_semi_bold_italic.ttf</string>
+    <string name="font_opensans_italic">opensans_italic.ttf</string>
+
+
+    <string name="title_activity_maps">Map</string>
+
+    <!--ICON STRING FROM AWSOME FONT-->
+    <string name="icon_username">&#xf007;</string>
+    <string name="icon_password">&#xf023;</string>
+    <string name="icon_non_password">&#xf13e;</string>
+    <string name="icon_email">&#xf0e0;</string>
+    <string name='icon_sms'>&#xf075;</string>
+    <string name="icon_phone">&#xf095;</string>
+    <string name="icon_phone_custom">&#xf095;</string>
+    <string name="icon_password_custom">&#xf023;</string>
+    <string name="icon_idcard">&#xf02a;</string>
+    <string name="icon_edit">&#xf044;</string>
+    <string name="icon_camera">&#xf030;</string>
+    <string name="icon_facebook">&#xf09a;</string>
+    <string name="icon_image">&#xf1c5;</string>
+    <string name="icon_circle">&#xf111;</string>
+    <string name="icon_trash">&#xf014;</string>
+    <string name="icon_upload">&#xf0ee;</string>
+    <string name="icon_clock">&#xf017;</string>
+    <string name="icon_heart">&#xf004;</string>
+    <string name="icon_dashboard">&#xf0e4;</string>
+    <string name="icon_group">&#xf0c0;</string>
+    <string name="icon_setting">&#xf085;</string>
+    <string name="icon_logout">&#xf08b;</string>
+    <string name="icon_info">&#xf05a;</string>
+    <string name="icon_invite">&#xf0a1;</string>
+    <string name="icon_qrcode">&#xf029;</string>
+    <string name="icon_up">&#xf0de;</string>
+    <string name="icon_schedule">&#xf073;</string>
+    <string name="icon_comment">&#xf0e6;</string>
+    <string name="icon_more">&#xf141;</string>
+    <string name="icon_account">&#xf013;</string>
+    <string name="icon_home">&#xf015;</string>
+    <string name="icon_plus">&#xf067;</string>
+    <string name="icon_price_map">&#xf080;</string>
+    <string name="icon_listing">&#xf0ae;</string>
+    <string name="icon_filter">&#xf0b0;</string>
+    <string name="icon_sort">&#xf160;</string>
+    <string name="icon_hand_feedback">&#xf164;</string>
+    <string name="icon_star">&#xf005;</string>
+
+    <string name="icon_dollar">&#xf155;</string>
+    <string name="icon_book">&#xf02d;</string>
+    <string name="icon_share">&#xf1e0;</string>
+    <string name="icon_user">&#xf007;</string>
+    <string name="icon_key">&#xf084;</string>
+    <string name="icon_sign_out">&#xf08b;</string>
+    <string name="icon_arrow_right">&#xf105;</string>
+    <string name="icon_calenda">&#xf073;</string>
+    <string name="icon_warning_triangle">&#xf071;</string>
+    <string name="icon_arrow_bottom">&#xf107;</string>
+    <string name="icon_chevron_circle_left">&#xf137;</string>
+    <string name="icon_chevron_circle_right">&#xf138;</string>
+    <string name="icon_arrow_double_right">&#xf101;</string>
+
+
+    <string name="title">Tiêu đề</string>
+    <string name="content">Nội dung</string>
+
+
+    <string name="save">Lưu</string>
+    <string name="continues">Tiếp tục</string>
+    <string name="note">Ghi</string>
 </resources>
