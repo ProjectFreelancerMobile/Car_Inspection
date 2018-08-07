@@ -24,9 +24,7 @@ versions.retrofit           = "2.4.0"
 versions.okHttp             = "3.11.0"
 versions.okHttpLogging      = "2.0.7"
 //Utils
-versions.utilcode           = "1.17.1"
-versions.rich               = "2.2.1"
-versions.kotlinify          = "1.3.1"
+versions.utilcode           = "1.18.3"
 versions.realm_extensions   = "2.2.0"
 //Libraries: Development
 versions.leakCanary         = "1.6.1"
@@ -62,10 +60,10 @@ deps.libCore = libCore
 def utils =[:]
 utils.utilcode              = "com.blankj:utilcode:$versions.utilcode"
 utils.ktx                   = "androidx.core:core-ktx:$versions.support"
-utils.anko_commons          = "org.jetbrains.anko:anko-commons:$versions.supportAnko"
+//utils.anko_commons          = "org.jetbrains.anko:anko-commons:$versions.supportAnko"
 //utils.kotlinify             = "com.github.GilGoldzweig.kotlinify:reactive:$versions.kotlinify"
 //utils.rich                  = "com.github.WindSekirun:RichUtilsKt:$versions.rich"
-utils.realm_extensions      = "com.github.vicpinm:krealmextensions:$versions.realm_extensions"
+//utils.realm_extensions      = "com.github.vicpinm:krealmextensions:$versions.realm_extensions"
 deps.utils = utils
 
 def room = [:]
