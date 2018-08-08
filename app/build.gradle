@@ -141,6 +141,12 @@ kotlin {
     }
 }
 
+ext {
+    versions = [
+            'javacv': '1.4.2',
+            'ffmpeg': '4.0.1'
+    ]
+}
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':Core')
@@ -179,6 +185,9 @@ dependencies {
     implementation(deps.libCore.ok_httpLogging, {
         exclude group: 'org.json', module: 'json'
     })
+    /*implementation(deps.libCore.javacv, {
+        exclude group: 'org.bytedeco.javacpp-presets'
+    })*/
     implementation(deps.libCore.glide_recycler, {
         transitive = false
     })
@@ -194,6 +203,12 @@ dependencies {
     for (dependency in deps.library) {
         implementation dependency.value
     }
+    implementation(group: 'org.bytedeco', name: 'javacv-platform', version: versions.javacv) {
+        exclude group: 'org.bytedeco.javacpp-presets'
+    }
+    implementation group: 'org.bytedeco.javacpp-presets', name: 'ffmpeg', version: "${versions.ffmpeg}-${versions.javacv}"
+    implementation group: 'org.bytedeco.javacpp-presets', name: 'ffmpeg', version: "${versions.ffmpeg}-${versions.javacv}", classifier: 'android-arm'
+    implementation group: 'org.bytedeco.javacpp-presets', name: 'ffmpeg', version: "${versions.ffmpeg}-${versions.javacv}", classifier: 'android-arm64'
     // Test
     debugImplementation deps.test.leakcanary
     debugImplementation deps.test.leakcanaryfragment

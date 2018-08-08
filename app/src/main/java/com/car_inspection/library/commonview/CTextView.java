@@ -1,5 +1,4 @@
-package com.car_inspection.ui.customview.commonview;
-
+package com.car_inspection.library.commonview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -10,24 +9,26 @@ import android.util.Log;
 import com.car_inspection.R;
 import com.car_inspection.utils.CustomFontHelper;
 
-import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
 
 
-public class CButton extends AppCompatButton {
-    private static final String TAG = "Button";
+public class CTextView extends AppCompatTextView {
+    private static final String TAG = "TextView";
 
-    public CButton(Context context) {
+    public CTextView(Context context) {
         super(context);
     }
 
-    public CButton(Context context, AttributeSet attrs) {
+    public CTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         CustomFontHelper.setCustomFont(this,context, attrs);
+        //setCustomTextColor(context, attrs);
     }
 
-    public CButton(Context context, AttributeSet attrs, int defStyle) {
+    public CTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        CustomFontHelper.setCustomFont(this,context, attrs);
+        CustomFontHelper.setCustomFont(this, context, attrs);
+        //setCustomTextColor(context, attrs);
     }
 
     private void setCustomFont(Context ctx, AttributeSet attrs) {
@@ -48,7 +49,16 @@ public class CButton extends AppCompatButton {
 
         setTypeface(tf);
         return true;
-
     }
+
+
+//    private void setCustomTextColor(Context ctx, AttributeSet attrs) {
+//        TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.CTextView);
+//        String customText = a.getString(R.styleable.CTextView_textColorCustom);
+//
+//        setTextColor(a.getColor(R.styleable.CTextView_textColorCustom, 0));
+//
+//        a.recycle();
+//    }
 
 }

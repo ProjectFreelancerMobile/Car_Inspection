@@ -33,6 +33,8 @@ versions.stetho             = "1.5.0"
 versions.realmStetho        = "2.1.0"
 //Libraries :App
 versions.jodatime           = "2.10"
+versions.javacv             = "1.4.2"
+versions.ffmpeg             = "4.0.1"
 
 def deps = [:]
 
@@ -55,6 +57,7 @@ deps.core = core
 def libCore =[:]
 libCore.ok_httpLogging      = "com.github.ihsanbal:LoggingInterceptor:$versions.okHttpLogging"
 libCore.glide_recycler      = "com.github.bumptech.glide:recyclerview-integration:$versions.glide"
+libCore.javacv              = "group: 'org.bytedeco', name: 'javacv-platform', version:$versions.javacv"
 deps.libCore = libCore
 
 def utils =[:]
@@ -116,6 +119,9 @@ deps.navigation = navigation
 
 def library = [:]
 library.jodatime            = "joda-time:joda-time:$versions.jodatime"
+//library.ffmpeg              = "group: org.bytedeco.javacpp-presets, name: 'ffmpeg', version:$versions.ffmpeg-$versions.javacv"
+//library.ffmpeg_arm          = "group: org.bytedeco.javacpp-presets, name: 'ffmpeg', version:$versions.ffmpeg-$versions.javacv, 'classifier: android-arm'"
+//library.ffmpeg_arm_64       = "group: org.bytedeco.javacpp-presets, name: 'ffmpeg', version:$versions.ffmpeg-$versions.javacv, 'classifier: android-arm64'"
 deps.library = library
 
 def compiler = [:]

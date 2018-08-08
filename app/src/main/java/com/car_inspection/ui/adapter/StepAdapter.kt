@@ -1,5 +1,6 @@
 package com.car_inspection.ui.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.text.Editable
 import android.text.TextUtils
@@ -39,9 +40,10 @@ class StepAdapter(var context: Context) : RecyclerView.Adapter<StepAdapter.StepV
         return if (items != null) items!!.size else 0
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: StepViewHolder, position: Int) {
-        holder.tvSubStep.setText(items?.get(position)?.subStep + " " + items?.get(position)?.subStepTitle2)
-        holder.tvSubStepTitle.setText(items?.get(position)?.subStepTitle3)
+        holder.tvSubStep.text = items?.get(position)?.subStep + " " + items?.get(position)?.subStepTitle2
+        holder.tvSubStepTitle.text = items?.get(position)?.subStepTitle3
         binding = true
         if (!TextUtils.isEmpty(items?.get(position)?.rating)) {
             when (items?.get(position)?.rating) {
@@ -52,9 +54,9 @@ class StepAdapter(var context: Context) : RecyclerView.Adapter<StepAdapter.StepV
         } else holder.rgGPF.clearCheck()
         binding = false
         if (!binding)
-            holder.rgGPF.setOnCheckedChangeListener({ group, checkId ->
+            holder.rgGPF.setOnCheckedChangeListener { group, checkId ->
                 stepAdapterListener?.onRadioGroupCheckChangeListner(group, checkId, position)
-            })
+            }
 
         holder.tvNote.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
@@ -66,7 +68,7 @@ class StepAdapter(var context: Context) : RecyclerView.Adapter<StepAdapter.StepV
             }
 
             override fun onTextChanged(p0: CharSequence, p1: Int, p2: Int, p3: Int) {
-                if (p0.length > 0)
+                if (p0.isNotEmpty())
                     items?.get(position)?.note = p0.toString()
                 else items?.get(position)?.note = ""
             }
@@ -76,7 +78,7 @@ class StepAdapter(var context: Context) : RecyclerView.Adapter<StepAdapter.StepV
     }
 
     fun isFinishCheckItem(): Boolean {
-        for (item in this!!.items!!)
+        for (item in this.items!!)
             if (TextUtils.isEmpty(item.rating))
                 return false
         return true

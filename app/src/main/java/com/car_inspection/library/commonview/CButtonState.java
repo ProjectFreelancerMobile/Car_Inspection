@@ -1,4 +1,4 @@
-package com.car_inspection.ui.customview.commonview;
+package com.car_inspection.library.commonview;
 
 
 import android.content.Context;

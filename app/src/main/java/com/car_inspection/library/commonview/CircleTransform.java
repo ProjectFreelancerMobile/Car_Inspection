@@ -1,4 +1,4 @@
-package com.car_inspection.ui.customview.commonview;
+package com.car_inspection.library.commonview;
 
 /**
  * Created by Engine on 1/18/2017.

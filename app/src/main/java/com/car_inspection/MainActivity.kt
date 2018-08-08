@@ -2,7 +2,6 @@ package com.car_inspection
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.car_inspection.ui.main.MainFragment
 
 class MainActivity : AppCompatActivity() {
 

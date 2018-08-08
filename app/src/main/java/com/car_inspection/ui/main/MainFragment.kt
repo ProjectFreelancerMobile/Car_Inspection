@@ -18,7 +18,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
 
     private val SAVE_PATH: String = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath
 
-    var items: ArrayList<StepModifyModel> = ArrayList()
+    private var items: ArrayList<StepModifyModel>? = null
     lateinit var stepAdapter: StepAdapter
     var isTakePicture = false
     var currentPosition = 0
@@ -42,7 +42,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
 
         initTestData()
 
-        stepAdapter = StepAdapter (this!!.activity!!)
+        stepAdapter = StepAdapter (this.activity!!)
         stepAdapter.stepAdapterListener = this
         stepAdapter.items = this.items
         rvSubStep.adapter = stepAdapter
@@ -53,15 +53,16 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
         pgStep.gravity = Gravity.CENTER
         pgStep.isShowingPercentage = true
         pgStep.setTextColor(Color.BLACK)
-        pgStep.setText("30%")
+        pgStep.text = "30%"
         pgStep.updateView()
     }
-    fun convertStepOrinalModelsToStepModifyModels(stepOrinalModels: ArrayList<StepOrinalModel>): ArrayList<StepModifyModel> {
-        var stepModifyModels = ArrayList<StepModifyModel>()
-        if (stepOrinalModels != null && stepOrinalModels.size > 0) {
+
+    private fun convertStepOrinalModelsToStepModifyModels(stepOrinalModels: ArrayList<StepOrinalModel>): ArrayList<StepModifyModel> {
+        val stepModifyModels = ArrayList<StepModifyModel>()
+        if (stepOrinalModels.size > 0) {
             for (stepOrinalModel in stepOrinalModels)
                 run {
-                    var stepModifyModel = StepModifyModel()
+                    val stepModifyModel = StepModifyModel()
                     stepModifyModel.subStep = stepOrinalModel.subStep
                     stepModifyModel.subStepTitle1 = stepOrinalModel.subStepTitle1
                     stepModifyModel.subStepTitle2 = stepOrinalModel.subStepTitle2
@@ -72,11 +73,10 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
         return stepModifyModels
     }
 
-    fun initTestData() {
-        var stepOrinalModels = ArrayList<StepOrinalModel>()
-
+    private fun initTestData() {
+        val stepOrinalModels = ArrayList<StepOrinalModel>()
         for (i in 1..20) {
-            var stepmodify = StepOrinalModel()
+            val stepmodify = StepOrinalModel()
             stepmodify.step = "2"
             stepmodify.subStep = "2." + i
             stepmodify.subStepTitle1 = "bên ngoài xe"
@@ -88,7 +88,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
         items = convertStepOrinalModelsToStepModifyModels(stepOrinalModels)
     }
 
-    fun autoScrollAfterCheckComplete() {
+    private fun autoScrollAfterCheckComplete() {
         rvSubStep.post(object : Runnable {
             override fun run() {
                 rvSubStep.smoothScrollBy(0,  stepAdapter.heightItem)
@@ -120,13 +120,13 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
             autoScrollAfterCheckComplete()
     }
 
-    fun showLayoutTakepicture() {
+    private fun showLayoutTakepicture() {
         isTakePicture = true
         layoutTakePicture.visibility = View.VISIBLE
         layoutVideo.visibility = View.GONE
     }
 
-    fun showLayoutVideo() {
+    private fun showLayoutVideo() {
         isTakePicture = false
         layoutTakePicture.visibility = View.GONE
         layoutVideo.visibility = View.VISIBLE

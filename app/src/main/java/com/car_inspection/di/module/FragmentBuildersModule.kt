@@ -1,7 +1,6 @@
 package com.car_inspection.di.module
 
 import com.car_inspection.di.FragmentScope
-import com.car_inspection.ui.main.MainFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
