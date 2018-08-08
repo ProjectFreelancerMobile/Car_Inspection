@@ -107,7 +107,7 @@ android {
         variant.outputs.all { output ->
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                def fileName = "BlendTV_v${defaultConfig.versionName}_${getDate()}.apk"
+                def fileName = "CarInspection_v${defaultConfig.versionName}_${getDate()}.apk"
                 outputFileName = fileName
             }
         }

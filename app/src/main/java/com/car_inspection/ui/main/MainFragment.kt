@@ -52,27 +52,19 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
         loadDataStep(currentStep)
         updateProgressStep(currentStep)
 
-        btnSave.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View?) {
-                btnContinue.setActive(true)
-
-            }
-
-        })
-        btnContinue.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(view: View?) {
-                Observable.just(1L).delay(100, TimeUnit.MILLISECONDS)
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeWith(object : DisposableImpl<Long>() {
-                            override fun onNext(t: Long) {
-                                currentStep++
-                                loadDataStep(currentStep)
-                                btnContinue.setActive(false)
-                            }
-                        })
-            }
-        })
+        btnSave.setOnClickListener { btnContinue.isActive = true }
+        btnContinue.setOnClickListener {
+            Observable.just(1L).delay(100, TimeUnit.MILLISECONDS)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(object : DisposableImpl<Long>() {
+                        override fun onNext(t: Long) {
+                            currentStep++
+                            loadDataStep(currentStep)
+                            btnContinue.isActive = false
+                        }
+                    })
+        }
 
         // disable scroll up android
 //        rvSubStep.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
@@ -98,13 +90,13 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
     fun updateProgressStep(step: Int) {
         val percent = step * 1f / 7
         pgStep.setMaximumPercentage(percent)
-        pgStep.useRoundedRectangleShape(20.0f);
+        pgStep.useRoundedRectangleShape(20.0f)
         pgStep.setProgressColor(resources.getColor(R.color.blue_500))
         pgStep.setProgressBackgroundColor(resources.getColor(R.color.blue_200))
-        pgStep.setText("${step * 100 / 7}%")
-        pgStep.setTextSize(14f)
+        pgStep.text = "${step * 100 / 7}%"
+        pgStep.textSize = 14f
         pgStep.setTextColor(Color.WHITE)
-        pgStep.setGravity(Gravity.CENTER)
+        pgStep.gravity = Gravity.CENTER
         pgStep.updateView()
     }
 
@@ -113,13 +105,13 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
             layoutFinishCheck.visibility = View.GONE
         items.clear()
         items = initStepTestData(step)
-        stepAdapter = StepAdapter(this!!.activity!!)
+        stepAdapter = StepAdapter(this.activity!!)
         stepAdapter.stepAdapterListener = this
         stepAdapter.items = items
         rvSubStep.adapter = stepAdapter
 
         updateProgressStep(step)
-        tvStep.setText("Bước ${items?.get(0).subStep}: ${items?.get(0).subStepTitle1}")
+        tvStep.text = "Bước ${items.get(0).subStep}: ${items.get(0).subStepTitle1}"
     }
 
     fun convertStepOrinalModelsToStepModifyModels(stepOrinalModels: ArrayList<StepOrinalModel>): ArrayList<StepModifyModel> {
@@ -142,7 +134,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
         var stepOrinalModels = ArrayList<StepOrinalModel>()
         var size = 5
         if (step % 2 == 0)
-            size = 4;
+            size = 4
 
         for (i in 1..size) {
             var stepmodify = StepOrinalModel()
@@ -170,15 +162,15 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
         when (checkId) {
             R.id.cbG -> {
                 showLayoutVideo()
-                items?.get(position)?.rating = "G"
+                items.get(position).rating = "G"
             }
             R.id.cbP -> {
                 showLayoutTakepicture()
-                items?.get(position)?.rating = "P"
+                items.get(position).rating = "P"
             }
             R.id.cbF -> {
                 showLayoutTakepicture()
-                items?.get(position)?.rating = "F"
+                items.get(position).rating = "F"
             }
         }
         if (stepAdapter.isFinishCheckItem() && currentStep < 7) {

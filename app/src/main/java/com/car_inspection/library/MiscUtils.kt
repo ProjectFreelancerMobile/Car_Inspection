@@ -11,10 +11,10 @@ object MiscUtils {
     fun isOrientationLandscape(context: Context): Boolean {
         val isOrientationLandscape: Boolean
         val orientation = context.resources.configuration.orientation
-        when (orientation) {
-            Configuration.ORIENTATION_LANDSCAPE -> isOrientationLandscape = true
-            Configuration.ORIENTATION_PORTRAIT -> isOrientationLandscape = false
-            else -> isOrientationLandscape = false
+        isOrientationLandscape = when (orientation) {
+            Configuration.ORIENTATION_LANDSCAPE -> true
+            Configuration.ORIENTATION_PORTRAIT -> false
+            else -> false
         }
         return isOrientationLandscape
     }

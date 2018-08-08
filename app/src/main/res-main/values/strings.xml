@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Car_Inspection</string>
+    <string name="app_name">Car Inspection</string>
     <!-- FONT STRING -->
     <string name="font_awesome">font_awesome.ttf</string>
     <string name="font_regular">opensans_regular.ttf</string>

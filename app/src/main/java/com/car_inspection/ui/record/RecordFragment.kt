@@ -123,8 +123,10 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
             }
             R.id.mBtnDone -> {
                 pauseRecording()
+                Logger.e("1111")
                 mRecordFragments?.apply {
                     // check video length
+                    Logger.e("recordedTime="+calculateTotalRecordedTime(this) +"MIN_VIDEO_LENGTH="+MIN_VIDEO_LENGTH)
                     if (calculateTotalRecordedTime(this) < MIN_VIDEO_LENGTH) {
                         Toast.makeText(context, R.string.video_too_short, Toast.LENGTH_SHORT).show()
                         return
@@ -307,9 +309,9 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
 
                 override fun onPreviewFrame(data: ByteArray, camera: Camera) {
                     val thisPreviewFrameTime = System.currentTimeMillis()
-                    if (lastPreviewFrameTime > 0) {
+                    /*if (lastPreviewFrameTime > 0) {
                         Log.d(LOG_TAG, "Preview frame interval: " + (thisPreviewFrameTime - lastPreviewFrameTime) + "ms")
-                    }
+                    }*/
                     lastPreviewFrameTime = thisPreviewFrameTime
 
                     // get video data
@@ -500,8 +502,9 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
     private fun calculateTotalRecordedTime(recordModel: Stack<RecordModel>?): Long {
         var recordedTime: Long = 0
         recordModel?.apply {
-            for (recordFragment in recordModel) {
+            for (recordFragment in this) {
                 recordedTime += recordFragment.duration
+                Logger.e("recordedTime=$recordedTime")
             }
         }
         return recordedTime
@@ -541,7 +544,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
                             val bufferReadResult = read(audioData.array(), 0, audioData.capacity())
                             audioData.limit(bufferReadResult)
                             if (bufferReadResult > 0) {
-                                Log.v(LOG_TAG, "bufferReadResult: $bufferReadResult")
+                               // Log.v(LOG_TAG, "bufferReadResult: $bufferReadResult")
                                 try {
                                     recordSamples(audioData)
                                 } catch (e: Exception) {
@@ -665,52 +668,49 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
 
             isRunning = true
             var recordedFrame: FrameToRecord
-            mFrameToRecordQueue?.apply {
-                while (isRunning || !isEmpty()) {
+            while (isRunning || !mFrameToRecordQueue!!.isEmpty()) {
+                try {
+                    recordedFrame = mFrameToRecordQueue?.take()!!
+                } catch (ie: InterruptedException) {
+                    ie.printStackTrace()
                     try {
-                        recordedFrame = take()
-                    } catch (ie: InterruptedException) {
-                        ie.printStackTrace()
-                        try {
-                            frameFilter.stop()
-                        } catch (e: FrameFilter.Exception) {
-                            e.printStackTrace()
-                        }
-
-                        break
+                        frameFilter.stop()
+                    } catch (e: FrameFilter.Exception) {
+                        e.printStackTrace()
                     }
-
-                    mFrameRecorder?.apply {
-                        val timestamp = recordedFrame.timestamp
-                        if (timestamp > getTimestamp()) {
-                            setTimestamp(timestamp)
-                        }
-                        val startTime = System.currentTimeMillis()
-                        //                    Frame filteredFrame = recordedFrame.getFrame();
-                        var filteredFrame: Frame? = null
-                        try {
-                            frameFilter.push(recordedFrame.frame)
-                            filteredFrame = frameFilter.pull()
-                        } catch (e: FrameFilter.Exception) {
-                            e.printStackTrace()
-                        }
-
-                        try {
-                            record(filteredFrame)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-
-                        val endTime = System.currentTimeMillis()
-                        val processTime = endTime - startTime
-                        mTotalProcessFrameTime += processTime
-                        Log.d(LOG_TAG, "This frame process time: " + processTime + "ms")
-                        val totalAvg = mTotalProcessFrameTime / ++mFrameRecordedCount
-                        Log.d(LOG_TAG, "Avg frame process time: " + totalAvg + "ms")
-                    }
-                    Log.d(LOG_TAG, mFrameRecordedCount.toString() + " / " + mFrameToRecordCount)
-                    mRecycledFrameQueue?.offer(recordedFrame)
+                    break
                 }
+
+                mFrameRecorder?.apply {
+                    val timestamp = recordedFrame.timestamp
+                    if (timestamp > getTimestamp()) {
+                        setTimestamp(timestamp)
+                    }
+                    val startTime = System.currentTimeMillis()
+                    //                    Frame filteredFrame = recordedFrame.getFrame();
+                    var filteredFrame: Frame? = null
+                    try {
+                        frameFilter.push(recordedFrame.frame)
+                        filteredFrame = frameFilter.pull()
+                    } catch (e: FrameFilter.Exception) {
+                        e.printStackTrace()
+                    }
+
+                    try {
+                        record(filteredFrame)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+
+                    val endTime = System.currentTimeMillis()
+                    val processTime = endTime - startTime
+                    mTotalProcessFrameTime += processTime
+                    //Log.d(LOG_TAG, "This frame process time: " + processTime + "ms")
+                    val totalAvg = mTotalProcessFrameTime / ++mFrameRecordedCount
+                    //Log.d(LOG_TAG, "Avg frame process time: " + totalAvg + "ms")
+                }
+                //Log.d(LOG_TAG, mFrameRecordedCount.toString() + " / " + mFrameToRecordCount)
+                mRecycledFrameQueue?.offer(recordedFrame)
             }
         }
 
