@@ -6,8 +6,11 @@ buildscript {
         classpath deps.android_gradle_plugin
         classpath deps.realm_plugin
         classpath deps.kotlin_plugin
-       // classpath deps.fabric_plugin
-       // classpath deps.google_service
+        classpath deps.fabric_plugin
+        classpath deps.google_service
+    }
+    repositories {
+        google()
     }
 }
 

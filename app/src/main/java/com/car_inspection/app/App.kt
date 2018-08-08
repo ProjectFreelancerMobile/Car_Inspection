@@ -99,11 +99,7 @@ class App : Application(), HasActivityInjector {
         Utils.init(this)
         PreferenceManager.initialize(this, Constants.APP_NAME)
         Realm.init(this)
-        val fabric = Fabric.Builder(this)
-                .kits(Crashlytics())
-                .debuggable(false)
-                .build()
-        Fabric.with(fabric)
+        Fabric.with(this, Crashlytics())
     }
 
     private fun setupTest() {

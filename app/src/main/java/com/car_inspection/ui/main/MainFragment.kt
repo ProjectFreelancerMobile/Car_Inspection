@@ -12,6 +12,8 @@ import com.car_inspection.data.local.database.model.StepModifyModel
 import com.car_inspection.data.local.database.model.StepOrinalModel
 import com.car_inspection.ui.adapter.StepAdapter
 import com.car_inspection.ui.base.BaseFragment
+import com.car_inspection.ui.record.RecordFragment
+import com.toan_itc.core.utils.addFragment
 import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
@@ -27,7 +29,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
     }
 
     override fun initViews() {
-
+        activity?.addFragment(RecordFragment.newInstance(),R.id.fragmentRecord)
     }
 
     override fun setLayoutResourceID() = R.layout.main_fragment
@@ -89,11 +91,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
     }
 
     private fun autoScrollAfterCheckComplete() {
-        rvSubStep.post(object : Runnable {
-            override fun run() {
-                rvSubStep.smoothScrollBy(0,  stepAdapter.heightItem)
-            }
-        })
+        rvSubStep.post { rvSubStep.smoothScrollBy(0,  stepAdapter.heightItem) }
     }
 
     override fun onRadioGroupCheckChangeListner(group: RadioGroup, checkId: Int, position: Int) {

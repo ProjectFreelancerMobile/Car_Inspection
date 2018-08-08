@@ -26,7 +26,9 @@ import com.car_inspection.library.CameraHelper
 import com.car_inspection.library.FixedRatioCroppedTextureView
 import com.car_inspection.library.MiscUtils
 import com.car_inspection.ui.base.BaseFragment
+import com.car_inspection.ui.main.MainFragment
 import com.car_inspection.utils.listenToViews
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.main_fragment.*
 import kotlinx.android.synthetic.main.record_fragment.*
 import org.bytedeco.javacpp.avcodec
@@ -96,8 +98,13 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
 
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture?, p1: Int, p2: Int) {
         surface?.let {
+            Logger.e("onSurfaceTextureAvailable")
             startPreview(it)
         }
+    }
+
+    companion object {
+        fun newInstance() = RecordFragment()
     }
 
     override fun onClick(view: View?) {
@@ -239,6 +246,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
         val surfaceTexture = cameraPreview.surfaceTexture
         if (surfaceTexture != null) {
             // SurfaceTexture already created
+            Logger.e("doAfterAllPermissionsGranted")
             startPreview(surfaceTexture)
         }
         object : ProgressDialogTask<Void, Int, Void>(R.string.initiating) {
@@ -269,6 +277,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
         if (mCamera == null) {
             return
         }
+        Logger.e("startPreview")
         mCamera?.apply {
             val parameters = parameters
             val previewSizes = parameters.supportedPreviewSizes
@@ -431,10 +440,11 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
             }
         }
         mRecordFragments?.clear()
-        activity?.runOnUiThread(Runnable { mBtnReset.visibility = View.INVISIBLE })
+        activity?.runOnUiThread(Runnable { mBtnReset?.visibility = View.INVISIBLE })
     }
 
     private fun startRecording() {
+        Logger.e("startRecording")
         mAudioRecordThread = AudioRecordThread()
         mAudioRecordThread?.start()
         mVideoRecordThread = VideoRecordThread()
@@ -528,7 +538,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
         override fun run() {
             android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO)
             mAudioRecord?.apply {
-                Log.d(LOG_TAG, "mAudioRecord startRecording")
+                Logger.e(LOG_TAG+"mAudioRecord startRecording")
                 startRecording()
                 isRunning = true
                 /* ffmpeg_audio encoding loop */
