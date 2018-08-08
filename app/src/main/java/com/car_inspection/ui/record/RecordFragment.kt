@@ -452,31 +452,24 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
     }
 
     private fun stopRecording() {
-        mAudioRecordThread?.apply {
-            if(isRunning)
-                stopRunning()
-        }
-        mVideoRecordThread?.apply {
-            if(isRunning)
-                stopRunning()
-        }
         try {
             mAudioRecordThread?.apply {
+                if(isRunning)
+                    stopRunning()
                 join()
+                mAudioRecordThread = null
             }
             mVideoRecordThread?.apply {
+                if(isRunning)
+                    stopRunning()
                 join()
+                mVideoRecordThread = null
             }
+            mFrameToRecordQueue?.clear()
+            mRecycledFrameQueue?.clear()
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
-
-        mAudioRecordThread = null
-        mVideoRecordThread = null
-
-
-        mFrameToRecordQueue?.clear()
-        mRecycledFrameQueue?.clear()
     }
 
     private fun resumeRecording() {
@@ -723,9 +716,9 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
 
         override fun stopRunning() {
             super.stopRunning()
-            /*if (state == WAITING) {
+            if (state == State.WAITING) {
                 interrupt()
-            }*/
+            }
         }
     }
 
