@@ -1,5 +1,6 @@
 package com.car_inspection.ui.main
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Environment
@@ -12,6 +13,7 @@ import com.car_inspection.data.local.database.model.StepModifyModel
 import com.car_inspection.data.local.database.model.StepOrinalModel
 import com.car_inspection.ui.adapter.StepAdapter
 import com.car_inspection.ui.base.BaseFragment
+import com.car_inspection.ui.inputtext.SuggestTextActivity
 import com.car_inspection.ui.record.RecordFragment
 import com.toan_itc.core.utils.addFragment
 import google.com.carinspection.DisposableImpl
@@ -20,9 +22,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.main_fragment.*
 import java.util.concurrent.TimeUnit
+import android.app.Activity
+
+
 
 class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
-
+    private val REQUEST_SUGGEST_TEST = 0;
     private val SAVE_PATH: String = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath
 
     var items: ArrayList<StepModifyModel> = ArrayList()
@@ -31,12 +36,13 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
     var currentPosition = 0
 
     var currentStep = 2
+
     companion object {
         fun newInstance() = MainFragment()
     }
 
     override fun initViews() {
-        activity?.addFragment(RecordFragment.newInstance(),R.id.fragmentRecord)
+        activity?.addFragment(RecordFragment.newInstance(), R.id.fragmentRecord)
     }
 
     override fun setLayoutResourceID() = R.layout.main_fragment
@@ -87,6 +93,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
 //
 //        })
     }
+
     fun updateProgressStep(step: Int) {
         val percent = step * 1f / 7
         pgStep.setMaximumPercentage(percent)
@@ -157,6 +164,13 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
         })
     }
 
+    override fun onTextNoteClickListener(v: View, position: Int) {
+        var intent = Intent(activity, SuggestTextActivity::class.java)
+        intent.putExtra("position", position)
+        intent.putExtra("note",items.get(position).note)
+        startActivityForResult(intent, REQUEST_SUGGEST_TEST)
+    }
+
     override fun onRadioGroupCheckChangeListner(group: RadioGroup, checkId: Int, position: Int) {
         currentPosition = position
         when (checkId) {
@@ -194,5 +208,15 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
         isTakePicture = false
         layoutTakePicture.visibility = View.GONE
         layoutVideo.visibility = View.VISIBLE
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode === REQUEST_SUGGEST_TEST) {
+            if (resultCode === Activity.RESULT_OK) {
+                val position = data.getIntExtra("position",0)
+                items.get(position).note = data.getStringExtra("note")
+            }
+        }
     }
 }

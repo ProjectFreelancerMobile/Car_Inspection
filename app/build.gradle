@@ -151,8 +151,10 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':Core')
     implementation 'com.android.support:design:27.1.1'
-//picasso
+    //picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+    //FlowLayout
+    implementation 'com.nex3z:flow-layout:1.2.2'
     // Kotlin
     implementation deps.kotlin.stdlib
     implementation deps.multidex

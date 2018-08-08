@@ -31,6 +31,12 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.inputtext.SuggestTextActivity"
+            android:configChanges="keyboard|keyboardHidden|locale|screenLayout|screenSize|uiMode|orientation"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateVisible"></activity>
+
         <meta-data
             android:name="com.car_inspection.utils.OkHttpLibraryGlideModule"
             android:value="OkHttpLibraryGlideModule" />

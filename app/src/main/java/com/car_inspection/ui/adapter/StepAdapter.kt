@@ -74,7 +74,7 @@ class StepAdapter(var context: Context) : RecyclerView.Adapter<StepAdapter.StepV
             }
 
         })
-        // holder.tvNote.setOnClickListener({v->stepAdapterListener?.onTextNoteClickListener(v,position)})
+         holder.tvNote.setOnClickListener({v->stepAdapterListener?.onTextNoteClickListener(v,position)})
     }
 
     fun isFinishCheckItem(): Boolean {
@@ -93,6 +93,6 @@ class StepAdapter(var context: Context) : RecyclerView.Adapter<StepAdapter.StepV
 
     interface StepAdapterListener {
         fun onRadioGroupCheckChangeListner(group: RadioGroup, checkId: Int, position: Int)
-        //  fun onTextNoteClickListener(v:View,position: Int)
+          fun onTextNoteClickListener(v:View,position: Int)
     }
 }
