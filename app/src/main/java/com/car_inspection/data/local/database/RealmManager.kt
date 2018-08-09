@@ -2,8 +2,11 @@ package com.car_inspection.data.local.database
 
 import com.car_inspection.app.Constants
 import com.car_inspection.data.local.prefs.PreferenceManager
+import com.car_inspection.data.model.StepModifyModel
+import com.car_inspection.data.model.StepOrinalModel
 import com.orhanobut.logger.Logger
 import io.realm.Realm
+import io.realm.Realm.getDefaultInstance
 import io.realm.RealmConfiguration
 
 @Suppress("ReplaceCallWithBinaryOperator")
@@ -22,6 +25,33 @@ class RealmManager : RepositoryData {
 
     init {
         Realm.setDefaultConfiguration(mRealmConfig)
+    }
+
+    override fun initStepData(step : Int) :List<StepOrinalModel> {
+        getDefaultInstance().executeTransactionAsync { realm ->
+            realm.where(StepOrinalModel::class.java).findFirst().let {
+                if(it !=null)
+                    return@let it
+                else{
+                    val stepOrinalModels = mutableListOf<StepOrinalModel>()
+                    var size = 5
+                    if (step % 2 == 0)
+                        size = 4
+                    for (i in 1..size) {
+                        val stepmodify = StepOrinalModel()
+                        stepmodify.step = "$step"
+                        stepmodify.subStep = "$step." + i
+                        stepmodify.subStepTitle1 = "bên ngoài xe"
+                        stepmodify.subStepTitle2 = "bên trái trước"
+                        stepmodify.subStepTitle3 = "bên ngoài cửa xe"
+                        stepOrinalModels.add(stepmodify)
+                    }
+                    realm.copyToRealmOrUpdate(stepOrinalModels)
+                    return@let stepOrinalModels
+                }
+            }
+        }
+        return emptyList()
     }
 
     override fun clearAll() {

@@ -1,172 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:weightSum="2">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <FrameLayout
-        android:layout_width="0dp"
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.car_inspection.ui.main.MainViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@drawable/rectangle_black">
+        android:orientation="horizontal"
+        android:weightSum="2">
 
-        <RelativeLayout
-            android:id="@+id/layoutVideo"
-            android:layout_width="match_parent"
+        <FrameLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/rectangle_black">
 
             <RelativeLayout
-                android:id="@+id/layoutControl"
+                android:id="@+id/layoutVideo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_height="match_parent"
                 android:background="@drawable/rectangle_black">
 
-                <ImageView
-                    android:id="@+id/btnPlayPause"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_play_video" />
-
-                <com.car_inspection.library.commonview.CustomProgress
-                    android:id="@+id/pgVideo"
+                <RelativeLayout
+                    android:id="@+id/layoutControl"
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="1dp"
-                    android:layout_toLeftOf="@+id/btnSound"
-                    android:layout_toRightOf="@+id/btnPlayPause"
-                    android:background="@drawable/rectangle_black" />
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/rectangle_black">
 
-                <ImageView
-                    android:id="@+id/btnSound"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:layout_toLeftOf="@+id/btnFullScreen"
-                    android:src="@drawable/ic_sound" />
+                    <ImageView
+                        android:id="@+id/btnPlayPause"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_play_video" />
 
-                <ImageView
-                    android:id="@+id/btnFullScreen"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/ic_fullscreen_video" />
+                    <com.car_inspection.library.commonview.CustomProgress
+                        android:id="@+id/pgVideo"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="1dp"
+                        android:layout_toLeftOf="@+id/btnSound"
+                        android:layout_toRightOf="@+id/btnPlayPause"
+                        android:background="@drawable/rectangle_black" />
 
+                    <ImageView
+                        android:id="@+id/btnSound"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/btnFullScreen"
+                        android:src="@drawable/ic_sound" />
+
+                    <ImageView
+                        android:id="@+id/btnFullScreen"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/ic_fullscreen_video" />
+
+
+                </RelativeLayout>
+
+                <FrameLayout
+                    android:id="@+id/fragmentRecord"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/layoutControl"
+                    android:background="@color/black" />
 
             </RelativeLayout>
 
-            <FrameLayout
-                android:id="@+id/fragmentRecord"
+            <RelativeLayout
+                android:id="@+id/layoutTakePicture"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/layoutControl"
-                android:background="@color/black"/>
+                android:visibility="gone">
 
-        </RelativeLayout>
+                <android.view.SurfaceView
+                    android:id="@+id/preview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <ImageView
+                    android:id="@+id/btnTakePicture"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/ic_camera_white" />
+
+                <TextView
+                    android:id="@+id/tvTitleStep"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/btnTakePicture"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dp"
+                    android:text="phía ngoài cửa xe"
+                    android:textColor="@color/colorWhite" />
+            </RelativeLayout>
+
+        </FrameLayout>
 
         <RelativeLayout
-            android:id="@+id/layoutTakePicture"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:layout_margin="5dp"
+            android:layout_weight="1">
 
-            <android.view.SurfaceView
-                android:id="@+id/preview"
+            <com.car_inspection.library.commonview.CustomProgress
+                android:id="@+id/pgStep"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <ImageView
-                android:id="@+id/btnTakePicture"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentBottom="true"
+                android:layout_height="30dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="10dp"
-                android:src="@drawable/ic_camera_white" />
+                android:background="@drawable/rectangle_black"
+                android:padding="1dp" />
 
             <TextView
-                android:id="@+id/tvTitleStep"
+                android:id="@+id/tvStep"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/btnTakePicture"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="10dp"
-                android:text="phía ngoài cửa xe"
-                android:textColor="@color/colorWhite" />
+                android:layout_below="@+id/pgStep"
+                android:layout_marginTop="5dp"
+                android:text="bước 2: kiểm tra bên ngoài xe" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSubStep"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/layoutFinishCheck"
+                android:layout_below="@+id/tvStep"
+                android:layout_marginTop="5dp" />
+
+            <LinearLayout
+                android:id="@+id/layoutFinishCheck"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@color/colorWhite"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.car_inspection.library.commonview.CButtonState
+                    android:id="@+id/btnSave"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/save"
+                    android:textColor="@color/black"
+                    app:setActive="true" />
+
+                <com.car_inspection.library.commonview.CButtonState
+                    android:id="@+id/btnContinue"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/continues"
+                    android:textColor="@color/black"
+                    app:setActive="false" />
+            </LinearLayout>
         </RelativeLayout>
 
-    </FrameLayout>
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:layout_weight="1">
-
-        <com.car_inspection.library.commonview.CustomProgress
-            android:layout_centerHorizontal="true"
-            android:id="@+id/pgStep"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:background="@drawable/rectangle_black"
-            android:padding="1dp" />
-
-        <TextView
-            android:id="@+id/tvStep"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/pgStep"
-            android:layout_marginTop="5dp"
-            android:text="bước 2: kiểm tra bên ngoài xe" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvSubStep"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/layoutFinishCheck"
-            android:layout_below="@+id/tvStep"
-            android:layout_marginTop="5dp" />
-
-        <LinearLayout
-            android:id="@+id/layoutFinishCheck"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorWhite"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <com.car_inspection.library.commonview.CButtonState
-                android:id="@+id/btnSave"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/save"
-                android:textColor="@color/black"
-                app:setActive="true" />
-
-            <com.car_inspection.library.commonview.CButtonState
-                android:id="@+id/btnContinue"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/continues"
-                android:textColor="@color/black"
-                app:setActive="false" />
-        </LinearLayout>
-    </RelativeLayout>
-
-</LinearLayout>
+    </LinearLayout>
+</layout>

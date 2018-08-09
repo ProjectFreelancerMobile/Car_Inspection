@@ -1,4 +1,4 @@
-package google.com.carinspection
+package com.car_inspection.common
 
 import io.reactivex.observers.DisposableObserver
 

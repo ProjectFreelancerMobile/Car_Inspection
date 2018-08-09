@@ -5,16 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.KeyEvent
-import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.car_inspection.R
 import kotlinx.android.synthetic.main.suggest_text_activity.*
-import android.widget.Toast
-
-
 
 
 class SuggestTextActivity : AppCompatActivity() {
@@ -27,10 +23,11 @@ class SuggestTextActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.suggest_text_activity)
 
-        position = getIntent().getExtras().getInt("position")
-        if (!TextUtils.isEmpty(getIntent().getExtras().getString("note")))
-            note = getIntent().getExtras().getString("note")
-
+        intent.extras?.apply {
+            position = getInt("position")
+            if (!TextUtils.isEmpty(getString("note")))
+                note = getString("note")?:""
+        }
         initViews()
         addTextSuggest()
 
@@ -39,7 +36,7 @@ class SuggestTextActivity : AppCompatActivity() {
     fun initViews() {
         edtNote.requestFocus()
         edtNote.setText(note)
-        edtNote.setSelection(edtNote.getText().length)
+        edtNote.setSelection(edtNote.text.length)
         edtNote.setHandleDismissingKeyboard { returnResult() }
         edtNote.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -75,7 +72,7 @@ class SuggestTextActivity : AppCompatActivity() {
 
             textView.setOnClickListener {
                 edtNote.setText(edtNote.text.toString() + textView.text.toString())
-                edtNote.setSelection(edtNote.getText().length)
+                edtNote.setSelection(edtNote.text.length)
             }
             flowLayoutSuggest.addView(textView)
         }

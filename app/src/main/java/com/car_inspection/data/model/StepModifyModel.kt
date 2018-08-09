@@ -1,4 +1,4 @@
-package com.car_inspection.data.local.database.model
+package com.car_inspection.data.model
 
 import io.realm.RealmList
 import io.realm.RealmObject
