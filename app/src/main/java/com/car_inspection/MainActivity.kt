@@ -1,19 +1,28 @@
 package com.car_inspection
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.car_inspection.ui.main.MainFragment
+import com.toan_itc.core.base.CoreBaseActivity
+import com.toan_itc.core.utils.addFragment
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : CoreBaseActivity(), HasSupportFragmentInjector {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, MainFragment.newInstance())
-                    .commitNow()
-        }
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+
+    override fun supportFragmentInjector() = dispatchingAndroidInjector
+
+    override fun setLayoutResourceID(): Int = R.layout.main_activity
+
+    override fun initViews(){
+       addFragment(MainFragment.newInstance(), R.id.fragmentContainer)
+    }
+
+    override fun initData() {
+
     }
 
 }

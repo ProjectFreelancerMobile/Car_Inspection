@@ -33,7 +33,6 @@ internal constructor(private val mainRepository: MainRepository) : BaseViewModel
         Logger.d(TAG + "ON_RESUME")
     }
 
-
     fun initStepData(step: Int) = mainRepository.initStepData(step)
 
     fun clearAll() = mainRepository.clearAll()

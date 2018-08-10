@@ -22,8 +22,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".MainActivity"
-            android:screenOrientation="landscape">
+            android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,7 +34,7 @@
             android:name="com.car_inspection.ui.inputtext.SuggestTextActivity"
             android:configChanges="keyboard|keyboardHidden|locale|screenLayout|screenSize|uiMode|orientation"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateVisible"></activity>
+            android:windowSoftInputMode="stateVisible"/>
 
         <meta-data
             android:name="com.car_inspection.utils.OkHttpLibraryGlideModule"

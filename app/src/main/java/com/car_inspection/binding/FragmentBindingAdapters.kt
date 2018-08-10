@@ -4,9 +4,7 @@ import android.graphics.Bitmap
 import android.view.View
 import android.webkit.WebView
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import androidx.databinding.InverseBindingAdapter
 import androidx.fragment.app.Fragment
 import com.car_inspection.utils.GlideApp
 import javax.inject.Inject
@@ -31,11 +29,6 @@ class FragmentBindingAdapters
                 .load(drawable)
                 .dontAnimate()
                 .into(imageView)
-    }
-
-    @InverseBindingAdapter(attribute = "android:text", event = "android:textAttrChanged")
-    fun captureTextValue(view: TextView): String {
-        return view.text.toString()
     }
 
     @BindingAdapter("onLongClick")

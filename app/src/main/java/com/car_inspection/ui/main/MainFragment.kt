@@ -1,36 +1,35 @@
 package com.car_inspection.ui.main
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Environment
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.RadioGroup
+import androidx.databinding.DataBindingComponent
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.car_inspection.R
+import com.car_inspection.binding.FragmentDataBindingComponent
+import com.car_inspection.common.DisposableImpl
 import com.car_inspection.data.model.StepModifyModel
 import com.car_inspection.data.model.StepOrinalModel
+import com.car_inspection.databinding.MainFragmentBinding
 import com.car_inspection.ui.adapter.StepAdapter
-import com.car_inspection.ui.base.BaseFragment
+import com.car_inspection.ui.base.BaseDataFragment
 import com.car_inspection.ui.inputtext.SuggestTextActivity
 import com.car_inspection.ui.record.RecordFragment
+import com.toan_itc.core.architecture.autoCleared
 import com.toan_itc.core.utils.addFragment
-import com.car_inspection.common.DisposableImpl
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.main_fragment.*
 import java.util.concurrent.TimeUnit
-import android.app.Activity
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.databinding.DataBindingComponent
-import androidx.databinding.DataBindingUtil
-import com.car_inspection.binding.FragmentDataBindingComponent
-import com.car_inspection.databinding.MainFragmentBinding
-import com.car_inspection.ui.base.BaseDataFragment
-import com.toan_itc.core.architecture.autoCleared
 
 
 class MainFragment : BaseDataFragment<MainViewModel>(), StepAdapter.StepAdapterListener {
@@ -50,9 +49,6 @@ class MainFragment : BaseDataFragment<MainViewModel>(), StepAdapter.StepAdapterL
     companion object {
         fun newInstance() = MainFragment()
     }
-
-    override fun setLayoutResourceID() = R.layout.main_fragment
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val dataBinding = DataBindingUtil.inflate<MainFragmentBinding>(
                 inflater,
@@ -67,16 +63,13 @@ class MainFragment : BaseDataFragment<MainViewModel>(), StepAdapter.StepAdapterL
 
     override fun getViewModel(): Class<MainViewModel> = MainViewModel::class.java
 
+    override fun setLayoutResourceID(): Int = R.layout.main_fragment
+
     override fun initView() {
         activity?.addFragment(RecordFragment.newInstance(), R.id.fragmentRecord)
     }
 
     override fun initData() {
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         rvSubStep.layoutManager = LinearLayoutManager(activity)
 
         loadDataStep(currentStep)
@@ -95,6 +88,7 @@ class MainFragment : BaseDataFragment<MainViewModel>(), StepAdapter.StepAdapterL
                         }
                     })
         }
+
 
         // disable scroll up android
 //        rvSubStep.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
@@ -145,7 +139,7 @@ class MainFragment : BaseDataFragment<MainViewModel>(), StepAdapter.StepAdapterL
 
     fun convertStepOrinalModelsToStepModifyModels(stepOrinalModels: List<StepOrinalModel>): List<StepModifyModel> {
         var stepModifyModels = ArrayList<StepModifyModel>()
-        if (stepOrinalModels != null && stepOrinalModels.size > 0) {
+        if (stepOrinalModels != null && stepOrinalModels.isNotEmpty()) {
             for (stepOrinalModel in stepOrinalModels)
                 run {
                     var stepModifyModel = StepModifyModel()

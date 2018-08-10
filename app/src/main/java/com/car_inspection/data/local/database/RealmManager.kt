@@ -28,10 +28,12 @@ class RealmManager : RepositoryData {
     }
 
     override fun initStepData(step : Int) :List<StepOrinalModel> {
-        getDefaultInstance().executeTransactionAsync { realm ->
-            realm.where(StepOrinalModel::class.java).findFirst().let {
-                if(it !=null)
-                    return@let it
+        getDefaultInstance().use { realm ->
+            val listStep = realm.copyFromRealm(realm.where(StepOrinalModel::class.java).findAll().let {
+                if(it !=null && it.size >0 ){
+                    Logger.e("stepOrinalModels="+it.toString())
+                    it
+                }
                 else{
                     val stepOrinalModels = mutableListOf<StepOrinalModel>()
                     var size = 5
@@ -46,12 +48,14 @@ class RealmManager : RepositoryData {
                         stepmodify.subStepTitle3 = "bên ngoài cửa xe"
                         stepOrinalModels.add(stepmodify)
                     }
+                    Logger.e("stepOrinalModels="+stepOrinalModels.toString())
                     realm.copyToRealmOrUpdate(stepOrinalModels)
-                    return@let stepOrinalModels
+                    stepOrinalModels
                 }
-            }
+            })
+            Logger.e("emptyList=")
+            return listStep
         }
-        return emptyList()
     }
 
     override fun clearAll() {

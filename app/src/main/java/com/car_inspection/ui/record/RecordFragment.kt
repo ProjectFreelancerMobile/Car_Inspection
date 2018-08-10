@@ -244,24 +244,28 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
     }
 
     private fun doAfterAllPermissionsGranted() {
-        acquireCamera()
-        val surfaceTexture = cameraPreview.surfaceTexture
-        if (surfaceTexture != null) {
-            // SurfaceTexture already created
-            Logger.e("doAfterAllPermissionsGranted")
-            startPreview(surfaceTexture)
-        }
-        object : ProgressDialogTask<Void, Int, Void>(R.string.initiating) {
-
-            override fun doInBackground(vararg params: Void): Void? {
-                if (mFrameRecorder == null) {
-                    initRecorder()
-                    startRecorder()
-                }
-                startRecording()
-                return null
+        try {
+            acquireCamera()
+            val surfaceTexture = cameraPreview.surfaceTexture
+            if (surfaceTexture != null) {
+                // SurfaceTexture already created
+                Logger.e("doAfterAllPermissionsGranted")
+                startPreview(surfaceTexture)
             }
-        }.execute()
+            object : ProgressDialogTask<Void, Int, Void>(R.string.initiating) {
+
+                override fun doInBackground(vararg params: Void): Void? {
+                    if (mFrameRecorder == null) {
+                        initRecorder()
+                        startRecorder()
+                    }
+                    startRecording()
+                    return null
+                }
+            }.execute()
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
     }
 
     private fun setPreviewSize(width: Int, height: Int) {
@@ -727,8 +731,12 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
 
         override fun onPreExecute() {
             super.onPreExecute()
-            mProgressDialog = ProgressDialog.show(context,
-                    null, getString(promptRes), true)
+            try {
+                mProgressDialog = ProgressDialog.show(context,
+                        null, getString(promptRes), true)
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
         }
 
         override fun onPostExecute(result: Result) {
