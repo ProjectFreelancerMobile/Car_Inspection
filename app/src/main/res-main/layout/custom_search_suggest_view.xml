@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/search_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    app:ignore="NamespaceTypo">
+
+    <View
+        android:id="@+id/transparent_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0.3"
+        android:background="#000"
+        android:visibility="invisible" />
+
+    <!--<android.support.v7.widget.CardView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@drawable/colorwhite_nostroke_corner"-->
+    <!--card_view:cardBackgroundColor="@android:color/white"-->
+    <!--card_view:cardCornerRadius="5dp"-->
+    <!--card_view:cardElevation="5dp"-->
+    <!--card_view:cardUseCompatPadding="true"-->
+    <!--card_view:theme="@style/Base.Animation.AppCompat.DropDownUp">-->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/colorwhite_nostroke_corner"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/search_top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/rectangle_white_radius_border_gray_light">
+
+            <ImageView
+                android:id="@+id/btnShowListSuggest"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                card_view:srcCompat="@drawable/ic_expand_more_gray" />
+
+            <com.car_inspection.library.commonview.CTextView
+                android:id="@+id/searchTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/btnShowListSuggest"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="5dp"
+                android:singleLine="true"
+                android:textColor="#de000000"
+                android:textSize="14sp" />
+
+
+        </RelativeLayout>
+
+        <com.car_inspection.library.commonview.MaxHeightRecyclerView
+            android:id="@+id/suggestion_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+    <!--</android.support.v7.widget.CardView>-->
+</FrameLayout>

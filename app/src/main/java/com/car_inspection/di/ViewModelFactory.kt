@@ -2,7 +2,6 @@ package com.car_inspection.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.orhanobut.logger.Logger
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
@@ -12,7 +11,6 @@ import javax.inject.Singleton
  * Email:Huynhvantoan.itc@gmail.com
  */
 
-@Suppress("UNCHECKED_CAST")
 @Singleton
 class ViewModelFactory @Inject constructor(
         private val creators: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
@@ -22,6 +20,7 @@ class ViewModelFactory @Inject constructor(
             modelClass.isAssignableFrom(it.key)
         }?.value ?: throw IllegalArgumentException("unknown model class $modelClass")
         try {
+            @Suppress("UNCHECKED_CAST")
             return creator.get() as T
         } catch (e: Exception) {
             throw RuntimeException(e)
@@ -29,4 +28,5 @@ class ViewModelFactory @Inject constructor(
 
     }
 }
+
 

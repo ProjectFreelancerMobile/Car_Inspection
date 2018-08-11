@@ -2,7 +2,10 @@ package com.car_inspection.utils
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
+import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.bumptech.glide.request.target.Target
 import com.car_inspection.R
 

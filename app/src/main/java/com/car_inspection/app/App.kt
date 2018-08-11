@@ -8,11 +8,11 @@ import android.os.StrictMode
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.multidex.MultiDex
+import com.car_inspection.data.local.prefs.PreferenceManager
+import com.car_inspection.utils.isDebug
 import com.blankj.utilcode.util.Utils
 import com.car_inspection.R
-import com.car_inspection.data.local.prefs.PreferenceManager
 import com.car_inspection.di.AppInjector
-import com.car_inspection.utils.isDebug
 import com.crashlytics.android.Crashlytics
 import com.github.moduth.blockcanary.BlockCanary
 import com.orhanobut.logger.AndroidLogAdapter

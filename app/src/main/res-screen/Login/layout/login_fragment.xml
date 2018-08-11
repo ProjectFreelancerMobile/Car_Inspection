@@ -1,0 +1,159 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/img_logo"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/block_canary_icon" />
+
+    <com.car_inspection.library.commonview.CTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="@string/app_title"
+        android:textSize="20sp"
+        app:customFont="@string/font_semibold" />
+
+
+    <LinearLayout
+        android:id="@+id/layout_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/background_rectangle_border_gray"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <com.car_inspection.library.commonview.CTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="19dp"
+                android:gravity="center_vertical"
+                android:text="@string/icon_username"
+                android:textAlignment="center"
+                android:textColor="@color/color_text_login"
+                android:textSize="18sp"
+                app:customFont="@string/font_awesome" />
+
+            <com.car_inspection.library.commonview.CEditTextInput
+                android:id="@+id/edtUserName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:backgroundTint="@android:color/transparent"
+                android:ems="10"
+                android:hint="@string/account"
+                android:inputType="textEmailAddress"
+                android:padding="5dp"
+                android:text=""
+                android:textColor="@color/color_text_login"
+                android:textSize="14sp"
+                app:customFont="@string/font_opensans_italic" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:background="@color/color_gray_light" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <com.car_inspection.library.commonview.CTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="19dp"
+                android:gravity="center_vertical"
+                android:text="@string/icon_password"
+                android:textAlignment="center"
+                android:textColor="@color/color_text_login"
+                android:textSize="18sp"
+                app:customFont="@string/font_awesome" />
+
+            <com.car_inspection.library.commonview.CEditTextInput
+                android:id="@+id/edtPass"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:backgroundTint="@android:color/transparent"
+                android:ems="10"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:padding="5dp"
+                android:text=""
+                android:textColor="@color/color_text_login"
+                android:textSize="14sp"
+                app:customFont="@string/font_opensans_italic" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutRememberAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_input"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="40dp"
+        android:orientation="horizontal">
+
+        <com.car_inspection.library.commonview.CTextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="10dp"
+            android:text="@string/remember_pass"
+            android:textSize="14sp"
+            app:customFont="@string/font_regular" />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp" />
+    </RelativeLayout>
+
+    <com.car_inspection.library.commonview.CButtonState
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/layoutRememberAccount"
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/login"
+        android:textColor="@color/black"
+        app:setActive="true" />
+
+</RelativeLayout>

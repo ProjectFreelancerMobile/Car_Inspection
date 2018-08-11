@@ -8,6 +8,10 @@ import com.car_inspection.app.Constants
 import io.reactivex.disposables.Disposable
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 /**
  * Created by ToanDev on 28/2/18.
@@ -31,4 +35,42 @@ fun disposableAll(vararg disposable: Disposable?) = disposable.forEach { it?.dis
 fun returnBody(value: String): RequestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), value)
 
 fun getStringFromEditText(content: EditText): String = content.text.toString().trim()
+
+fun getTimeStamFromDate(dateString: String): Long {
+    var result: Long = 0
+    val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm")
+    var date: Date? = null
+    try {
+        date = formatter.parse(dateString) as Date
+        result = date!!.getTime()
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+
+    return result
+}
+
+fun getDate(timstamp: Long): String {
+    val calendar = Calendar.getInstance()
+    calendar.setTime(Date(timstamp))
+    val day = calendar.get(Calendar.DAY_OF_MONTH)
+    val month = calendar.get(Calendar.MONTH)
+    val year = calendar.get(Calendar.YEAR)
+    return formatTimeNumber(day) + "/" + formatTimeNumber(month + 1) + "/" + formatTimeNumber(year)
+}
+
+fun getTime(timestamp: Long): String {
+    val calendar = Calendar.getInstance()
+    calendar.setTime(Date(timestamp))
+    val h = calendar.get(Calendar.HOUR_OF_DAY)
+    val m = calendar.get(Calendar.MINUTE)
+    return formatTimeNumber(h) + ":" + formatTimeNumber(m)
+}
+
+fun formatTimeNumber(number: Int): String {
+    return if (number < 10)
+        "0$number"
+    else
+        number.toString() + ""
+}
 

@@ -2,6 +2,7 @@ package com.car_inspection.di.module
 
 import com.car_inspection.di.FragmentScope
 import com.car_inspection.ui.main.MainFragment
+import com.car_inspection.ui.record.RecordFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -10,10 +11,15 @@ import dagger.android.ContributesAndroidInjector
  * Email:Huynhvantoan.itc@gmail.com
  */
 
+@Suppress("unused")
 @Module
 abstract class FragmentBuildersModule {
 
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun contributeMainFragment(): MainFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    internal abstract fun contributeRecordFragment(): RecordFragment
 }

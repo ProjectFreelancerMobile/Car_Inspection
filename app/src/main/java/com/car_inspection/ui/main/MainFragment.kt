@@ -1,81 +1,76 @@
 package com.car_inspection.ui.main
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Environment
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.RadioGroup
-import androidx.databinding.DataBindingComponent
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.car_inspection.R
-import com.car_inspection.binding.FragmentDataBindingComponent
-import com.car_inspection.common.DisposableImpl
-import com.car_inspection.data.model.StepModifyModel
-import com.car_inspection.data.model.StepOrinalModel
-import com.car_inspection.databinding.MainFragmentBinding
+import com.car_inspection.data.local.database.model.StepModifyModel
+import com.car_inspection.data.local.database.model.StepOrinalModel
 import com.car_inspection.ui.adapter.StepAdapter
-import com.car_inspection.ui.base.BaseDataFragment
+import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.ui.inputtext.SuggestTextActivity
 import com.car_inspection.ui.record.RecordFragment
-import com.toan_itc.core.architecture.autoCleared
 import com.toan_itc.core.utils.addFragment
+import google.com.carinspection.DisposableImpl
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.main_fragment.*
 import java.util.concurrent.TimeUnit
+import android.app.Activity
+import androidx.databinding.adapters.TextViewBindingAdapter.setText
+import android.text.style.UnderlineSpan
+import android.text.SpannableString
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import com.car_inspection.MainActivity
 
 
-class MainFragment : BaseDataFragment<MainViewModel>(), StepAdapter.StepAdapterListener {
-
+class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
     private val REQUEST_SUGGEST_TEST = 0;
     private val SAVE_PATH: String = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath
 
-    var items: List<StepModifyModel> = mutableListOf()
+    var items: ArrayList<StepModifyModel> = ArrayList()
     lateinit var stepAdapter: StepAdapter
     var isTakePicture = false
     var currentPosition = 0
-    var currentStep = 2
 
-    private var binding by autoCleared<MainFragmentBinding>()
-    private var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
+    var currentStep = 2
 
     companion object {
         fun newInstance() = MainFragment()
     }
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val dataBinding = DataBindingUtil.inflate<MainFragmentBinding>(
-                inflater,
-                setLayoutResourceID(),
-                container,
-                false,
-                dataBindingComponent
-        )
-        binding = dataBinding
-        return dataBinding.root
-    }
 
-    override fun getViewModel(): Class<MainViewModel> = MainViewModel::class.java
-
-    override fun setLayoutResourceID(): Int = R.layout.main_fragment
-
-    override fun initView() {
+    override fun initViews() {
         activity?.addFragment(RecordFragment.newInstance(), R.id.fragmentRecord)
     }
 
+    override fun setLayoutResourceID() = R.layout.main_fragment
+
     override fun initData() {
+
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+//        (activity as MainActivity).setRequestedOrientationLandscape()
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         rvSubStep.layoutManager = LinearLayoutManager(activity)
 
         loadDataStep(currentStep)
         updateProgressStep(currentStep)
 
-        btnSave.setOnClickListener { btnContinue.isActive = true }
+        btnSave.setOnClickListener {
+            saveDataStep(currentStep)
+            btnContinue.isActive = true
+        }
         btnContinue.setOnClickListener {
             Observable.just(1L).delay(100, TimeUnit.MILLISECONDS)
                     .subscribeOn(Schedulers.newThread())
@@ -88,7 +83,7 @@ class MainFragment : BaseDataFragment<MainViewModel>(), StepAdapter.StepAdapterL
                         }
                     })
         }
-
+        btnFinish.setOnClickListener { saveDataStep(currentStep) }
 
         // disable scroll up android
 //        rvSubStep.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
@@ -112,13 +107,17 @@ class MainFragment : BaseDataFragment<MainViewModel>(), StepAdapter.StepAdapterL
 //        })
     }
 
+    fun saveDataStep(step: Int) {
+
+    }
+
     fun updateProgressStep(step: Int) {
-        val percent = step * 1f / 7
+        val percent = (step+1) * 1f / 8
         pgStep.setMaximumPercentage(percent)
         pgStep.useRoundedRectangleShape(20.0f)
         pgStep.setProgressColor(resources.getColor(R.color.blue_500))
         pgStep.setProgressBackgroundColor(resources.getColor(R.color.blue_200))
-        pgStep.text = "${step * 100 / 7}%"
+        pgStep.text = "${(step+1) * 100 / 8}%"
         pgStep.textSize = 14f
         pgStep.setTextColor(Color.WHITE)
         pgStep.gravity = Gravity.CENTER
@@ -126,24 +125,34 @@ class MainFragment : BaseDataFragment<MainViewModel>(), StepAdapter.StepAdapterL
     }
 
     fun loadDataStep(step: Int) {
-        if (layoutFinishCheck.visibility == View.VISIBLE)
-            layoutFinishCheck.visibility = View.GONE
-        items = convertStepOrinalModelsToStepModifyModels(viewModel.initStepData(step))
+        if (layoutContinue.visibility == View.VISIBLE)
+            layoutContinue.visibility = View.GONE
+        if (layoutFinish.visibility == View.VISIBLE)
+            layoutFinish.visibility = View.GONE
+        items.clear()
+        items = initStepTestData(step)
         stepAdapter = StepAdapter(this.activity!!)
         stepAdapter.stepAdapterListener = this
         stepAdapter.items = items
         rvSubStep.adapter = stepAdapter
+
         updateProgressStep(step)
-        tvStep.text = "Bước ${items[0].subStep}: ${items[0].subStepTitle1}"
+
+        val stepTitle = "Bước ${items.get(0).step}: ${items.get(0).stepTitle}"
+        val content = SpannableString(stepTitle)
+        content.setSpan(UnderlineSpan(), 0, stepTitle.length, 0)
+        tvStep.text = content
     }
 
-    fun convertStepOrinalModelsToStepModifyModels(stepOrinalModels: List<StepOrinalModel>): List<StepModifyModel> {
+    fun convertStepOrinalModelsToStepModifyModels(stepOrinalModels: ArrayList<StepOrinalModel>): ArrayList<StepModifyModel> {
         var stepModifyModels = ArrayList<StepModifyModel>()
-        if (stepOrinalModels != null && stepOrinalModels.isNotEmpty()) {
+        if (stepOrinalModels != null && stepOrinalModels.size > 0) {
             for (stepOrinalModel in stepOrinalModels)
                 run {
                     var stepModifyModel = StepModifyModel()
+                    stepModifyModel.step = stepOrinalModel.step
                     stepModifyModel.subStep = stepOrinalModel.subStep
+                    stepModifyModel.stepTitle = stepOrinalModel.stepTitle
                     stepModifyModel.subStepTitle1 = stepOrinalModel.subStepTitle1
                     stepModifyModel.subStepTitle2 = stepOrinalModel.subStepTitle2
                     stepModifyModel.subStepTitle3 = stepOrinalModel.subStepTitle3
@@ -151,6 +160,37 @@ class MainFragment : BaseDataFragment<MainViewModel>(), StepAdapter.StepAdapterL
                 }
         }
         return stepModifyModels
+    }
+
+    fun initStepTestData(step: Int): ArrayList<StepModifyModel> {
+        var stepOrinalModels = ArrayList<StepOrinalModel>()
+        var size = 5
+        if (step % 2 == 0)
+            size = 4
+        if (step == 4) {
+            for (i in 1..size) {
+                var stepmodify = StepOrinalModel()
+                stepmodify.step = "$step"
+                stepmodify.stepTitle = "kiểm tra khoang động cơ"
+//                stepmodify.subStep = "$step." + i
+                //  stepmodify.subStepTitle1 = "bên ngoài xe"
+                //  stepmodify.subStepTitle2 = "bên trái trước"
+                stepmodify.subStepTitle3 = "bên ngoài cửa xe"
+                stepOrinalModels.add(stepmodify)
+            }
+        } else
+            for (i in 1..size) {
+                var stepmodify = StepOrinalModel()
+                stepmodify.step = "$step"
+                stepmodify.stepTitle = "kiểm tra chung"
+                stepmodify.subStep = "$step." + i
+                stepmodify.subStepTitle1 = "bên ngoài xe"
+                stepmodify.subStepTitle2 = "bên trái trước"
+                stepmodify.subStepTitle3 = "bên ngoài cửa xe"
+                stepOrinalModels.add(stepmodify)
+            }
+
+        return convertStepOrinalModelsToStepModifyModels(stepOrinalModels)
     }
 
     fun autoScrollAfterCheckComplete() {
@@ -164,7 +204,7 @@ class MainFragment : BaseDataFragment<MainViewModel>(), StepAdapter.StepAdapterL
     override fun onTextNoteClickListener(v: View, position: Int) {
         var intent = Intent(activity, SuggestTextActivity::class.java)
         intent.putExtra("position", position)
-        intent.putExtra("note",items.get(position).note)
+        intent.putExtra("note", items.get(position).note)
         startActivityForResult(intent, REQUEST_SUGGEST_TEST)
     }
 
@@ -184,10 +224,16 @@ class MainFragment : BaseDataFragment<MainViewModel>(), StepAdapter.StepAdapterL
                 items.get(position).rating = "F"
             }
         }
-        if (stepAdapter.isFinishCheckItem() && currentStep < 7) {
-            if (layoutFinishCheck.visibility == View.GONE)
-                layoutFinishCheck.visibility = View.VISIBLE
+        if (stepAdapter.isFinishCheckItem()) {
+            if (currentStep < 7) {
+                if (layoutContinue.visibility == View.GONE)
+                    layoutContinue.visibility = View.VISIBLE
+            } else {
+                layoutFinish.bringToFront()
+                layoutFinish.visibility = View.VISIBLE
+            }
         }
+
         //else layoutFinishCheck.visibility = View.GONE
 
 //        if (position < stepAdapter.itemCount - 3)
@@ -211,7 +257,7 @@ class MainFragment : BaseDataFragment<MainViewModel>(), StepAdapter.StepAdapterL
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode === REQUEST_SUGGEST_TEST) {
             if (resultCode === Activity.RESULT_OK) {
-                val position = data.getIntExtra("position",0)
+                val position = data.getIntExtra("position", 0)
                 items.get(position).note = data.getStringExtra("note")
             }
         }

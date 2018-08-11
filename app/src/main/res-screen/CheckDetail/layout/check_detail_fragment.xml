@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
+
+        <com.car_inspection.library.commonview.CustomProgress
+            android:id="@+id/pgStep"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rectangle_black"
+            android:padding="1dp" />
+
+        <com.car_inspection.library.commonview.CTextView
+            android:id="@+id/tvStep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pgStep"
+            android:layout_marginTop="30dp"
+            android:text="@string/step1_2_detail_info"
+            app:customFont="@string/font_semibold" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <com.car_inspection.library.commonview.CTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"
+                android:text="@string/out_color"
+                app:customFont="@string/font_regular" />
+
+
+            <Spinner
+                android:id="@+id/spOutColor"
+                android:layout_width="200dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/background_rectangle_border_gray"></Spinner>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <com.car_inspection.library.commonview.CTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"
+                android:text="@string/number_KM"
+                app:customFont="@string/font_regular" />
+
+
+            <com.car_inspection.library.commonview.CEditTextInput
+                android:id="@+id/edtNumberKM"
+                android:layout_width="200dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/background_rectangle_border_gray"
+                android:paddingLeft="5dp"
+                app:customFont="@string/font_regular" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <com.car_inspection.library.commonview.CTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"
+                android:text="@string/number_VIN"
+                app:customFont="@string/font_regular" />
+
+
+            <com.car_inspection.library.commonview.CEditTextInput
+                android:id="@+id/edtNumberVIN"
+                android:layout_width="200dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/background_rectangle_border_gray"
+                android:paddingLeft="5dp"
+                app:customFont="@string/font_regular" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <com.car_inspection.library.commonview.CTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"
+                android:text="@string/assurance"
+                app:customFont="@string/font_regular" />
+
+
+            <com.car_inspection.library.commonview.CEditTextInput
+                android:id="@+id/edtAssurance"
+                android:layout_width="200dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/background_rectangle_border_gray"
+                android:paddingLeft="5dp"
+                app:customFont="@string/font_regular" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <com.car_inspection.library.commonview.CTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"
+                android:text="@string/tem"
+                app:customFont="@string/font_regular" />
+
+
+            <com.car_inspection.library.commonview.CEditTextInput
+                android:id="@+id/edtTem"
+                android:layout_width="200dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/background_rectangle_border_gray"
+                android:paddingLeft="5dp"
+                app:customFont="@string/font_regular" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <com.car_inspection.library.commonview.CTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"
+                android:text="@string/route_fee"
+                app:customFont="@string/font_regular" />
+
+
+            <com.car_inspection.library.commonview.CEditTextInput
+                android:id="@+id/edtRouteFee"
+                android:layout_width="200dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/background_rectangle_border_gray"
+                android:paddingLeft="5dp"
+                app:customFont="@string/font_regular" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <com.car_inspection.library.commonview.CTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"
+                android:text="@string/fine"
+                app:customFont="@string/font_regular" />
+
+
+            <RadioGroup
+                android:layout_width="200dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:text="@string/yes" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="40dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/no" />
+            </RadioGroup>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <com.car_inspection.library.commonview.CTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"
+                android:text="@string/owned_type"
+                app:customFont="@string/font_regular" />
+
+
+            <RadioGroup
+                android:layout_width="200dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:text="@string/owned" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:text="@string/allowed" />
+            </RadioGroup>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <com.car_inspection.library.commonview.CTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="20dp"
+                android:layout_toLeftOf="@+id/rgPaymentBank"
+                android:text="@string/pay_bank"
+                app:customFont="@string/font_regular" />
+
+
+            <RadioGroup
+                android:id="@+id/rgPaymentBank"
+                android:layout_width="200dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:text="@string/yes" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="40dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/no" />
+            </RadioGroup>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutContinue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/colorWhite"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <com.car_inspection.library.commonview.CButtonState
+                android:id="@+id/btnPrevious"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/back"
+                android:textColor="@color/black"
+                app:setActive="true" />
+
+            <com.car_inspection.library.commonview.CButtonState
+                android:id="@+id/btnContinue"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/continues"
+                android:textColor="@color/black"
+                app:setActive="true" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

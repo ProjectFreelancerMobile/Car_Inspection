@@ -69,8 +69,13 @@
     <string name="title">Tiêu đề</string>
     <string name="content">Nội dung</string>
     <string name="save">Lưu</string>
+    <string name="back">Quay lại</string>
     <string name="continues">Tiếp tục</string>
     <string name="note">Ghi</string>
+    <string name="finish">Kết thúc</string>
+
+
+    <string name="app_title">Chương trình kiểm tra xe</string>
 
     <!--RECORD -->
     <string name="reset">Reset</string>
@@ -84,4 +89,77 @@
     <string name="processing">Processing…</string>
     <string name="please_wait">Please wait</string>
     <string name="permissions_denied_exit">Permissions denied, exit.</string>
+
+    <!-- login-->
+    <string name="account">Tài khoản</string>
+    <string name="password">Mật khẩu</string>
+    <string name="remember_pass">Ghi nhớ tài khoản</string>
+    <string name="login">Đăng nhập</string>
+
+    <!--home-->
+    <string name="check_car">Kiểm tra xe</string>
+    <string name="cars_checked">Các xe đã kiểm tra</string>
+    <string name="support_check_car">Hướng dẫn kiểm tra xe</string>
+    <string name="contact_me">Liên lạc chúng tôi</string>
+    <string name="setup">Thiết lập</string>
+
+    <!-- check info-->
+    <string name="step1_1_basic_info"><u>Bước 1.1: thông tin cơ bản</u></string>
+    <string name="step1_2_detail_info"><u>Bước 1.2: thông tin chi tiết</u></string>
+    <string name="day_checking">Ngày kiểm tra</string>
+    <string name="checker">Người kiểm tra</string>
+    <string name="owner">Chủ sở hữu</string>
+    <string name="license_plates">Biển kiểm soát</string>
+    <string name="car_product">Hãng xe</string>
+    <string name="series">Dòng xe</string>
+    <string name="year_product">Năm sản xuất</string>
+
+    <!-- check detail-->
+    <string name="out_color">Màu ngoại thất</string>
+    <string name="number_KM">Số KM đã đi</string>
+    <string name="number_VIN">Số VIN</string>
+    <string name="assurance">Bảo hiểm bắt buộc</string>
+    <string name="tem">Tem đăng kiểm</string>
+    <string name="route_fee">Phí đường bộ</string>
+    <string name="fine">Phạt nguội</string>
+    <string name="owned_type">Hình thức sở hữu</string>
+    <string name="pay_bank">Đang trả góp ngân hàng</string>
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+    <string name="owned">Chính chủ</string>
+    <string name="allowed">Ủy quyền</string>
+
+
+    <string-array name="car_productor">
+        <item>Toyota</item>
+        <item>Honda</item>
+        <item>BMW</item>
+        <item>Hyundai</item>
+        <item>Kia</item>
+    </string-array>
+
+
+    <string-array name="car_series">
+        <item>Crossover</item>
+        <item>SUV</item>
+        <item>Hatchback</item>
+        <item>Coupe</item>
+        <item>Convertible</item>
+    </string-array>
+
+    <string-array name="year_product">
+        <item>2000</item>
+        <item>2001</item>
+        <item>2002</item>
+        <item>2003</item>
+        <item>2004</item>
+    </string-array>
+
+    <string-array name="out_colors">
+        <item>Đen</item>
+        <item>Đỏ</item>
+        <item>Trắng</item>
+        <item>Xanh</item>
+        <item>Vàng</item>
+    </string-array>
 </resources>

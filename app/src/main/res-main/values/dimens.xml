@@ -1,0 +1,51 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="tiny_7">7sp</dimen>
+    <dimen name="tiny_8">8sp</dimen>
+    <dimen name="tiny">10dp</dimen>
+    <dimen name="small_12">12sp</dimen>
+    <dimen name="small">14sp</dimen>
+    <dimen name="normal_16">16sp</dimen>
+    <dimen name="normal">18sp</dimen>
+    <dimen name="large_20">20sp</dimen>
+    <dimen name="large_24">24sp</dimen>
+    <dimen name="large">22sp</dimen>
+    <dimen name="xlarge">26dp</dimen>
+    <dimen name="xxlarge">30dp</dimen>
+    <dimen name="image_large">70dp</dimen>
+    <dimen name="margin_xxlarge">130dp</dimen>
+    <dimen name="margin_small">2dp</dimen>
+    <dimen name="margin_normal">5dp</dimen>
+    <dimen name="margin_big">10dp</dimen>
+
+    <dimen name="padding_small">2dp</dimen>
+    <dimen name="tab_max_width">150dp</dimen>
+    <dimen name="padding_normal">5dp</dimen>
+    <dimen name="padding_big">10dp</dimen>
+
+    <fraction name="album_page_heightPercent">90%</fraction>
+    <dimen name="padding_number_noti">10dp</dimen>
+
+    <dimen name="default_indicator_margin_horizontal">10dp</dimen>
+    <dimen name="default_indicator_margin_vertical">25dp</dimen>
+    <dimen name="radio_button_conner_radius">5dp</dimen>
+    <dimen name="radio_button_stroke_border">1dp</dimen>
+    <dimen name="image_width_listing_market_report">107dp</dimen>
+    <dimen name="image_height_listing_market_report">74dp</dimen>
+
+    <dimen name="item_suggest_search_height">60dp</dimen>
+
+    <dimen name="simpletooltip_overlay_offset">10dp</dimen>
+    <dimen name="simpletooltip_margin">10dp</dimen>
+    <dimen name="simpletooltip_padding">8dp</dimen>
+    <dimen name="simpletooltip_arrow_width">30dp</dimen>
+    <dimen name="simpletooltip_arrow_height">15dp</dimen>
+    <dimen name="simpletooltip_animation_padding">4dp</dimen>
+</resources>

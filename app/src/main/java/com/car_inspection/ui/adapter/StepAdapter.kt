@@ -12,12 +12,12 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.RadioGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.car_inspection.R
-import com.car_inspection.data.model.StepModifyModel
+import com.car_inspection.data.local.database.model.StepModifyModel
 import kotlinx.android.synthetic.main.adapter_step.view.*
 
 
 class StepAdapter(var context: Context) : RecyclerView.Adapter<StepAdapter.StepViewHolder>() {
-    var items: List<StepModifyModel>? = null
+    var items: ArrayList<StepModifyModel>? = null
     var stepAdapterListener: StepAdapterListener? = null
     var binding = false
     var heightItem = 0
@@ -42,8 +42,11 @@ class StepAdapter(var context: Context) : RecyclerView.Adapter<StepAdapter.StepV
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: StepViewHolder, position: Int) {
-        holder.tvSubStep.text = items?.get(position)?.subStep + " " + items?.get(position)?.subStepTitle2
-        holder.tvSubStepTitle.text = items?.get(position)?.subStepTitle3
+        if (!TextUtils.isEmpty(items?.get(position)?.subStep) && !TextUtils.isEmpty(items?.get(position)?.subStepTitle2))
+            holder.tvSubStep.text = items?.get(position)?.subStep + " " + items?.get(position)?.subStepTitle2
+        else holder.tvSubStep.visibility = View.GONE
+        if (!TextUtils.isEmpty(items?.get(position)?.subStepTitle3))
+            holder.tvSubStepTitle.text = items?.get(position)?.subStepTitle3
         binding = true
         if (!TextUtils.isEmpty(items?.get(position)?.rating)) {
             when (items?.get(position)?.rating) {
@@ -74,7 +77,7 @@ class StepAdapter(var context: Context) : RecyclerView.Adapter<StepAdapter.StepV
             }
 
         })
-         holder.tvNote.setOnClickListener({v->stepAdapterListener?.onTextNoteClickListener(v,position)})
+        holder.tvNote.setOnClickListener({ v -> stepAdapterListener?.onTextNoteClickListener(v, position) })
     }
 
     fun isFinishCheckItem(): Boolean {
@@ -93,6 +96,6 @@ class StepAdapter(var context: Context) : RecyclerView.Adapter<StepAdapter.StepV
 
     interface StepAdapterListener {
         fun onRadioGroupCheckChangeListner(group: RadioGroup, checkId: Int, position: Int)
-          fun onTextNoteClickListener(v:View,position: Int)
+        fun onTextNoteClickListener(v: View, position: Int)
     }
 }
