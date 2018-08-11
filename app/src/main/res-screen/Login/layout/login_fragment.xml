@@ -6,13 +6,13 @@
     <ImageView
         android:id="@+id/img_logo"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="150dp"
+        android:adjustViewBounds="true"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="50dp"
         android:layout_marginRight="30dp"
         android:layout_marginBottom="10dp"
-        android:src="@drawable/block_canary_icon" />
+        android:src="@mipmap/ic_launcher_round" />
 
     <com.car_inspection.library.commonview.CTextView
         android:layout_width="wrap_content"
