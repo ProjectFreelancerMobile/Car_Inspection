@@ -42,6 +42,7 @@ class CheckInfoFragment : BaseFragment() {
         initCalenda()
 
         btnContinue.setOnClickListener { (activity as MainActivity).pushFragment(CheckDetailFragment.newInstance()) }
+        btnPrevious.setOnClickListener { (activity as MainActivity).popFragment() }
     }
 
     fun initCalenda() {

@@ -32,6 +32,7 @@ class CheckDetailFragment : BaseFragment() {
         initListOutColor()
 
         btnContinue.setOnClickListener { (activity as MainActivity).pushFragment(MainFragment.newInstance()) }
+        btnPrevious.setOnClickListener { (activity as MainActivity).popFragment() }
     }
 
     fun initListOutColor() {

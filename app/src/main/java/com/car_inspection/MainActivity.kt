@@ -23,7 +23,12 @@ class MainActivity : AppCompatActivity() {
     fun pushFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.container, fragment)
-                .commitNow()
+                .addToBackStack(fragment.javaClass.simpleName)
+                .commit()
+    }
+
+    fun popFragment() {
+        getSupportFragmentManager().popBackStack()
     }
 
     fun setRequestedOrientationPortrait() {

@@ -47,7 +47,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
     }
 
     override fun initViews() {
-        activity?.addFragment(RecordFragment.newInstance(), R.id.fragmentRecord)
+      //  activity?.addFragment(RecordFragment.newInstance(), R.id.fragmentRecord)
     }
 
     override fun setLayoutResourceID() = R.layout.main_fragment
@@ -57,7 +57,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-//        (activity as MainActivity).setRequestedOrientationLandscape()
+        (activity as MainActivity).setRequestedOrientationLandscape()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

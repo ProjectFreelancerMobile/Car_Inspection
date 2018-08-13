@@ -14,7 +14,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginRight="30dp"
         android:layout_marginBottom="10dp"
-        android:src="@drawable/block_canary_icon" />
+        android:src="@mipmap/ic_launcher_round" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/btnCheckCar"
