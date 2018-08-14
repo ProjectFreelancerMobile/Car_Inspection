@@ -34,13 +34,14 @@ import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
 
-import com.serenegiant.glutils.EGLBase;
-import com.serenegiant.glutils.GLDrawer2D;
-import com.serenegiant.glutils.es1.GLHelper;
+import com.serenegiant.usb.common.EGLBase;
+import com.serenegiant.usb.common.FpsCounter;
+import com.serenegiant.usb.common.GLDrawer2D;
+import com.serenegiant.usb.common.GLHelper;
 import com.serenegiant.usb.encoder.IVideoEncoder;
 import com.serenegiant.usb.encoder.MediaEncoder;
 import com.serenegiant.usb.encoder.MediaVideoEncoder;
-import com.serenegiant.utils.FpsCounter;
+
 
 /**
  * change the view size with keeping the specified aspect ratio.

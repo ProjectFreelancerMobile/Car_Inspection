@@ -7,7 +7,7 @@ package com.car_inspection.app
 
 object Constants {
     const val APP_NAME = "CarInspection"
-    const val DEV = "CarInspectionDev"
+    const val DEBUG = "debug"
     const val DB_Realm = "CarInspection.realm"
     const val RealmVersion: Long = 1
     const val BLANK = ""

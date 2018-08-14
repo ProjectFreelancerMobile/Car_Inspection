@@ -35,7 +35,6 @@ versions.realmStetho        = "2.1.0"
 versions.jodatime           = "2.10"
 versions.javacv             = "1.4.2"
 versions.ffmpeg             = "4.0.1"
-
 def deps = [:]
 
 def support = [:]
@@ -189,6 +188,9 @@ def addRepos(RepositoryHandler handler) {
     }
     handler.maven {
         url 'https://maven.fabric.io/public'
+    }
+    handler.maven {
+        url 'http://raw.github.com/saki4510t/libcommon/master/repository/'
     }
 }
 ext.addRepos = this.&addRepos

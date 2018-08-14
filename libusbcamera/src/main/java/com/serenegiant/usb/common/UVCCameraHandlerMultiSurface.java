@@ -25,8 +25,6 @@ package com.serenegiant.usb.common;
 
 import android.app.Activity;
 import android.view.Surface;
-
-import com.serenegiant.glutils.RendererHolder;
 import com.serenegiant.usb.UVCCamera;
 import com.serenegiant.usb.widget.CameraViewInterface;
 

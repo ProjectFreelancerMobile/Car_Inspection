@@ -18,10 +18,12 @@ abstract class CoreBaseFragment : Fragment() {
         return mContentView
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        initViews()
-        initData()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if(savedInstanceState == null) {
+            initViews()
+            initData()
+        }
     }
 
     protected abstract fun initViews()

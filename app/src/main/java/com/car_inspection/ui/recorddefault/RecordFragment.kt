@@ -27,6 +27,7 @@ import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.ui.recordotg.RecordOTGFragment
 import com.car_inspection.utils.listenToViews
 import com.orhanobut.logger.Logger
+import kotlinx.android.synthetic.main.record_fragment.*
 import kotlinx.android.synthetic.main.record_otg_fragment.*
 import org.bytedeco.javacpp.avcodec
 import org.bytedeco.javacpp.avutil

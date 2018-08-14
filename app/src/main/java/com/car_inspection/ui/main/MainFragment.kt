@@ -1,20 +1,35 @@
 package com.car_inspection.ui.main
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Environment
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.RadioGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.car_inspection.MainActivity
 import com.car_inspection.R
 import com.car_inspection.data.local.database.model.StepModifyModel
 import com.car_inspection.data.local.database.model.StepOrinalModel
 import com.car_inspection.ui.adapter.StepAdapter
 import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.ui.inputtext.SuggestTextActivity
+import com.car_inspection.ui.recorddefault.RecordFragment
+import com.car_inspection.ui.recordotg.RecordOTGFragment
+import com.car_inspection.utils.Constanst
+import com.car_inspection.utils.createFolderPicture
+import com.car_inspection.utils.isCameraOTG
+import com.car_inspection.utils.overlay
+import com.github.florent37.camerafragment.CameraFragment
+import com.github.florent37.camerafragment.configuration.Configuration
+import com.github.florent37.camerafragment.listeners.CameraFragmentResultAdapter
+import com.orhanobut.logger.Logger
 import com.toan_itc.core.utils.addFragment
 import google.com.carinspection.DisposableImpl
 import io.reactivex.Observable
@@ -22,24 +37,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.main_fragment.*
 import java.util.concurrent.TimeUnit
-import android.app.Activity
-import android.content.Context
-import android.text.style.UnderlineSpan
-import android.text.SpannableString
-import android.util.Log
-import com.car_inspection.MainActivity
-import com.car_inspection.ui.recorddefault.RecordFragment
-import com.car_inspection.ui.recordotg.RecordOTGFragment
-import com.car_inspection.utils.createFolderPicture
-import com.car_inspection.utils.isCameraOTG
-import com.github.florent37.camerafragment.CameraFragment
-import com.github.florent37.camerafragment.configuration.Configuration
-import com.github.florent37.camerafragment.listeners.CameraFragmentResultAdapter
 
 
 class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
-    private val REQUEST_SUGGEST_TEST = 0;
-    private val SAVE_PATH: String = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath
+    private val REQUEST_SUGGEST_TEST = 0
 
     var items: ArrayList<StepModifyModel> = ArrayList()
     lateinit var stepAdapter: StepAdapter
@@ -56,10 +57,11 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
 
     @SuppressLint("MissingPermission")
     override fun initViews() {
-        if(isCameraOTG())
-          activity?.addFragment(RecordOTGFragment.newInstance(), R.id.fragmentRecord)
+        //TODO: Toan code record
+       /* if (isCameraOTG())
+            activity?.addFragment(RecordOTGFragment.newInstance(), R.id.fragmentRecord)
         else
-            activity?.addFragment(RecordFragment.newInstance(), R.id.fragmentRecord)
+            activity?.addFragment(RecordFragment.newInstance(), R.id.fragmentRecord)*/
     }
 
     override fun setLayoutResourceID() = R.layout.main_fragment
@@ -101,24 +103,19 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
 
         btnTakePicture.setOnClickListener {
             if (cameraFragment != null) {
-                createFolderPicture(SAVE_PATH)
+                createFolderPicture(Constanst.getFolderPicturePath())
                 cameraFragment?.takePhotoOrCaptureVideo(object : CameraFragmentResultAdapter() {
                     override fun onPhotoTaken(bytes: ByteArray, filePath: String) {
                         Log.e("file images", "----------@@@@@@@@@@@@@@   $filePath")
                         stepAdapter.items?.get(currentPosition)?.imagepaths?.add(filePath)
                         showLayoutVideo()
-
-//                        var icon = BitmapFactory.decodeResource(context?.getResources(),
-//                                R.mipmap.ic_launcher_foreground)
-//                        var bmOptions = BitmapFactory.Options()
-//                        var bitmap = BitmapFactory.decodeFile(File(filePath).getAbsolutePath(), bmOptions)
-//                        overlay(bitmap, icon)
+                        overlay(activity!!, filePath, R.mipmap.ic_launcher_foreground, currentSubStepName)
                     }
-                }, SAVE_PATH, currentSubStepName)
+                }, Constanst.getFolderPicturePath(), currentSubStepName)
 
             }
         }
-
+        //TODO:
         addFragmentTakePicture()
         // disable scroll up android
 //        rvSubStep.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {

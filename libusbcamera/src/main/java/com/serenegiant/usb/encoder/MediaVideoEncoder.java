@@ -32,8 +32,8 @@ import android.os.Build;
 import android.util.Log;
 import android.view.Surface;
 
-import com.serenegiant.glutils.EGLBase;
-import com.serenegiant.glutils.RenderHandler;
+import com.serenegiant.usb.common.EGLBase;
+import com.serenegiant.usb.common.RenderHandler;
 
 import java.io.IOException;
 

@@ -5,6 +5,8 @@ import android.os.Looper
 import android.util.Log
 import android.view.Surface
 import android.view.View
+import android.widget.Toast
+import androidx.core.widget.toast
 import com.car_inspection.R
 import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.utils.listenToViews
@@ -36,7 +38,7 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
 
         override fun onAttachDev(device: UsbDevice) {
             if (mCameraHelper == null || mCameraHelper?.usbDeviceCount == 0) {
-                //showShortMsg("check no usb camera")
+                Toast.makeText(context, "check no usb camera", Toast.LENGTH_LONG).show()
                 return
             }
             // request open permission
@@ -56,11 +58,11 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
 
         override fun onConnectDev(device: UsbDevice, isConnected: Boolean) {
             if (!isConnected) {
-                //showShortMsg("fail to connect,please check resolution params")
+                Toast.makeText(context, "fail to connect,please check resolution params", Toast.LENGTH_LONG).show()
                 isPreview = false
             } else {
                 isPreview = true
-                //showShortMsg("connecting")
+                Toast.makeText(context, "connecting", Toast.LENGTH_LONG).show()
                 // initialize seekbar
                 // need to wait UVCCamera initialize over
                 Thread(Runnable {
@@ -81,7 +83,7 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
         }
 
         override fun onDisConnectDev(device: UsbDevice) {
-            //showShortMsg("disconnecting")
+            Toast.makeText(context, "disconnecting", Toast.LENGTH_LONG).show()
         }
     }
     override fun initViews() {
@@ -96,17 +98,16 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
     }
 
     private fun initUVCCameraHelper(){
+        Logger.e("initUVCCameraHelper")
         // step.1 initialize UVCCameraHelper
-        mUVCCameraView = cameraPreview as? CameraViewInterface
+        mUVCCameraView = cameraView
         mUVCCameraView?.apply {
             setCallback(this@RecordOTGFragment)
             mCameraHelper = UVCCameraHelper.getInstance()
             mCameraHelper?.apply {
                 setDefaultFrameFormat(UVCCameraHelper.FRAME_FORMAT_YUYV)
                 initUSBMonitor(activity, mUVCCameraView, listener)
-                setOnPreviewFrameListener {
-
-                }
+                setOnPreviewFrameListener(AbstractUVCCameraHandler.OnPreViewResultListener { })
             }
         }
     }
@@ -147,11 +148,14 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
 
                                 override fun onRecordResult(videoPath: String) {
                                     Logger.e( "videoPath = $videoPath")
+                                    Toast.makeText(context, "videoPath = $videoPath", Toast.LENGTH_LONG).show()
                                 }
                             })
                             // if you only want to push stream,please call like this
                             // mCameraHelper.startPusher(listener);
+                            Toast.makeText(context, "start record...", Toast.LENGTH_LONG).show()
                         } else {
+                            Toast.makeText(context, "stop record...", Toast.LENGTH_LONG).show()
                             FileUtils.releaseFile()
                             stopPusher()
                         }
@@ -159,6 +163,7 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
                 }
             }
             R.id.mBtnRes -> {
+                Toast.makeText(context, getResolutionList().toString(), Toast.LENGTH_LONG).show()
                 Logger.e("getResolutionList="+getResolutionList().toString())
             }
             R.id.mBtnFocus -> mCameraHelper?.startCameraFoucs()
@@ -218,5 +223,12 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
         super.onStop()
         // step.3 unregister USB event broadcast
         mCameraHelper?.unregisterUSB()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        FileUtils.releaseFile()
+        // step.4 release uvc camera resources
+        mCameraHelper?.release()
     }
 }

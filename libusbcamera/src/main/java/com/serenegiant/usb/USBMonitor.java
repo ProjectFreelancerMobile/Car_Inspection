@@ -40,8 +40,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
 
-import com.serenegiant.utils.BuildCheck;
-import com.serenegiant.utils.HandlerThreadHandler;
+import com.jiangdg.usbcamera.utils.BuildCheck;
+import com.jiangdg.usbcamera.utils.HandlerThreadHandler;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;

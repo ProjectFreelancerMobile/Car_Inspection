@@ -3,6 +3,9 @@ package com.car_inspection.ui.checkinfo
 import android.app.DatePickerDialog
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
 import android.widget.ArrayAdapter
@@ -12,6 +15,7 @@ import com.car_inspection.R
 import com.car_inspection.library.commonview.DatePickerFragment
 import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.ui.checkdetail.CheckDetailFragment
+import com.car_inspection.utils.Constanst
 import com.car_inspection.utils.formatTimeNumber
 import kotlinx.android.synthetic.main.check_info_fragment.*
 
@@ -43,6 +47,20 @@ class CheckInfoFragment : BaseFragment() {
 
         btnContinue.setOnClickListener { (activity as MainActivity).pushFragment(CheckDetailFragment.newInstance()) }
         btnPrevious.setOnClickListener { (activity as MainActivity).popFragment() }
+        edtLicensePlate.addTextChangedListener(object :TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                Constanst.CAR_CODE = if (TextUtils.isEmpty(p0)) "" else p0.toString()
+            }
+
+        })
     }
 
     fun initCalenda() {

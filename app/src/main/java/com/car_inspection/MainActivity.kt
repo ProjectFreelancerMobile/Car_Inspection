@@ -13,9 +13,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
-//            supportFragmentManager.beginTransaction()
-//                    .replace(R.id.container, MainFragment.newInstance())
-//                    .commitNow()
             pushFragment(LoginFragment.newInstance())
         }
     }
@@ -28,16 +25,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun popFragment() {
-        getSupportFragmentManager().popBackStack()
+        supportFragmentManager.popBackStack()
     }
 
     fun setRequestedOrientationPortrait() {
-        if (resources.getConfiguration().orientation != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        if (resources.configuration.orientation != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
     fun setRequestedOrientationLandscape() {
-        if (resources.getConfiguration().orientation != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+        if (resources.configuration.orientation != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
     }
 }

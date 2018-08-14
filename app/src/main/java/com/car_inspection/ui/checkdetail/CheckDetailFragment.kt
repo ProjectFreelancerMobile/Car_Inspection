@@ -9,6 +9,7 @@ import com.car_inspection.MainActivity
 import com.car_inspection.R
 import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.ui.main.MainFragment
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.check_detail_fragment.*
 
 class CheckDetailFragment : BaseFragment() {
@@ -31,7 +32,8 @@ class CheckDetailFragment : BaseFragment() {
         updateProgressStep(2)
         initListOutColor()
 
-        btnContinue.setOnClickListener { (activity as MainActivity).pushFragment(MainFragment.newInstance()) }
+        btnContinue.setOnClickListener {(activity as MainActivity).pushFragment(MainFragment.newInstance())
+        }
         btnPrevious.setOnClickListener { (activity as MainActivity).popFragment() }
     }
 
