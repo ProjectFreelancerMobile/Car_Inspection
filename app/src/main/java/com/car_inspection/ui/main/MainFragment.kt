@@ -1,5 +1,6 @@
 package com.car_inspection.ui.main
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -23,12 +24,23 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.main_fragment.*
 import java.util.concurrent.TimeUnit
 import android.app.Activity
+import android.content.Context
+import android.graphics.BitmapFactory
 import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import android.text.style.UnderlineSpan
 import android.text.SpannableString
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.car_inspection.MainActivity
+import com.car_inspection.utils.createFolderPicture
+import com.car_inspection.utils.overlay
+import com.github.florent37.camerafragment.CameraFragment
+import com.github.florent37.camerafragment.configuration.Configuration
+import com.github.florent37.camerafragment.listeners.CameraFragmentResultAdapter
+import com.orhanobut.logger.Logger
+import io.fabric.sdk.android.services.settings.IconRequest.build
+import java.io.File
 
 
 class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
@@ -41,13 +53,17 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
     var currentPosition = 0
 
     var currentStep = 2
+    var cameraFragment: CameraFragment? = null
+    var currentSubStepName = ""
 
     companion object {
         fun newInstance() = MainFragment()
     }
 
+    @SuppressLint("MissingPermission")
     override fun initViews() {
-      //  activity?.addFragment(RecordFragment.newInstance(), R.id.fragmentRecord)
+        //  activity?.addFragment(RecordFragment.newInstance(), R.id.fragmentRecord)
+
     }
 
     override fun setLayoutResourceID() = R.layout.main_fragment
@@ -56,10 +72,12 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
         (activity as MainActivity).setRequestedOrientationLandscape()
-        return super.onCreateView(inflater, container, savedInstanceState)
     }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rvSubStep.layoutManager = LinearLayoutManager(activity)
@@ -85,6 +103,27 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
         }
         btnFinish.setOnClickListener { saveDataStep(currentStep) }
 
+        btnTakePicture.setOnClickListener {
+            if (cameraFragment != null) {
+                createFolderPicture(SAVE_PATH)
+                cameraFragment?.takePhotoOrCaptureVideo(object : CameraFragmentResultAdapter() {
+                    override fun onPhotoTaken(bytes: ByteArray, filePath: String) {
+                        Log.e("file images", "----------@@@@@@@@@@@@@@   $filePath")
+                        stepAdapter.items?.get(currentPosition)?.imagepaths?.add(filePath)
+                        showLayoutVideo()
+
+//                        var icon = BitmapFactory.decodeResource(context?.getResources(),
+//                                R.mipmap.ic_launcher_foreground)
+//                        var bmOptions = BitmapFactory.Options()
+//                        var bitmap = BitmapFactory.decodeFile(File(filePath).getAbsolutePath(), bmOptions)
+//                        overlay(bitmap, icon)
+                    }
+                }, SAVE_PATH, currentSubStepName)
+
+            }
+        }
+
+        addFragmentTakePicture()
         // disable scroll up android
 //        rvSubStep.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
 //            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
@@ -107,17 +146,38 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
 //        })
     }
 
+    fun addFragmentTakePicture() {
+        Observable.just(1L).delay(2, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableImpl<Long>() {
+                    @SuppressLint("MissingPermission")
+                    override fun onNext(t: Long) {
+                        var builder = Configuration.Builder()
+                        builder
+                                .setCamera(Configuration.CAMERA_FACE_FRONT)
+                                .setFlashMode(Configuration.FLASH_MODE_OFF)
+                                .setMediaAction(Configuration.MEDIA_ACTION_PHOTO)
+
+                        cameraFragment = CameraFragment.newInstance(builder.build())
+//                        fragmentCamera.animate().rotation(-90f).start()
+
+                        activity?.addFragment(cameraFragment!!, R.id.fragmentCamera)
+                    }
+                })
+    }
+
     fun saveDataStep(step: Int) {
 
     }
 
     fun updateProgressStep(step: Int) {
-        val percent = (step+1) * 1f / 8
+        val percent = (step + 1) * 1f / 8
         pgStep.setMaximumPercentage(percent)
         pgStep.useRoundedRectangleShape(20.0f)
         pgStep.setProgressColor(resources.getColor(R.color.blue_500))
         pgStep.setProgressBackgroundColor(resources.getColor(R.color.blue_200))
-        pgStep.text = "${(step+1) * 100 / 8}%"
+        pgStep.text = "${(step + 1) * 100 / 8}%"
         pgStep.textSize = 14f
         pgStep.setTextColor(Color.WHITE)
         pgStep.gravity = Gravity.CENTER
@@ -130,7 +190,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
         if (layoutFinish.visibility == View.VISIBLE)
             layoutFinish.visibility = View.GONE
         items.clear()
-        items = initStepTestData(step)
+        items = initStepTestData(step) //////////////////////  cai này de load data tu database len
         stepAdapter = StepAdapter(this.activity!!)
         stepAdapter.stepAdapterListener = this
         stepAdapter.items = items
@@ -172,10 +232,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
                 var stepmodify = StepOrinalModel()
                 stepmodify.step = "$step"
                 stepmodify.stepTitle = "kiểm tra khoang động cơ"
-//                stepmodify.subStep = "$step." + i
-                //  stepmodify.subStepTitle1 = "bên ngoài xe"
-                //  stepmodify.subStepTitle2 = "bên trái trước"
-                stepmodify.subStepTitle3 = "bên ngoài cửa xe"
+                stepmodify.subStepTitle3 = "bên ngoài cửa xe $step-$i"
                 stepOrinalModels.add(stepmodify)
             }
         } else
@@ -186,7 +243,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
                 stepmodify.subStep = "$step." + i
                 stepmodify.subStepTitle1 = "bên ngoài xe"
                 stepmodify.subStepTitle2 = "bên trái trước"
-                stepmodify.subStepTitle3 = "bên ngoài cửa xe"
+                stepmodify.subStepTitle3 = "bên ngoài cửa xe $step-$i"
                 stepOrinalModels.add(stepmodify)
             }
 
@@ -210,6 +267,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
 
     override fun onRadioGroupCheckChangeListner(group: RadioGroup, checkId: Int, position: Int) {
         currentPosition = position
+        currentSubStepName = stepAdapter.items?.get(position)?.subStepTitle3!!
         when (checkId) {
             R.id.cbG -> {
                 showLayoutVideo()

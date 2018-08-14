@@ -78,10 +78,16 @@
             android:layout_height="match_parent"
             android:visibility="gone">
 
-            <android.view.SurfaceView
-                android:id="@+id/preview"
+            <FrameLayout
+                android:rotation="-90"
+                android:id="@+id/fragmentCamera"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@color/black" />
+            <!--<android.view.SurfaceView-->
+            <!--android:id="@+id/preview"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
 
             <ImageView
                 android:id="@+id/btnTakePicture"

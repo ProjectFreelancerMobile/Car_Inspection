@@ -8,9 +8,15 @@ import com.car_inspection.app.Constants
 import io.reactivex.disposables.Disposable
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import java.io.File
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import android.opengl.ETC1.getHeight
+import android.opengl.ETC1.getWidth
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Matrix
 
 
 /**
@@ -72,5 +78,19 @@ fun formatTimeNumber(number: Int): String {
         "0$number"
     else
         number.toString() + ""
+}
+
+fun createFolderPicture(path: String) {
+    var folder = File(path)
+    if (!folder.exists())
+        folder.mkdirs()
+}
+
+fun overlay(bmp1: Bitmap, bmp2: Bitmap): Bitmap {
+    val bmOverlay = Bitmap.createBitmap(bmp1.width, bmp1.height, bmp1.config)
+    val canvas = Canvas(bmOverlay)
+    canvas.drawBitmap(bmp1, Matrix(), null)
+    canvas.drawBitmap(bmp2, Matrix(), null)
+    return bmOverlay
 }
 
