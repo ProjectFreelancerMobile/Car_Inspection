@@ -24,6 +24,7 @@ import android.graphics.*
 import androidx.databinding.adapters.TextViewBindingAdapter.setTextSize
 import android.opengl.ETC1.getHeight
 import android.opengl.ETC1.getWidth
+import android.os.Environment
 import androidx.core.view.ViewCompat.getClipBounds
 
 
@@ -115,7 +116,7 @@ fun overlay(context: Context, filePath: String, iconResource: Int, text: String)
     canvas.drawBitmap(bmp1, Matrix(), null)
     canvas.drawText(text, x, y, paint)
 
-    canvas.drawBitmap(icon, bmp1.width - icon.width*1f, bmp1.height - icon.height*1f, null)
+    canvas.drawBitmap(icon, bmp1.width - icon.width * 1f, bmp1.height - icon.height * 1f, null)
     var out: FileOutputStream? = null
     try {
         out = FileOutputStream(filePath)

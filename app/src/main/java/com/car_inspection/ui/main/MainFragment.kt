@@ -33,6 +33,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.car_inspection.MainActivity
+import com.car_inspection.utils.Constanst
 import com.car_inspection.utils.createFolderPicture
 import com.car_inspection.utils.overlay
 import com.github.florent37.camerafragment.CameraFragment
@@ -45,7 +46,6 @@ import java.io.File
 
 class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
     private val REQUEST_SUGGEST_TEST = 0;
-    private val SAVE_PATH: String = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath
 
     var items: ArrayList<StepModifyModel> = ArrayList()
     lateinit var stepAdapter: StepAdapter
@@ -105,7 +105,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
 
         btnTakePicture.setOnClickListener {
             if (cameraFragment != null) {
-                createFolderPicture(SAVE_PATH)
+                createFolderPicture(Constanst.getFolderPicturePath())
                 cameraFragment?.takePhotoOrCaptureVideo(object : CameraFragmentResultAdapter() {
                     override fun onPhotoTaken(bytes: ByteArray, filePath: String) {
                         Log.e("file images", "----------@@@@@@@@@@@@@@   $filePath")
@@ -113,7 +113,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
                         showLayoutVideo()
                         overlay(activity!!, filePath, R.mipmap.ic_launcher_foreground,currentSubStepName)
                     }
-                }, SAVE_PATH, currentSubStepName)
+                }, Constanst.getFolderPicturePath(), currentSubStepName)
 
             }
         }
