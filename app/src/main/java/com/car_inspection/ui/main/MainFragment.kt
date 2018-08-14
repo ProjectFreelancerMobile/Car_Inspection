@@ -111,12 +111,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
                         Log.e("file images", "----------@@@@@@@@@@@@@@   $filePath")
                         stepAdapter.items?.get(currentPosition)?.imagepaths?.add(filePath)
                         showLayoutVideo()
-
-//                        var icon = BitmapFactory.decodeResource(context?.getResources(),
-//                                R.mipmap.ic_launcher_foreground)
-//                        var bmOptions = BitmapFactory.Options()
-//                        var bitmap = BitmapFactory.decodeFile(File(filePath).getAbsolutePath(), bmOptions)
-//                        overlay(bitmap, icon)
+                        overlay(activity!!, filePath, R.mipmap.ic_launcher_foreground,currentSubStepName)
                     }
                 }, SAVE_PATH, currentSubStepName)
 

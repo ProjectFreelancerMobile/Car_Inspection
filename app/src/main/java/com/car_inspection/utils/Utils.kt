@@ -1,5 +1,6 @@
 package com.car_inspection.utils
 
+import android.content.Context
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
@@ -14,9 +15,16 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.opengl.ETC1.getHeight
 import android.opengl.ETC1.getWidth
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Matrix
+import com.car_inspection.R
+import java.io.FileOutputStream
+import java.io.IOException
+import android.R.attr.y
+import android.R.attr.x
+import android.graphics.*
+import androidx.databinding.adapters.TextViewBindingAdapter.setTextSize
+import android.opengl.ETC1.getHeight
+import android.opengl.ETC1.getWidth
+import androidx.core.view.ViewCompat.getClipBounds
 
 
 /**
@@ -86,11 +94,43 @@ fun createFolderPicture(path: String) {
         folder.mkdirs()
 }
 
-fun overlay(bmp1: Bitmap, bmp2: Bitmap): Bitmap {
-    val bmOverlay = Bitmap.createBitmap(bmp1.width, bmp1.height, bmp1.config)
-    val canvas = Canvas(bmOverlay)
+fun overlay(context: Context, filePath: String, iconResource: Int, text: String) {
+    var icon = BitmapFactory.decodeResource(context?.getResources(),
+            iconResource)
+    var bmp1 = BitmapFactory.decodeFile(filePath)
+    var bmOverlay = Bitmap.createBitmap(bmp1.width, bmp1.height, bmp1.config)
+    var canvas = Canvas(bmOverlay)
+    val paint = Paint()
+    var r = Rect()
+    canvas.getClipBounds(r)
+    val cHeight = r.height()
+    val cWidth = r.width()
+    paint.textAlign = Paint.Align.LEFT
+    paint.setColor(Color.WHITE)
+    paint.setTextSize(50f)
+    paint.getTextBounds(text, 0, text.length, r)
+    val x = cWidth / 2f - r.width() / 2f - r.left
+    val y = cHeight / 2f + r.height() / 2f - r.bottom
+
     canvas.drawBitmap(bmp1, Matrix(), null)
-    canvas.drawBitmap(bmp2, Matrix(), null)
-    return bmOverlay
+    canvas.drawText(text, x, y, paint)
+
+    canvas.drawBitmap(icon, bmp1.width - icon.width*1f, bmp1.height - icon.height*1f, null)
+    var out: FileOutputStream? = null
+    try {
+        out = FileOutputStream(filePath)
+        bmOverlay.compress(Bitmap.CompressFormat.PNG, 100, out) // bmp is your Bitmap instance
+    } catch (e: Exception) {
+        e.printStackTrace()
+    } finally {
+        try {
+            if (out != null) {
+                out!!.close()
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+    }
 }
 
