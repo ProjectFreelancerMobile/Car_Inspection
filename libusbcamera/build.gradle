@@ -1,0 +1,33 @@
+apply plugin: 'com.android.library'
+
+
+android {
+    compileSdkVersion build_versions.compileSdk
+    defaultConfig {
+        minSdkVersion build_versions.minSdk
+        targetSdkVersion build_versions.targetSdk
+        versionCode build_versions.versionCode
+        versionName build_versions.versionName
+    }
+    signingConfigs {
+        Key {
+            try {
+                storeFile file(key_store.keystore)
+                storePassword key_store.keystorePass
+                keyAlias key_store.alias
+                keyPassword key_store.aliasPass
+            }
+            catch (ignored) {
+                throw new InvalidUserDataException("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.")
+            }
+        }
+    }
+}
+
+
+dependencies {
+    // Support libraries
+    for (dependency in deps.support) {
+        implementation dependency.value
+    }
+}

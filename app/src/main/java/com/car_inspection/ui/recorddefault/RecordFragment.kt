@@ -1,4 +1,4 @@
-package com.car_inspection.ui.record
+package com.car_inspection.ui.recorddefault
 
 import android.Manifest
 import android.app.ProgressDialog
@@ -14,7 +14,6 @@ import android.util.Log
 import android.view.Surface
 import android.view.TextureView
 import android.view.View
-import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
@@ -23,14 +22,12 @@ import com.car_inspection.R
 import com.car_inspection.data.model.FrameToRecord
 import com.car_inspection.data.model.RecordModel
 import com.car_inspection.library.CameraHelper
-import com.car_inspection.library.FixedRatioCroppedTextureView
 import com.car_inspection.library.MiscUtils
 import com.car_inspection.ui.base.BaseFragment
-import com.car_inspection.ui.main.MainFragment
+import com.car_inspection.ui.recordotg.RecordOTGFragment
 import com.car_inspection.utils.listenToViews
 import com.orhanobut.logger.Logger
-import kotlinx.android.synthetic.main.main_fragment.*
-import kotlinx.android.synthetic.main.record_fragment.*
+import kotlinx.android.synthetic.main.record_otg_fragment.*
 import org.bytedeco.javacpp.avcodec
 import org.bytedeco.javacpp.avutil
 import org.bytedeco.javacv.FFmpegFrameFilter
@@ -46,7 +43,7 @@ import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 
 class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.OnClickListener{
-    private val LOG_TAG = RecordFragment::class.java.simpleName
+    private val LOG_TAG = RecordOTGFragment::class.java.simpleName
 
     private val REQUEST_PERMISSIONS = 1
 
@@ -104,7 +101,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
     }
 
     companion object {
-        fun newInstance() = RecordFragment()
+        fun newInstance() = RecordOTGFragment()
     }
 
     override fun onClick(view: View?) {

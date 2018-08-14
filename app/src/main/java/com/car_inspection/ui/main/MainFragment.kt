@@ -15,7 +15,6 @@ import com.car_inspection.data.local.database.model.StepOrinalModel
 import com.car_inspection.ui.adapter.StepAdapter
 import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.ui.inputtext.SuggestTextActivity
-import com.car_inspection.ui.record.RecordFragment
 import com.toan_itc.core.utils.addFragment
 import google.com.carinspection.DisposableImpl
 import io.reactivex.Observable
@@ -25,22 +24,17 @@ import kotlinx.android.synthetic.main.main_fragment.*
 import java.util.concurrent.TimeUnit
 import android.app.Activity
 import android.content.Context
-import android.graphics.BitmapFactory
-import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import android.text.style.UnderlineSpan
 import android.text.SpannableString
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import com.car_inspection.MainActivity
+import com.car_inspection.ui.recorddefault.RecordFragment
+import com.car_inspection.ui.recordotg.RecordOTGFragment
 import com.car_inspection.utils.createFolderPicture
-import com.car_inspection.utils.overlay
+import com.car_inspection.utils.isCameraOTG
 import com.github.florent37.camerafragment.CameraFragment
 import com.github.florent37.camerafragment.configuration.Configuration
 import com.github.florent37.camerafragment.listeners.CameraFragmentResultAdapter
-import com.orhanobut.logger.Logger
-import io.fabric.sdk.android.services.settings.IconRequest.build
-import java.io.File
 
 
 class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
@@ -62,8 +56,10 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
 
     @SuppressLint("MissingPermission")
     override fun initViews() {
-        //  activity?.addFragment(RecordFragment.newInstance(), R.id.fragmentRecord)
-
+        if(isCameraOTG())
+          activity?.addFragment(RecordOTGFragment.newInstance(), R.id.fragmentRecord)
+        else
+            activity?.addFragment(RecordFragment.newInstance(), R.id.fragmentRecord)
     }
 
     override fun setLayoutResourceID() = R.layout.main_fragment

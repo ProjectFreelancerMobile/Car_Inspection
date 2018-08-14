@@ -36,6 +36,8 @@ fun textEmty(vararg view: TextView?) = view.forEach { it?.text = Constants.BLANK
 
 fun isDebug(): Boolean = BuildConfig.FLAVOR == Constants.DEV
 
+fun isCameraOTG(): Boolean = false
+
 fun disposableAll(vararg disposable: Disposable?) = disposable.forEach { it?.dispose() }
 
 fun returnBody(value: String): RequestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), value)

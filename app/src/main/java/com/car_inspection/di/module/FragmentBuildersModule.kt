@@ -2,7 +2,8 @@ package com.car_inspection.di.module
 
 import com.car_inspection.di.FragmentScope
 import com.car_inspection.ui.main.MainFragment
-import com.car_inspection.ui.record.RecordFragment
+import com.car_inspection.ui.recorddefault.RecordFragment
+import com.car_inspection.ui.recordotg.RecordOTGFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -22,4 +23,8 @@ abstract class FragmentBuildersModule {
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun contributeRecordFragment(): RecordFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    internal abstract fun contributeRecordOTGFragment(): RecordOTGFragment
 }
