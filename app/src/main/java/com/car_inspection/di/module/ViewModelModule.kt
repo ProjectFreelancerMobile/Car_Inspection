@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.car_inspection.di.ViewModelFactory
 import com.car_inspection.di.key.ViewModelKey
-import com.car_inspection.ui.recorddefault.RecordViewModel
+import com.car_inspection.ui.record.RecordViewModel
 import com.car_inspection.ui.recordotg.RecordOTGViewModel
 import dagger.Binds
 import dagger.Module

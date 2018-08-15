@@ -1,4 +1,4 @@
-package com.car_inspection.ui.recorddefault
+package com.car_inspection.ui.record
 
 import android.Manifest
 import android.app.ProgressDialog
@@ -24,11 +24,9 @@ import com.car_inspection.data.model.RecordModel
 import com.car_inspection.library.CameraHelper
 import com.car_inspection.library.MiscUtils
 import com.car_inspection.ui.base.BaseFragment
-import com.car_inspection.ui.recordotg.RecordOTGFragment
 import com.car_inspection.utils.listenToViews
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.record_fragment.*
-import kotlinx.android.synthetic.main.record_otg_fragment.*
 import org.bytedeco.javacpp.avcodec
 import org.bytedeco.javacpp.avutil
 import org.bytedeco.javacv.FFmpegFrameFilter

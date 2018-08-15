@@ -20,16 +20,12 @@ import com.car_inspection.data.local.database.model.StepOrinalModel
 import com.car_inspection.ui.adapter.StepAdapter
 import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.ui.inputtext.SuggestTextActivity
-import com.car_inspection.ui.recorddefault.RecordFragment
-import com.car_inspection.ui.recordotg.RecordOTGFragment
 import com.car_inspection.utils.Constanst
 import com.car_inspection.utils.createFolderPicture
-import com.car_inspection.utils.isCameraOTG
 import com.car_inspection.utils.overlay
 import com.github.florent37.camerafragment.CameraFragment
 import com.github.florent37.camerafragment.configuration.Configuration
 import com.github.florent37.camerafragment.listeners.CameraFragmentResultAdapter
-import com.orhanobut.logger.Logger
 import com.toan_itc.core.utils.addFragment
 import google.com.carinspection.DisposableImpl
 import io.reactivex.Observable
@@ -264,15 +260,15 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
         when (checkId) {
             R.id.cbG -> {
                 showLayoutVideo()
-                items.get(position).rating = "G"
+                items[position].rating = "G"
             }
             R.id.cbP -> {
                 showLayoutTakepicture()
-                items.get(position).rating = "P"
+                items[position].rating = "P"
             }
             R.id.cbF -> {
                 showLayoutTakepicture()
-                items.get(position).rating = "F"
+                items[position].rating = "F"
             }
         }
         if (stepAdapter.isFinishCheckItem()) {
@@ -306,8 +302,8 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode === REQUEST_SUGGEST_TEST) {
-            if (resultCode === Activity.RESULT_OK) {
+        if (requestCode == REQUEST_SUGGEST_TEST) {
+            if (resultCode == Activity.RESULT_OK) {
                 val position = data.getIntExtra("position", 0)
                 items.get(position).note = data.getStringExtra("note")
             }

@@ -1,8 +1,7 @@
-package com.car_inspection.ui.camera
+package com.car_inspection.ui.cameracapture
 
 import com.car_inspection.R
 import com.car_inspection.ui.base.BaseFragment
-import kotlinx.android.synthetic.main.camera_fragment.*
 
 class CameraFragment: BaseFragment() {
     companion object {

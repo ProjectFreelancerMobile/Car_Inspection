@@ -1,12 +1,9 @@
-package com.car_inspection.ui.recordotg
+package com.car_inspection.ui.record
 
 import android.hardware.usb.UsbDevice
-import android.os.Looper
-import android.util.Log
 import android.view.Surface
 import android.view.View
 import android.widget.Toast
-import androidx.core.widget.toast
 import com.car_inspection.R
 import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.utils.listenToViews
@@ -18,9 +15,8 @@ import com.serenegiant.usb.USBMonitor
 import com.serenegiant.usb.common.AbstractUVCCameraHandler
 import com.serenegiant.usb.encoder.RecordParams
 import com.serenegiant.usb.widget.CameraViewInterface
-import kotlinx.android.synthetic.main.record_fragment.*
 import kotlinx.android.synthetic.main.record_otg_fragment.*
-import java.util.ArrayList
+import java.util.*
 
 class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, CameraViewInterface.Callback, View.OnClickListener{
 
@@ -63,22 +59,6 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
             } else {
                 isPreview = true
                 Toast.makeText(context, "connecting", Toast.LENGTH_LONG).show()
-                // initialize seekbar
-                // need to wait UVCCamera initialize over
-                Thread(Runnable {
-                    try {
-                        Thread.sleep(2500)
-                    } catch (e: InterruptedException) {
-                        e.printStackTrace()
-                    }
-
-                    Looper.prepare()
-                    if (mCameraHelper != null && mCameraHelper?.isCameraOpened!!) {
-                       /* mSeekBrightness.setProgress(mCameraHelper.getModelValue(UVCCameraHelper.MODE_BRIGHTNESS))
-                        mSeekContrast.setProgress(mCameraHelper.getModelValue(UVCCameraHelper.MODE_CONTRAST))*/
-                    }
-                    Looper.loop()
-                }).start()
             }
         }
 
@@ -108,6 +88,8 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
                 setDefaultFrameFormat(UVCCameraHelper.FRAME_FORMAT_YUYV)
                 initUSBMonitor(activity, mUVCCameraView, listener)
                 setOnPreviewFrameListener(AbstractUVCCameraHandler.OnPreViewResultListener { })
+                setModelValue(UVCCameraHelper.MODE_BRIGHTNESS, 80)
+                setModelValue(UVCCameraHelper.MODE_CONTRAST,60)
             }
         }
     }
@@ -133,7 +115,7 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
                             val params = RecordParams()
                             params.recordPath = videoPath
                             params.recordDuration = 0                        // 设置为0，不分割保存
-                           // params.isVoiceClose = mSwitchVoice.isChecked()    // is close voice
+                            params.isVoiceClose = false    // is close voice
                             startPusher(params, object : AbstractUVCCameraHandler.OnEncodeResultListener {
                                 override fun onEncodeResult(data: ByteArray, offset: Int, length: Int, timestamp: Long, type: Int) {
                                     // type = 1,h264 video stream
