@@ -11,8 +11,6 @@ import com.orhanobut.logger.Logger
 import com.toan_itc.core.base.BaseViewModel
 import com.toan_itc.core.base.CoreBaseDataFragment
 import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 /**
  * Created by ToanDev on 28/2/18.

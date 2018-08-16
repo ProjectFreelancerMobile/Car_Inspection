@@ -13,8 +13,7 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.TextView
 import com.car_inspection.R
-
-import java.util.Arrays
+import java.util.*
 
 class CustomProgress : TextView {
 

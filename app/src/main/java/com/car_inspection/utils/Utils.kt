@@ -1,6 +1,7 @@
 package com.car_inspection.utils
 
 import android.content.Context
+import android.graphics.*
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
@@ -10,22 +11,11 @@ import io.reactivex.disposables.Disposable
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
-import android.opengl.ETC1.getHeight
-import android.opengl.ETC1.getWidth
-import com.car_inspection.R
-import java.io.FileOutputStream
-import java.io.IOException
-import android.R.attr.y
-import android.R.attr.x
-import android.graphics.*
-import androidx.databinding.adapters.TextViewBindingAdapter.setTextSize
-import android.opengl.ETC1.getHeight
-import android.opengl.ETC1.getWidth
-import android.os.Environment
-import androidx.core.view.ViewCompat.getClipBounds
 
 
 /**

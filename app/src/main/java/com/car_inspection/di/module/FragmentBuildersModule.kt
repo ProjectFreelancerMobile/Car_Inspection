@@ -20,11 +20,4 @@ abstract class FragmentBuildersModule {
     @ContributesAndroidInjector
     internal abstract fun contributeMainFragment(): MainFragment
 
-    @FragmentScope
-    @ContributesAndroidInjector
-    internal abstract fun contributeRecordFragment(): RecordFragment
-
-    @FragmentScope
-    @ContributesAndroidInjector
-    internal abstract fun contributeRecordOTGFragment(): RecordOTGFragment
 }

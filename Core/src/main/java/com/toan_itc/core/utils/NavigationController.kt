@@ -1,5 +1,6 @@
 package com.toan_itc.core.utils
 
+import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -12,7 +13,18 @@ import androidx.fragment.app.FragmentTransaction
  */
 
 inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
-    beginTransaction().func().commitAllowingStateLoss()
+    beginTransaction()
+            .func()
+            .addToBackStack(javaClass.simpleName)
+            .commitAllowingStateLoss()
+}
+
+fun AppCompatActivity.popFragment() {
+    supportFragmentManager.popBackStack()
+}
+
+fun FragmentActivity.popFragment() {
+    supportFragmentManager.popBackStack()
 }
 
 fun AppCompatActivity.addFragment(fragment: Fragment, frameId: Int){
@@ -71,4 +83,15 @@ private inline fun FragmentManager.transact(action: FragmentTransaction.() -> Un
     beginTransaction().apply {
         action()
     }.commit()
+}
+
+
+fun setRequestedOrientationPortrait(activity: FragmentActivity) {
+    if (activity.resources.configuration.orientation != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+}
+
+fun setRequestedOrientationLandscape(activity: FragmentActivity) {
+    if (activity.resources.configuration.orientation != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+        activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 }

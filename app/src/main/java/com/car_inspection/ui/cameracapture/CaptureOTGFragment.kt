@@ -2,18 +2,15 @@ package com.car_inspection.ui.cameracapture
 
 import android.hardware.usb.UsbDevice
 import android.view.Surface
-import android.view.View
 import android.widget.Toast
 import com.car_inspection.R
 import com.car_inspection.ui.base.BaseFragment
-import com.car_inspection.utils.listenToViews
 import com.jiangdg.usbcamera.UVCCameraHelper
 import com.jiangdg.usbcamera.utils.FileUtils
 import com.orhanobut.logger.Logger
 import com.serenegiant.usb.CameraDialog
 import com.serenegiant.usb.USBMonitor
 import com.serenegiant.usb.common.AbstractUVCCameraHandler
-import com.serenegiant.usb.encoder.RecordParams
 import com.serenegiant.usb.widget.CameraViewInterface
 import kotlinx.android.synthetic.main.record_otg_fragment.*
 import java.util.*

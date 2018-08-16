@@ -1,8 +1,6 @@
 package com.car_inspection.di.module
 
-import com.car_inspection.di.ServiceScope
 import dagger.Module
-import dagger.android.ContributesAndroidInjector
 
 
 /**

@@ -12,12 +12,12 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.RadioGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.car_inspection.R
-import com.car_inspection.data.local.database.model.StepModifyModel
+import com.car_inspection.data.model.StepModifyModel
 import kotlinx.android.synthetic.main.adapter_step.view.*
 
 
 class StepAdapter(var context: Context) : RecyclerView.Adapter<StepAdapter.StepViewHolder>() {
-    var items: ArrayList<StepModifyModel>? = null
+    var items: List<StepModifyModel>? = null
     var stepAdapterListener: StepAdapterListener? = null
     var binding = false
     var heightItem = 0
@@ -77,7 +77,7 @@ class StepAdapter(var context: Context) : RecyclerView.Adapter<StepAdapter.StepV
             }
 
         })
-        holder.tvNote.setOnClickListener({ v -> stepAdapterListener?.onTextNoteClickListener(v, position) })
+        holder.tvNote.setOnClickListener { v -> stepAdapterListener?.onTextNoteClickListener(v, position) }
     }
 
     fun isFinishCheckItem(): Boolean {

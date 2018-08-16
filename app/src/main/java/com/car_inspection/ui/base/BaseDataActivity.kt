@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.databinding.ViewDataBinding
 import com.toan_itc.core.base.BaseViewModel
 import com.toan_itc.core.base.CoreBaseDataActivity
-import io.reactivex.disposables.Disposable
 
 /**
  * Created by ToanDev on 28/2/18.

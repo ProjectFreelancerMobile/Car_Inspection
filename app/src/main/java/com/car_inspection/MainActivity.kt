@@ -1,40 +1,28 @@
 package com.car_inspection
 
-import android.content.pm.ActivityInfo
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.car_inspection.ui.login.LoginFragment
-import com.car_inspection.ui.main.MainFragment
+import com.toan_itc.core.base.CoreBaseActivity
+import com.toan_itc.core.utils.addFragment
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : CoreBaseActivity(), HasSupportFragmentInjector {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
-        if (savedInstanceState == null) {
-            pushFragment(LoginFragment.newInstance())
-        }
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+
+    override fun supportFragmentInjector() = dispatchingAndroidInjector
+
+    override fun setLayoutResourceID(): Int = R.layout.main_activity
+
+    override fun initViews(){
+        addFragment(LoginFragment.newInstance(), R.id.container)
     }
 
-    fun pushFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.container, fragment)
-                .addToBackStack(fragment.javaClass.simpleName)
-                .commit()
+    override fun initData() {
+
     }
 
-    fun popFragment() {
-        supportFragmentManager.popBackStack()
-    }
-
-    fun setRequestedOrientationPortrait() {
-        if (resources.configuration.orientation != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-    }
-
-    fun setRequestedOrientationLandscape() {
-        if (resources.configuration.orientation != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
-            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-    }
 }

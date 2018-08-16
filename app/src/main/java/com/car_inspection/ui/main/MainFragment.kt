@@ -5,20 +5,28 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.os.Bundle
+import android.os.Environment
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.RadioGroup
+import androidx.databinding.DataBindingComponent
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.car_inspection.MainActivity
 import com.car_inspection.R
-import com.car_inspection.data.local.database.model.StepModifyModel
-import com.car_inspection.data.local.database.model.StepOrinalModel
+import com.car_inspection.binding.FragmentDataBindingComponent
+import com.car_inspection.data.model.StepModifyModel
+import com.car_inspection.data.model.StepOrinalModel
+import com.car_inspection.databinding.MainFragmentBinding
 import com.car_inspection.ui.adapter.StepAdapter
-import com.car_inspection.ui.base.BaseFragment
+import com.car_inspection.ui.base.BaseDataFragment
 import com.car_inspection.ui.cameracapture.CaptureCameraFragment
 import com.car_inspection.ui.cameracapture.CaptureOTGFragment
 import com.car_inspection.ui.inputtext.SuggestTextActivity
@@ -28,8 +36,10 @@ import com.car_inspection.utils.*
 import com.github.florent37.camerafragment.CameraFragment
 import com.github.florent37.camerafragment.configuration.Configuration
 import com.github.florent37.camerafragment.listeners.CameraFragmentResultAdapter
+import com.toan_itc.core.architecture.autoCleared
 import com.toan_itc.core.utils.addFragment
 import com.toan_itc.core.utils.removeFragment
+import com.toan_itc.core.utils.setRequestedOrientationLandscape
 import google.com.carinspection.DisposableImpl
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -37,23 +47,41 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.main_fragment.*
 import java.util.concurrent.TimeUnit
 
-
-class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener, View.OnClickListener {
+class MainFragment : BaseDataFragment<MainViewModel>(), StepAdapter.StepAdapterListener, View.OnClickListener{
+    private val SAVE_PATH: String = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath
     private val REQUEST_SUGGEST_TEST = 0
-    var items: ArrayList<StepModifyModel> = ArrayList()
+    var cameraFragment: CameraFragment? = null
+    var currentSubStepName = ""
+    private var captureFragment: Fragment? = null
+    var items: List<StepModifyModel> = mutableListOf()
     lateinit var stepAdapter: StepAdapter
     var isTakePicture = false
     var currentPosition = 0
     var currentStep = 2
-    var cameraFragment: CameraFragment? = null
-    var currentSubStepName = ""
-    private var captureFragment: Fragment? = null
+    private var binding by autoCleared<MainFragmentBinding>()
+    private var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
 
     companion object {
         fun newInstance() = MainFragment()
     }
 
-    override fun initViews() {
+    override fun setLayoutResourceID() = R.layout.main_fragment
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val dataBinding = DataBindingUtil.inflate<MainFragmentBinding>(
+                inflater,
+                setLayoutResourceID(),
+                container,
+                false,
+                dataBindingComponent
+        )
+        binding = dataBinding
+        return dataBinding.root
+    }
+
+    override fun getViewModel(): Class<MainViewModel> = MainViewModel::class.java
+
+    override fun initView() {
         rvSubStep.layoutManager = LinearLayoutManager(activity)
         listenToViews(btnSave, btnContinue, btnFinish, btnTakePicture)
         if (isCameraOTG())
@@ -63,8 +91,6 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener, View.OnCli
         addFragmentTakePicture()
     }
 
-    override fun setLayoutResourceID() = R.layout.main_fragment
-
     override fun initData() {
         loadDataStep(currentStep)
         updateProgressStep(currentStep)
@@ -72,7 +98,9 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener, View.OnCli
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        (activity as MainActivity).setRequestedOrientationLandscape()
+        activity?.apply {
+            setRequestedOrientationLandscape(this)
+        }
     }
 
     override fun onClick(v: View?) {
@@ -126,7 +154,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener, View.OnCli
 
                         cameraFragment = CameraFragment.newInstance(builder.build())
 //                        fragmentCamera.animate().rotation(-90f).start()
-                        activity?.addFragment(cameraFragment!!, R.id.fragmentCamera)
+                        activity?.addFragment(cameraFragment!!, R.id.fragmentCapture)
                     }
                 })
     }
@@ -153,8 +181,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener, View.OnCli
             layoutContinue.visibility = View.GONE
         if (layoutFinish.visibility == View.VISIBLE)
             layoutFinish.visibility = View.GONE
-        items.clear()
-        items = initStepTestData(step) //////////////////////  cai này de load data tu database len
+        items = convertStepOrinalModelsToStepModifyModels(viewModel.initStepData(step))
         stepAdapter = StepAdapter(this.activity!!)
         stepAdapter.stepAdapterListener = this
         stepAdapter.items = items
@@ -162,13 +189,13 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener, View.OnCli
 
         updateProgressStep(step)
 
-        val stepTitle = "Bước ${items.get(0).step}: ${items.get(0).stepTitle}"
+        val stepTitle = "Bước ${items[0].step}: ${items[0].stepTitle}"
         val content = SpannableString(stepTitle)
         content.setSpan(UnderlineSpan(), 0, stepTitle.length, 0)
         tvStep.text = content
     }
 
-    private fun convertStepOrinalModelsToStepModifyModels(stepOrinalModels: ArrayList<StepOrinalModel>): ArrayList<StepModifyModel> {
+    private fun convertStepOrinalModelsToStepModifyModels(stepOrinalModels: List<StepOrinalModel>): List<StepModifyModel> {
         val stepModifyModels = ArrayList<StepModifyModel>()
         if (stepOrinalModels != null && stepOrinalModels.size > 0) {
             for (stepOrinalModel in stepOrinalModels)
@@ -186,7 +213,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener, View.OnCli
         return stepModifyModels
     }
 
-    private fun initStepTestData(step: Int): ArrayList<StepModifyModel> {
+    private fun initStepTestData(step: Int): List<StepModifyModel> {
         val stepOrinalModels = ArrayList<StepOrinalModel>()
         var size = 5
         if (step % 2 == 0)

@@ -2,52 +2,34 @@ package com.car_inspection.ui.checkinfo
 
 import android.app.DatePickerDialog
 import android.graphics.Color
-import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.Gravity
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
-import com.car_inspection.MainActivity
 import com.car_inspection.R
 import com.car_inspection.library.commonview.DatePickerFragment
 import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.ui.checkdetail.CheckDetailFragment
 import com.car_inspection.utils.Constanst
 import com.car_inspection.utils.formatTimeNumber
+import com.toan_itc.core.utils.popFragment
+import com.toan_itc.core.utils.switchFragment
 import kotlinx.android.synthetic.main.check_info_fragment.*
 
 class CheckInfoFragment : BaseFragment() {
-    var CAR_PRODUCTS = arrayListOf<String>("Toyota", "Honda", "BMW", "Hyundai", "Kia")
-    var dayCheck: String = ""
+    private var CAR_PRODUCTS = arrayListOf<String>("Toyota", "Honda", "BMW", "Hyundai", "Kia")
+    private var dayCheck: String = ""
 
     companion object {
         fun newInstance() = CheckInfoFragment()
     }
 
     override fun initViews() {
-
-    }
-
-    override fun setLayoutResourceID(): Int = R.layout.check_info_fragment
-
-    override fun initData() {
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        updateProgressStep(1)
-
-        initListCarProducts()
-        initListCarSeries()
-        initListYearProduct()
-        initCalenda()
-
-        btnContinue.setOnClickListener { (activity as MainActivity).pushFragment(CheckDetailFragment.newInstance()) }
-        btnPrevious.setOnClickListener { (activity as MainActivity).popFragment() }
-        edtLicensePlate.addTextChangedListener(object :TextWatcher{
+        btnContinue.setOnClickListener { activity?.switchFragment(null, CheckDetailFragment.newInstance(), R.id.container) }
+        btnPrevious.setOnClickListener { activity?.popFragment() }
+        edtLicensePlate.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
             }
@@ -63,9 +45,19 @@ class CheckInfoFragment : BaseFragment() {
         })
     }
 
-    fun initCalenda() {
+    override fun setLayoutResourceID(): Int = R.layout.check_info_fragment
+
+    override fun initData() {
+        updateProgressStep(1)
+        initListCarProducts()
+        initListCarSeries()
+        initListYearProduct()
+        initCalenda()
+    }
+
+    private fun initCalenda() {
         tvCalendar.setOnClickListener {
-            var timePicker = DatePickerFragment.newInstance(System.currentTimeMillis())
+            val timePicker = DatePickerFragment.newInstance(System.currentTimeMillis())
             timePicker.setOnDateSetListener(object : DatePickerDialog.OnDateSetListener {
                 override fun onDateSet(datePicker: DatePicker?, year: Int, month: Int, day: Int) {
                     val dateResult = formatTimeNumber(day) + "/" + formatTimeNumber(month + 1) + "/" + year
@@ -76,31 +68,31 @@ class CheckInfoFragment : BaseFragment() {
         }
     }
 
-    fun initListCarProducts() {
-        var listCarProductors = activity?.resources?.getStringArray(R.array.car_productor)
-        var dataAdapter = ArrayAdapter<String>(activity,
+    private fun initListCarProducts() {
+        val listCarProductors = activity?.resources?.getStringArray(R.array.car_productor)
+        val dataAdapter = ArrayAdapter<String>(activity,
                 android.R.layout.simple_spinner_item, listCarProductors)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spCarProductors.adapter = dataAdapter
     }
 
-    fun initListCarSeries() {
-        var listCarSeries = activity?.resources?.getStringArray(R.array.car_series)
-        var dataAdapter = ArrayAdapter<String>(activity,
+    private fun initListCarSeries() {
+        val listCarSeries = activity?.resources?.getStringArray(R.array.car_series)
+        val dataAdapter = ArrayAdapter<String>(activity,
                 android.R.layout.simple_spinner_item, listCarSeries)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spCarSeries.adapter = dataAdapter
     }
 
-    fun initListYearProduct() {
-        var listYears = activity?.resources?.getStringArray(R.array.year_product)
-        var dataAdapter = ArrayAdapter<String>(activity,
+    private fun initListYearProduct() {
+        val listYears = activity?.resources?.getStringArray(R.array.year_product)
+        val dataAdapter = ArrayAdapter<String>(activity,
                 android.R.layout.simple_spinner_item, listYears)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spYearProduct.adapter = dataAdapter
     }
 
-    fun updateProgressStep(step: Int) {
+    private fun updateProgressStep(step: Int) {
         val percent = step * 1f / 8
         pgStep.setMaximumPercentage(percent)
         pgStep.useRoundedRectangleShape(20.0f)

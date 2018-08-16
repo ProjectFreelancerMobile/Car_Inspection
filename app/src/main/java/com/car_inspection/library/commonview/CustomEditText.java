@@ -6,8 +6,6 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.widget.EditText;
 
-import androidx.appcompat.widget.AppCompatEditText;
-
 public class CustomEditText extends EditText {
 
 
