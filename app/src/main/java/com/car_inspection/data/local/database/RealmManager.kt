@@ -52,7 +52,6 @@ class RealmManager : RepositoryData {
                     stepOrinalModels
                 }
             })
-            Logger.e("emptyList=")
             return listStep
         }
     }

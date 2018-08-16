@@ -78,19 +78,22 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
     }
 
     private fun initUVCCameraHelper(){
-        Logger.e("initUVCCameraHelper")
-        // step.1 initialize UVCCameraHelper
-        mUVCCameraView = cameraView
-        mUVCCameraView?.apply {
-            setCallback(this@RecordOTGFragment)
-            mCameraHelper = UVCCameraHelper.getInstance()
-            mCameraHelper?.apply {
-                setDefaultFrameFormat(UVCCameraHelper.FRAME_FORMAT_YUYV)
-                initUSBMonitor(activity, mUVCCameraView, listener)
-                setOnPreviewFrameListener(AbstractUVCCameraHandler.OnPreViewResultListener { })
-                setModelValue(UVCCameraHelper.MODE_BRIGHTNESS, 80)
-                setModelValue(UVCCameraHelper.MODE_CONTRAST,60)
+        try {
+            // step.1 initialize UVCCameraHelper
+            mUVCCameraView = cameraView
+            mUVCCameraView?.apply {
+                setCallback(this@RecordOTGFragment)
+                mCameraHelper = UVCCameraHelper.getInstance()
+                mCameraHelper?.apply {
+                    setDefaultFrameFormat(UVCCameraHelper.FRAME_FORMAT_YUYV)
+                    initUSBMonitor(activity, mUVCCameraView, listener)
+                    setOnPreviewFrameListener(AbstractUVCCameraHandler.OnPreViewResultListener { })
+                    setModelValue(UVCCameraHelper.MODE_BRIGHTNESS, 80)
+                    setModelValue(UVCCameraHelper.MODE_CONTRAST, 60)
+                }
             }
+        }catch (e:Exception){
+            e.printStackTrace()
         }
     }
 

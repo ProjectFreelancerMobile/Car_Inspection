@@ -3,7 +3,7 @@ package com.car_inspection.ui.home
 import com.car_inspection.R
 import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.ui.checkinfo.CheckInfoFragment
-import com.toan_itc.core.utils.addFragment
+import com.toan_itc.core.utils.switchFragment
 import kotlinx.android.synthetic.main.home_fragment.*
 
 class HomeFragment : BaseFragment() {
@@ -13,7 +13,7 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun initViews() {
-        btnCheckCar.setOnClickListener { activity?.addFragment(CheckInfoFragment.newInstance(), R.id.container) }
+        btnCheckCar.setOnClickListener { activity?.switchFragment(null, CheckInfoFragment.newInstance(), R.id.container) }
     }
 
     override fun setLayoutResourceID(): Int = R.layout.home_fragment

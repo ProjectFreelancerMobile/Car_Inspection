@@ -12,11 +12,17 @@ import androidx.fragment.app.FragmentTransaction
  * Email:Huynhvantoan.itc@gmail.com
  */
 
-inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
-    beginTransaction()
-            .func()
-            .addToBackStack(javaClass.simpleName)
-            .commitAllowingStateLoss()
+inline fun FragmentManager.inTransaction(isNoBack : Boolean = false,func: FragmentTransaction.() -> FragmentTransaction) {
+    if(isNoBack){
+        beginTransaction()
+                .func()
+                .commitAllowingStateLoss()
+    }else {
+        beginTransaction()
+                .func()
+                .addToBackStack(javaClass.simpleName)
+                .commitAllowingStateLoss()
+    }
 }
 
 fun AppCompatActivity.popFragment() {
@@ -28,7 +34,7 @@ fun FragmentActivity.popFragment() {
 }
 
 fun AppCompatActivity.addFragment(fragment: Fragment, frameId: Int){
-    supportFragmentManager.inTransaction { add(frameId, fragment) }
+    supportFragmentManager.inTransaction (true) { add(frameId, fragment) }
 }
 
 fun AppCompatActivity.replaceFragment(fragment: Fragment, frameId: Int) {
@@ -50,7 +56,7 @@ fun FragmentActivity.switchFragment(from: Fragment?, to: Fragment, frameId: Int)
 }
 
 fun FragmentActivity.addFragment(fragment: Fragment, frameId: Int) {
-    supportFragmentManager.inTransaction { add(frameId, fragment) }
+    supportFragmentManager.inTransaction (true) { add(frameId, fragment) }
 }
 
 fun FragmentActivity.removeFragment(fragment: Fragment) {
