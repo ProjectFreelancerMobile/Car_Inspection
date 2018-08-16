@@ -5,13 +5,13 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.RadioGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.car_inspection.MainActivity
 import com.car_inspection.R
@@ -19,14 +19,17 @@ import com.car_inspection.data.local.database.model.StepModifyModel
 import com.car_inspection.data.local.database.model.StepOrinalModel
 import com.car_inspection.ui.adapter.StepAdapter
 import com.car_inspection.ui.base.BaseFragment
+import com.car_inspection.ui.cameracapture.CaptureCameraFragment
+import com.car_inspection.ui.cameracapture.CaptureOTGFragment
 import com.car_inspection.ui.inputtext.SuggestTextActivity
-import com.car_inspection.utils.Constanst
-import com.car_inspection.utils.createFolderPicture
-import com.car_inspection.utils.overlay
+import com.car_inspection.ui.record.RecordFragment
+import com.car_inspection.ui.record.RecordOTGFragment
+import com.car_inspection.utils.*
 import com.github.florent37.camerafragment.CameraFragment
 import com.github.florent37.camerafragment.configuration.Configuration
 import com.github.florent37.camerafragment.listeners.CameraFragmentResultAdapter
 import com.toan_itc.core.utils.addFragment
+import com.toan_itc.core.utils.removeFragment
 import google.com.carinspection.DisposableImpl
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -35,35 +38,36 @@ import kotlinx.android.synthetic.main.main_fragment.*
 import java.util.concurrent.TimeUnit
 
 
-class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
+class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener, View.OnClickListener {
     private val REQUEST_SUGGEST_TEST = 0
-
     var items: ArrayList<StepModifyModel> = ArrayList()
     lateinit var stepAdapter: StepAdapter
     var isTakePicture = false
     var currentPosition = 0
-
     var currentStep = 2
     var cameraFragment: CameraFragment? = null
     var currentSubStepName = ""
+    private var captureFragment: Fragment? = null
 
     companion object {
         fun newInstance() = MainFragment()
     }
 
-    @SuppressLint("MissingPermission")
     override fun initViews() {
-        //TODO: Toan code record
-       /* if (isCameraOTG())
+        rvSubStep.layoutManager = LinearLayoutManager(activity)
+        listenToViews(btnSave, btnContinue, btnFinish, btnTakePicture)
+        if (isCameraOTG())
             activity?.addFragment(RecordOTGFragment.newInstance(), R.id.fragmentRecord)
         else
-            activity?.addFragment(RecordFragment.newInstance(), R.id.fragmentRecord)*/
+            activity?.addFragment(RecordFragment.newInstance(), R.id.fragmentRecord)
+        addFragmentTakePicture()
     }
 
     override fun setLayoutResourceID() = R.layout.main_fragment
 
     override fun initData() {
-
+        loadDataStep(currentStep)
+        updateProgressStep(currentStep)
     }
 
     override fun onAttach(context: Context?) {
@@ -71,71 +75,43 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
         (activity as MainActivity).setRequestedOrientationLandscape()
     }
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        rvSubStep.layoutManager = LinearLayoutManager(activity)
-
-        loadDataStep(currentStep)
-        updateProgressStep(currentStep)
-
-        btnSave.setOnClickListener {
-            saveDataStep(currentStep)
-            btnContinue.isActive = true
-        }
-        btnContinue.setOnClickListener {
-            Observable.just(1L).delay(100, TimeUnit.MILLISECONDS)
-                    .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(object : DisposableImpl<Long>() {
-                        override fun onNext(t: Long) {
-                            currentStep++
-                            loadDataStep(currentStep)
-                            btnContinue.isActive = false
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.btnSave -> {
+                saveDataStep(currentStep)
+                btnContinue.isActive = true
+            }
+            R.id.btnContinue -> {
+                Observable.just(1L).delay(100, TimeUnit.MILLISECONDS)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(object : DisposableImpl<Long>() {
+                            override fun onNext(t: Long) {
+                                currentStep++
+                                loadDataStep(currentStep)
+                                btnContinue.isActive = false
+                            }
+                        })
+            }
+            R.id.btnFinish -> saveDataStep(currentStep)
+            R.id.btnTakePicture -> {
+                if (cameraFragment != null) {
+                    createFolderPicture(Constanst.getFolderPicturePath())
+                    cameraFragment?.takePhotoOrCaptureVideo(object : CameraFragmentResultAdapter() {
+                        override fun onPhotoTaken(bytes: ByteArray, filePath: String) {
+                            Log.e("file images", "----------@@@@@@@@@@@@@@   $filePath")
+                            stepAdapter.items?.get(currentPosition)?.imagepaths?.add(filePath)
+                            showLayoutVideo()
+                            overlay(activity!!, filePath, R.mipmap.ic_launcher_foreground, currentSubStepName)
                         }
-                    })
-        }
-        btnFinish.setOnClickListener { saveDataStep(currentStep) }
+                    }, Constanst.getFolderPicturePath(), currentSubStepName)
 
-        btnTakePicture.setOnClickListener {
-            if (cameraFragment != null) {
-                createFolderPicture(Constanst.getFolderPicturePath())
-                cameraFragment?.takePhotoOrCaptureVideo(object : CameraFragmentResultAdapter() {
-                    override fun onPhotoTaken(bytes: ByteArray, filePath: String) {
-                        Log.e("file images", "----------@@@@@@@@@@@@@@   $filePath")
-                        stepAdapter.items?.get(currentPosition)?.imagepaths?.add(filePath)
-                        showLayoutVideo()
-                        overlay(activity!!, filePath, R.mipmap.ic_launcher_foreground, currentSubStepName)
-                    }
-                }, Constanst.getFolderPicturePath(), currentSubStepName)
-
+                }
             }
         }
-        //TODO:
-        addFragmentTakePicture()
-        // disable scroll up android
-//        rvSubStep.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
-//            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
-//            }
-//
-//            override fun onInterceptTouchEvent(rv: RecyclerView, event: MotionEvent): Boolean {
-//                val action = event.getAction()
-//                if (action == MotionEvent.ACTION_DOWN) {
-//                    lastY = event.getY()
-//                }
-//                 if (action == MotionEvent.ACTION_MOVE && event.getY() < lastY) {
-//                     return true
-//                }
-//                 else return false
-//            }
-//
-//            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
-//            }
-//
-//        })
     }
 
-    fun addFragmentTakePicture() {
+    private fun addFragmentTakePicture() {
         Observable.just(1L).delay(2, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -150,17 +126,16 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
 
                         cameraFragment = CameraFragment.newInstance(builder.build())
 //                        fragmentCamera.animate().rotation(-90f).start()
-
                         activity?.addFragment(cameraFragment!!, R.id.fragmentCamera)
                     }
                 })
     }
 
-    fun saveDataStep(step: Int) {
+    private fun saveDataStep(step: Int) {
 
     }
 
-    fun updateProgressStep(step: Int) {
+    private fun updateProgressStep(step: Int) {
         val percent = (step + 1) * 1f / 8
         pgStep.setMaximumPercentage(percent)
         pgStep.useRoundedRectangleShape(20.0f)
@@ -173,7 +148,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
         pgStep.updateView()
     }
 
-    fun loadDataStep(step: Int) {
+    private fun loadDataStep(step: Int) {
         if (layoutContinue.visibility == View.VISIBLE)
             layoutContinue.visibility = View.GONE
         if (layoutFinish.visibility == View.VISIBLE)
@@ -193,8 +168,8 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
         tvStep.text = content
     }
 
-    fun convertStepOrinalModelsToStepModifyModels(stepOrinalModels: ArrayList<StepOrinalModel>): ArrayList<StepModifyModel> {
-        var stepModifyModels = ArrayList<StepModifyModel>()
+    private fun convertStepOrinalModelsToStepModifyModels(stepOrinalModels: ArrayList<StepOrinalModel>): ArrayList<StepModifyModel> {
+        val stepModifyModels = ArrayList<StepModifyModel>()
         if (stepOrinalModels != null && stepOrinalModels.size > 0) {
             for (stepOrinalModel in stepOrinalModels)
                 run {
@@ -211,8 +186,8 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
         return stepModifyModels
     }
 
-    fun initStepTestData(step: Int): ArrayList<StepModifyModel> {
-        var stepOrinalModels = ArrayList<StepOrinalModel>()
+    private fun initStepTestData(step: Int): ArrayList<StepModifyModel> {
+        val stepOrinalModels = ArrayList<StepOrinalModel>()
         var size = 5
         if (step % 2 == 0)
             size = 4
@@ -226,7 +201,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
             }
         } else
             for (i in 1..size) {
-                var stepmodify = StepOrinalModel()
+                val stepmodify = StepOrinalModel()
                 stepmodify.step = "$step"
                 stepmodify.stepTitle = "kiểm tra chung"
                 stepmodify.subStep = "$step." + i
@@ -288,16 +263,22 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
     }
 
 
-    fun showLayoutTakepicture() {
+    private fun showLayoutTakepicture() {
         isTakePicture = true
-        layoutTakePicture.visibility = View.VISIBLE
-        layoutVideo.visibility = View.GONE
+        captureFragment = if (isCameraOTG())
+            CaptureOTGFragment.newInstance()
+        else
+            CaptureCameraFragment.newInstance()
+        captureFragment?.apply {
+            activity?.addFragment(this, R.id.fragmentCapture)
+        }
     }
 
-    fun showLayoutVideo() {
+    private fun showLayoutVideo() {
         isTakePicture = false
-        layoutTakePicture.visibility = View.GONE
-        layoutVideo.visibility = View.VISIBLE
+        captureFragment?.apply {
+            activity?.removeFragment(this)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
@@ -305,7 +286,7 @@ class MainFragment : BaseFragment(), StepAdapter.StepAdapterListener {
         if (requestCode == REQUEST_SUGGEST_TEST) {
             if (resultCode == Activity.RESULT_OK) {
                 val position = data.getIntExtra("position", 0)
-                items.get(position).note = data.getStringExtra("note")
+                items[position].note = data.getStringExtra("note")
             }
         }
     }

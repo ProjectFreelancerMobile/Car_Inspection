@@ -3,9 +3,9 @@ package com.car_inspection.ui.cameracapture
 import com.car_inspection.R
 import com.car_inspection.ui.base.BaseFragment
 
-class CameraFragment: BaseFragment() {
+class CaptureCameraFragment: BaseFragment() {
     companion object {
-        fun newInstance() = CameraFragment()
+        fun newInstance() = CaptureCameraFragment()
     }
     override fun initViews() {
     }
