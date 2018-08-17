@@ -18,8 +18,7 @@ class LoginFragment : BaseFragment() {
     override fun initViews() {
         btnLogin.setOnClickListener {
             activity?.apply {
-                switchFragment(null,HomeFragment.newInstance() , R.id.fragmentContainer)
-                removeFragment(this@LoginFragment)
+                switchFragment(null, HomeFragment.newInstance() , R.id.fragmentContainer)
             }
         }
     }

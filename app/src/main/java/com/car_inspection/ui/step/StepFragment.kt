@@ -83,23 +83,23 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     override fun initView() {
         rvSubStep.layoutManager = LinearLayoutManager(activity)
         listenToViews(btnSave, btnContinue, btnFinish, btnTakePicture)
-        if (isCameraOTG())
-            activity?.addFragment(RecordOTGFragment.newInstance(), R.id.fragmentRecord)
-        else
-            activity?.addFragment(RecordFragment.newInstance(), R.id.fragmentRecord)
         addFragmentTakePicture()
     }
 
     override fun initData() {
         loadDataStep(currentStep)
         updateProgressStep(currentStep)
+        if (isCameraOTG())
+            activity?.addFragment(RecordOTGFragment.newInstance(), R.id.fragmentRecord)
+        else
+            activity?.addFragment(RecordFragment.newInstance(), R.id.fragmentRecord)
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        activity?.apply {
+        /*activity?.apply {
             setRequestedOrientationLandscape(this)
-        }
+        }*/
     }
 
     override fun onClick(v: View?) {

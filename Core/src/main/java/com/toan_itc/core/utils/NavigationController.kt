@@ -16,12 +16,12 @@ inline fun FragmentManager.inTransaction(isNoBack : Boolean = false,func: Fragme
     if(isNoBack){
         beginTransaction()
                 .func()
-                .commitAllowingStateLoss()
+                .commit()
     }else {
         beginTransaction()
                 .func()
                 .addToBackStack(javaClass.simpleName)
-                .commitAllowingStateLoss()
+                .commit()
     }
 }
 
@@ -56,7 +56,7 @@ fun FragmentActivity.switchFragment(from: Fragment?, to: Fragment, frameId: Int)
 }
 
 fun FragmentActivity.addFragment(fragment: Fragment, frameId: Int) {
-    supportFragmentManager.inTransaction { add(frameId, fragment) }
+    supportFragmentManager.inTransaction (true){ add(frameId, fragment) }
 }
 
 fun FragmentActivity.removeFragment(fragment: Fragment) {

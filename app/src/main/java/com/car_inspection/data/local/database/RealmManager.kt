@@ -27,9 +27,9 @@ class RealmManager : RepositoryData {
     }
 
     override fun initStepData(step : Int) :List<StepOrinalModel> {
-        getDefaultInstance().use { realm ->
-            realm.beginTransaction()
-            val listStep = realm.copyFromRealm(realm.where(StepOrinalModel::class.java).findAll().let {
+        var listStep = mutableListOf<StepOrinalModel>()
+        getDefaultInstance().executeTransaction { realm ->
+            listStep = realm.copyFromRealm(realm.where(StepOrinalModel::class.java).findAll().let {
                 if(it !=null && it.size >0 ){
                     Logger.e("stepOrinalModels="+it.toString())
                     it
@@ -50,12 +50,11 @@ class RealmManager : RepositoryData {
                     }
                     Logger.e("stepOrinalModels="+stepOrinalModels.toString())
                     realm.copyToRealmOrUpdate(stepOrinalModels)
-                    realm.commitTransaction()
                     stepOrinalModels
                 }
             })
-            return listStep
         }
+        return listStep
     }
 
     override fun clearAll() {
@@ -64,7 +63,7 @@ class RealmManager : RepositoryData {
 
 
     override fun closeRealm() {
-        Realm.getDefaultInstance().apply {
+        getDefaultInstance().apply {
             if (!isClosed) {
                 Logger.e("closeRealm")
                 close()

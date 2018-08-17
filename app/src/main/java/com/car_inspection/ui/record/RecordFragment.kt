@@ -100,7 +100,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
     }
 
     companion object {
-        fun newInstance() = RecordOTGFragment()
+        fun newInstance() = RecordFragment()
     }
 
     override fun onClick(view: View?) {

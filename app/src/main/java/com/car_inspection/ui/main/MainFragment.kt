@@ -3,7 +3,7 @@ package com.car_inspection.ui.main
 import com.car_inspection.R
 import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.ui.login.LoginFragment
-import com.toan_itc.core.utils.addFragment
+import com.toan_itc.core.utils.switchFragment
 
 class MainFragment : BaseFragment() {
 
@@ -12,7 +12,7 @@ class MainFragment : BaseFragment() {
     }
 
     override fun initViews() {
-        activity?.addFragment(LoginFragment.newInstance(), R.id.fragmentContainer)
+        activity?.switchFragment(null,LoginFragment.newInstance(), R.id.fragmentContainer)
     }
 
     override fun setLayoutResourceID(): Int = R.layout.main_fragment
