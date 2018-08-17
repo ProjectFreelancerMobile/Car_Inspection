@@ -13,7 +13,7 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun initViews() {
-        btnCheckCar.setOnClickListener { activity?.switchFragment(null, CheckInfoFragment.newInstance(), R.id.container) }
+        btnCheckCar.setOnClickListener { activity?.switchFragment(null, CheckInfoFragment.newInstance(), R.id.fragmentContainer) }
     }
 
     override fun setLayoutResourceID(): Int = R.layout.home_fragment

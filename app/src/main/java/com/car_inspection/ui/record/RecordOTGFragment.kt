@@ -92,7 +92,7 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
                     setModelValue(UVCCameraHelper.MODE_CONTRAST, 60)
                 }
             }
-        }catch (e:Exception){
+        }catch (e:IllegalStateException){
             e.printStackTrace()
         }
     }

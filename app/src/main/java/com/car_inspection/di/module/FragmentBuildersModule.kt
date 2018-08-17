@@ -1,9 +1,7 @@
 package com.car_inspection.di.module
 
 import com.car_inspection.di.FragmentScope
-import com.car_inspection.ui.main.MainFragment
-import com.car_inspection.ui.record.RecordFragment
-import com.car_inspection.ui.record.RecordOTGFragment
+import com.car_inspection.ui.step.StepFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -18,6 +16,6 @@ abstract class FragmentBuildersModule {
 
     @FragmentScope
     @ContributesAndroidInjector
-    internal abstract fun contributeMainFragment(): MainFragment
+    internal abstract fun contributeStepFragment(): StepFragment
 
 }

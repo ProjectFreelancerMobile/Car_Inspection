@@ -1,4 +1,4 @@
-package com.car_inspection.ui.main
+package com.car_inspection.ui.step
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -8,10 +8,10 @@ import com.orhanobut.logger.Logger
 import com.toan_itc.core.base.BaseViewModel
 import javax.inject.Inject
 
-class MainViewModel
+class StepViewModel
 @Inject
 internal constructor(private val mainRepository: MainRepository) : BaseViewModel(), LifecycleObserver {
-    private val TAG = "MainViewModel"
+    private val TAG = "StepViewModel"
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroy() {

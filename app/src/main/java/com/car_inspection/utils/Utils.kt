@@ -35,7 +35,7 @@ fun textEmty(vararg view: TextView?) = view.forEach { it?.text = Constants.BLANK
 
 fun isDebug(): Boolean = BuildConfig.BUILD_TYPE == Constants.DEBUG
 
-fun isCameraOTG(): Boolean = true
+fun isCameraOTG(): Boolean = false
 
 fun disposableAll(vararg disposable: Disposable?) = disposable.forEach { it?.dispose() }
 

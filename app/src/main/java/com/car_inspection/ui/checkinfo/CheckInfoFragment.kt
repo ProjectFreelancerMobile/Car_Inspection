@@ -27,7 +27,7 @@ class CheckInfoFragment : BaseFragment() {
     }
 
     override fun initViews() {
-        btnContinue.setOnClickListener { activity?.switchFragment(null, CheckDetailFragment.newInstance(), R.id.container) }
+        btnContinue.setOnClickListener { activity?.switchFragment(null, CheckDetailFragment.newInstance(), R.id.fragmentContainer) }
         btnPrevious.setOnClickListener { activity?.popFragment() }
         edtLicensePlate.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {

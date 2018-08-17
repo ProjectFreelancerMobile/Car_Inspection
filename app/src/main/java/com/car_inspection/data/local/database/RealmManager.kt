@@ -28,6 +28,7 @@ class RealmManager : RepositoryData {
 
     override fun initStepData(step : Int) :List<StepOrinalModel> {
         getDefaultInstance().use { realm ->
+            realm.beginTransaction()
             val listStep = realm.copyFromRealm(realm.where(StepOrinalModel::class.java).findAll().let {
                 if(it !=null && it.size >0 ){
                     Logger.e("stepOrinalModels="+it.toString())
@@ -49,6 +50,7 @@ class RealmManager : RepositoryData {
                     }
                     Logger.e("stepOrinalModels="+stepOrinalModels.toString())
                     realm.copyToRealmOrUpdate(stepOrinalModels)
+                    realm.commitTransaction()
                     stepOrinalModels
                 }
             })

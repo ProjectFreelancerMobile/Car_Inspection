@@ -5,7 +5,7 @@ import android.view.Gravity
 import android.widget.ArrayAdapter
 import com.car_inspection.R
 import com.car_inspection.ui.base.BaseFragment
-import com.car_inspection.ui.main.MainFragment
+import com.car_inspection.ui.step.StepFragment
 import com.toan_itc.core.utils.popFragment
 import com.toan_itc.core.utils.switchFragment
 import kotlinx.android.synthetic.main.check_detail_fragment.*
@@ -17,7 +17,7 @@ class CheckDetailFragment : BaseFragment() {
     }
 
     override fun initViews() {
-        btnContinue.setOnClickListener { activity?.switchFragment(null,MainFragment.newInstance(), R.id.container) }
+        btnContinue.setOnClickListener { activity?.switchFragment(null,StepFragment.newInstance(), R.id.fragmentContainer) }
         btnPrevious.setOnClickListener { activity?.popFragment() }
     }
 

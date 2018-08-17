@@ -34,7 +34,7 @@ fun FragmentActivity.popFragment() {
 }
 
 fun AppCompatActivity.addFragment(fragment: Fragment, frameId: Int){
-    supportFragmentManager.inTransaction (true) { add(frameId, fragment) }
+    supportFragmentManager.inTransaction { add(frameId, fragment) }
 }
 
 fun AppCompatActivity.replaceFragment(fragment: Fragment, frameId: Int) {
@@ -56,7 +56,7 @@ fun FragmentActivity.switchFragment(from: Fragment?, to: Fragment, frameId: Int)
 }
 
 fun FragmentActivity.addFragment(fragment: Fragment, frameId: Int) {
-    supportFragmentManager.inTransaction (true) { add(frameId, fragment) }
+    supportFragmentManager.inTransaction { add(frameId, fragment) }
 }
 
 fun FragmentActivity.removeFragment(fragment: Fragment) {

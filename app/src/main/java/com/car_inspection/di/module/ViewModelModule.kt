@@ -4,8 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.car_inspection.di.ViewModelFactory
 import com.car_inspection.di.key.ViewModelKey
-import com.car_inspection.ui.main.MainViewModel
-import com.car_inspection.ui.record.RecordViewModel
+import com.car_inspection.ui.step.StepViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -20,8 +19,8 @@ internal abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(MainViewModel::class)
-    internal abstract fun bindMainViewModel(mainViewModel: MainViewModel): ViewModel
+    @ViewModelKey(StepViewModel::class)
+    internal abstract fun bindStepViewModel(mainViewModel: StepViewModel): ViewModel
 
     @Binds
     internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
