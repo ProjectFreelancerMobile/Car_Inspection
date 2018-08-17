@@ -33,20 +33,20 @@ abstract class BaseDataFragment<VM : BaseViewModel> : CoreBaseDataFragment<VM>()
 
     override fun onDestroy() {
         Logger.v("onDestroy:" + this.javaClass.simpleName)
-        if (EventBus.getDefault().isRegistered(this)) {
+        /*if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this)
-        }
+        }*/
         super.onDestroy()
     }
 
     override fun onStart() {
-        try {
+       /* try {
             if (!EventBus.getDefault().isRegistered(this)) {
                 EventBus.getDefault().register(this)
             }
         }catch (e: EventBusException){
             e.printStackTrace()
-        }
+        }*/
         super.onStart()
     }
 

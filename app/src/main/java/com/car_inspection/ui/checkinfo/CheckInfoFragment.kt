@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import com.car_inspection.R
 import com.car_inspection.library.commonview.DatePickerFragment
+import com.car_inspection.ui.activity.MainActivity
 import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.ui.checkdetail.CheckDetailFragment
 import com.car_inspection.utils.Constanst
@@ -27,8 +28,14 @@ class CheckInfoFragment : BaseFragment() {
     }
 
     override fun initViews() {
-        btnContinue.setOnClickListener { activity?.switchFragment(null, CheckDetailFragment.newInstance(), R.id.fragmentContainer) }
-        btnPrevious.setOnClickListener { activity?.popFragment() }
+        btnContinue.setOnClickListener {
+            (activity as MainActivity).pushFragment(CheckDetailFragment.newInstance())
+            //activity?.switchFragment(null, CheckDetailFragment.newInstance(), R.id.fragmentContainer)
+        }
+        btnPrevious.setOnClickListener {
+            (activity as MainActivity).popFragment()
+            //activity?.popFragment()
+        }
         edtLicensePlate.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 

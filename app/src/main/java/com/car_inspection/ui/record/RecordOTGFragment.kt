@@ -79,6 +79,7 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
 
     private fun initUVCCameraHelper(){
         try {
+            Logger.e("initUVCCameraHelper")
             // step.1 initialize UVCCameraHelper
             mUVCCameraView = cameraView
             mUVCCameraView?.apply {

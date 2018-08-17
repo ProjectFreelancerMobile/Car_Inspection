@@ -1,9 +1,12 @@
 package com.car_inspection.ui.checkdetail
 
+import android.content.Intent
 import android.graphics.Color
 import android.view.Gravity
 import android.widget.ArrayAdapter
 import com.car_inspection.R
+import com.car_inspection.ui.activity.MainActivity
+import com.car_inspection.ui.activity.StepActivity
 import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.ui.step.StepFragment
 import com.toan_itc.core.utils.popFragment
@@ -17,8 +20,14 @@ class CheckDetailFragment : BaseFragment() {
     }
 
     override fun initViews() {
-        btnContinue.setOnClickListener { activity?.switchFragment(null,StepFragment.newInstance(), R.id.fragmentContainer) }
-        btnPrevious.setOnClickListener { activity?.popFragment() }
+        btnContinue.setOnClickListener {
+            startActivity(Intent(activity,StepActivity::class.java))
+            //activity?.switchFragment(null,StepFragment.newInstance(), R.id.fragmentContainer)
+        }
+        btnPrevious.setOnClickListener {
+            (activity as MainActivity).popFragment()
+            //activity?.popFragment()
+        }
     }
 
     override fun setLayoutResourceID(): Int = R.layout.check_detail_fragment

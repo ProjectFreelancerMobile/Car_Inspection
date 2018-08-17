@@ -62,9 +62,9 @@ class App : Application(), HasActivityInjector {
         super.onCreate()
         AppInjector.init(this)
         if (isDebug()) {
-            strictMode()
+            //strictMode()
             setupLogger()
-            setupTest()
+            //setupTest()
         }
         rxJava()
         setupData()

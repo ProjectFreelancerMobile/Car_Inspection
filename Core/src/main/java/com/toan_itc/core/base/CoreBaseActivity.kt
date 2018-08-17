@@ -12,8 +12,10 @@ abstract class CoreBaseActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(setLayoutResourceID())
-        initViews()
-        initData()
+        if(savedInstanceState == null) {
+            setContentView(setLayoutResourceID())
+            initViews()
+            initData()
+        }
     }
 }

@@ -24,6 +24,7 @@ import com.car_inspection.binding.FragmentDataBindingComponent
 import com.car_inspection.data.model.StepModifyModel
 import com.car_inspection.data.model.StepOrinalModel
 import com.car_inspection.databinding.StepFragmentBinding
+import com.car_inspection.ui.activity.MainActivity
 import com.car_inspection.ui.adapter.StepAdapter
 import com.car_inspection.ui.base.BaseDataFragment
 import com.car_inspection.ui.cameracapture.CaptureCameraFragment
@@ -38,7 +39,6 @@ import com.github.florent37.camerafragment.listeners.CameraFragmentResultAdapter
 import com.toan_itc.core.architecture.autoCleared
 import com.toan_itc.core.utils.addFragment
 import com.toan_itc.core.utils.removeFragment
-import com.toan_itc.core.utils.setRequestedOrientationLandscape
 import google.com.carinspection.DisposableImpl
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -83,24 +83,15 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     override fun initView() {
         rvSubStep.layoutManager = LinearLayoutManager(activity)
         listenToViews(btnSave, btnContinue, btnFinish, btnTakePicture)
-        addFragmentTakePicture()
+        addFragmentRecord()
+        //addFragmentTakePicture()
     }
 
     override fun initData() {
         loadDataStep(currentStep)
         updateProgressStep(currentStep)
-        if (isCameraOTG())
-            activity?.addFragment(RecordOTGFragment.newInstance(), R.id.fragmentRecord)
-        else
-            activity?.addFragment(RecordFragment.newInstance(), R.id.fragmentRecord)
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        /*activity?.apply {
-            setRequestedOrientationLandscape(this)
-        }*/
-    }
 
     override fun onClick(v: View?) {
         when (v?.id) {
@@ -154,6 +145,21 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
                         cameraFragment = CameraFragment.newInstance(builder.build())
 //                        fragmentCamera.animate().rotation(-90f).start()
                         activity?.addFragment(cameraFragment!!, R.id.fragmentCapture)
+                    }
+                })
+    }
+
+    private fun addFragmentRecord() {
+        Observable.just(1L).delay(5, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableImpl<Long>() {
+                    @SuppressLint("MissingPermission")
+                    override fun onNext(t: Long) {
+                        if (isCameraOTG())
+                            activity?.addFragment(RecordOTGFragment.newInstance(), R.id.fragmentRecord)
+                        else
+                            activity?.addFragment(RecordFragment.newInstance(), R.id.fragmentRecord)
                     }
                 })
     }

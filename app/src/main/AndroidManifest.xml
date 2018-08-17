@@ -17,12 +17,11 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:screenOrientation="landscape"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,11 +30,14 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.activity.StepActivity"
+            android:screenOrientation="landscape"/>
+
         <activity
             android:name=".ui.inputtext.SuggestTextActivity"
             android:configChanges="keyboard|keyboardHidden|locale|screenLayout|screenSize|uiMode|orientation"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateVisible"></activity>
+            android:windowSoftInputMode="stateVisible"/>
 
         <meta-data
             android:name="com.car_inspection.utils.OkHttpLibraryGlideModule"
