@@ -47,7 +47,7 @@ class MainActivity : CoreBaseActivity(), HasSupportFragmentInjector {
             super.onBackPressed()
         }
     }
-    
+
     fun setRequestedOrientationPortrait() {
         if (resources.configuration.orientation != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
