@@ -1,11 +1,13 @@
 package com.car_inspection.utils
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.*
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import com.car_inspection.BuildConfig
+import com.car_inspection.R
 import com.car_inspection.app.Constants
 import io.reactivex.disposables.Disposable
 import okhttp3.MediaType
@@ -16,6 +18,9 @@ import java.io.IOException
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import com.orhanobut.logger.Logger
 
 
 /**
@@ -49,7 +54,7 @@ fun getTimeStamFromDate(dateString: String): Long {
     var date: Date? = null
     try {
         date = formatter.parse(dateString) as Date
-        result = date!!.getTime()
+        result = date.time
     } catch (e: ParseException) {
         e.printStackTrace()
     }
@@ -59,7 +64,7 @@ fun getTimeStamFromDate(dateString: String): Long {
 
 fun getDate(timstamp: Long): String {
     val calendar = Calendar.getInstance()
-    calendar.setTime(Date(timstamp))
+    calendar.time = Date(timstamp)
     val day = calendar.get(Calendar.DAY_OF_MONTH)
     val month = calendar.get(Calendar.MONTH)
     val year = calendar.get(Calendar.YEAR)
@@ -68,7 +73,7 @@ fun getDate(timstamp: Long): String {
 
 fun getTime(timestamp: Long): String {
     val calendar = Calendar.getInstance()
-    calendar.setTime(Date(timestamp))
+    calendar.time = Date(timestamp)
     val h = calendar.get(Calendar.HOUR_OF_DAY)
     val m = calendar.get(Calendar.MINUTE)
     return formatTimeNumber(h) + ":" + formatTimeNumber(m)
@@ -87,28 +92,60 @@ fun createFolderPicture(path: String) {
         folder.mkdirs()
 }
 
-fun overlay(context: Context, filePath: String, iconResource: Int, text: String) {
-    var icon = BitmapFactory.decodeResource(context?.getResources(),
-            iconResource)
-    var bmp1 = BitmapFactory.decodeFile(filePath)
-    var bmOverlay = Bitmap.createBitmap(bmp1.width, bmp1.height, bmp1.config)
-    var canvas = Canvas(bmOverlay)
+private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+    // Raw height and width of image
+    val height = options.outHeight
+    val width = options.outWidth
+    var inSampleSize = 1
+    if (height > reqHeight || width > reqWidth) {
+        val halfHeight = height / 2
+        val halfWidth = width / 2
+        // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+        // height and width larger than the requested height and width.
+        while (halfHeight / inSampleSize >= reqHeight && halfWidth / inSampleSize >= reqWidth) {
+            inSampleSize *= 2
+        }
+    }
+    return inSampleSize
+}
+private fun decodeSampledBitmapFromResource(res: Resources, resId: Int,
+                                            reqWidth: Int, reqHeight: Int): Bitmap {
+    // First decode with inJustDecodeBounds=true to check dimensions
+    val options = BitmapFactory.Options()
+    options.inJustDecodeBounds = true
+    BitmapFactory.decodeResource(res, resId, options)
+
+    // Calculate inSampleSize
+    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight)
+
+    // Decode bitmap with inSampleSize set
+    options.inJustDecodeBounds = false
+    return BitmapFactory.decodeResource(res, resId, options)
+}
+fun overlay(context: Context, filePath: String, text: String) {
+    var icon = decodeSampledBitmapFromResource(context.resources, R.drawable.logo, 150,60)
+    icon = Bitmap.createScaledBitmap(icon, 150, 60, true)
+    val bmp1 = BitmapFactory.decodeFile(filePath)
+    if(icon == null || bmp1 == null){
+        return
+    }
+    val bmOverlay = Bitmap.createBitmap(bmp1.width, bmp1.height, bmp1.config)
+    val canvas = Canvas(bmOverlay)
     val paint = Paint()
-    var r = Rect()
+    val r = Rect()
     canvas.getClipBounds(r)
     val cHeight = r.height()
     val cWidth = r.width()
     paint.textAlign = Paint.Align.LEFT
-    paint.setColor(Color.WHITE)
-    paint.setTextSize(50f)
+    paint.color = Color.WHITE
+    paint.textSize = 16f
     paint.getTextBounds(text, 0, text.length, r)
-    val x = cWidth / 2f - r.width() / 2f - r.left
-    val y = cHeight / 2f + r.height() / 2f - r.bottom
+    val x = bmp1.width - 135f
+    val y = bmp1.height - 70f
 
     canvas.drawBitmap(bmp1, Matrix(), null)
     canvas.drawText(text, x, y, paint)
-
-    canvas.drawBitmap(icon, bmp1.width - icon.width * 1f, bmp1.height - icon.height * 1f, null)
+    canvas.drawBitmap(icon, bmp1.width - 150f, bmp1.height - 60f, null)
     var out: FileOutputStream? = null
     try {
         out = FileOutputStream(filePath)
@@ -117,9 +154,7 @@ fun overlay(context: Context, filePath: String, iconResource: Int, text: String)
         e.printStackTrace()
     } finally {
         try {
-            if (out != null) {
-                out!!.close()
-            }
+            out?.close()
         } catch (e: IOException) {
             e.printStackTrace()
         }

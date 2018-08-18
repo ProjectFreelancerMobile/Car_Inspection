@@ -4,9 +4,14 @@ import android.hardware.usb.UsbDevice
 import android.view.Surface
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import com.car_inspection.R
 import com.car_inspection.ui.base.BaseFragment
+import com.car_inspection.utils.Constanst
+import com.car_inspection.utils.createFolderPicture
 import com.car_inspection.utils.listenToViews
+import com.car_inspection.utils.overlay
 import com.jiangdg.usbcamera.UVCCameraHelper
 import com.jiangdg.usbcamera.utils.FileUtils
 import com.orhanobut.logger.Logger
@@ -25,6 +30,7 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
     private var mUVCCameraView: CameraViewInterface? = null
     private var isRequest: Boolean = false
     private var isPreview: Boolean = false
+    private var currentSubStepName :String = ""
 
     companion object {
         fun newInstance() = RecordOTGFragment()
@@ -63,7 +69,10 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
         }
 
         override fun onDisConnectDev(device: UsbDevice) {
-            Toast.makeText(context, "disconnecting", Toast.LENGTH_LONG).show()
+            activity?.apply {
+                if(!isFinishing)
+                    Toast.makeText(context, "disconnecting", Toast.LENGTH_LONG).show()
+            }
         }
     }
     override fun initViews() {
@@ -74,7 +83,7 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
 
 
     override fun initData() {
-        listenToViews(mBtnTake,mBtnRecord,mBtnRes,mBtnFocus)
+        listenToViews(mBtnRecord,btnTakePicture)
     }
 
     private fun initUVCCameraHelper(){
@@ -100,24 +109,28 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
 
     override fun onClick(v: View?) {
         when(v?.id){
-            R.id.mBtnTake -> {
+            R.id.btnTakePicture -> {
                 mCameraHelper?.apply {
                     if(isCameraOpened){
-                        val picPath = (UVCCameraHelper.ROOT_PATH + System.currentTimeMillis() + UVCCameraHelper.SUFFIX_JPEG)
-                        capturePicture(picPath) { path -> Logger.e( "save path：$path") }
+                        createFolderPicture(Constanst.getFolderPicturePath())
+                        val picPath = Constanst.getFolderPicturePath() + System.currentTimeMillis()+ UVCCameraHelper.SUFFIX_JPEG
+                        capturePicture(picPath) { path ->
+                            Logger.e( "save path：$path")
+                            overlay(activity!!, path, currentSubStepName)
+                        }
                     }
                 }
-
             }
             R.id.mBtnRecord -> {
                 mCameraHelper?.apply {
                     if(isCameraOpened){
                         if (!isPushing) {
-                            val videoPath = UVCCameraHelper.ROOT_PATH + System.currentTimeMillis()
-                            FileUtils.createfile(FileUtils.ROOT_PATH + "test666.h264")
+                           // val videoPath = UVCCameraHelper.ROOT_PATH + System.currentTimeMillis()
+                           // FileUtils.createfile(FileUtils.ROOT_PATH + "test666.h264")
+                            createFolderPicture(Constanst.getFolderVideoPath())
                             // if you want to record,please create RecordParams like this
                             val params = RecordParams()
-                            params.recordPath = videoPath
+                            params.recordPath =  Constanst.getFolderVideoPath() + System.currentTimeMillis()
                             params.recordDuration = 0                        // 设置为0，不分割保存
                             params.isVoiceClose = false    // is close voice
                             startPusher(params, object : AbstractUVCCameraHandler.OnEncodeResultListener {
@@ -139,8 +152,10 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
                             })
                             // if you only want to push stream,please call like this
                             // mCameraHelper.startPusher(listener);
+                            mBtnRecord.text = "Stop Record"
                             Toast.makeText(context, "start record...", Toast.LENGTH_LONG).show()
                         } else {
+                            mBtnRecord.text = "Start Record"
                             Toast.makeText(context, "stop record...", Toast.LENGTH_LONG).show()
                             FileUtils.releaseFile()
                             stopPusher()
@@ -148,11 +163,11 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
                     }
                 }
             }
-            R.id.mBtnRes -> {
+           /* R.id.mBtnRes -> {
                 Toast.makeText(context, getResolutionList().toString(), Toast.LENGTH_LONG).show()
                 Logger.e("getResolutionList="+getResolutionList().toString())
             }
-            R.id.mBtnFocus -> mCameraHelper?.startCameraFoucs()
+            R.id.mBtnFocus -> mCameraHelper?.startCameraFoucs()*/
         }
     }
     private fun getResolutionList(): List<String>? {
@@ -217,4 +232,19 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
         // step.4 release uvc camera resources
         mCameraHelper?.release()
     }
+
+    fun record(){
+        mBtnRecord.isVisible = true
+        btnTakePicture.isGone = true
+        tvTitleStep.isGone = true
+    }
+
+
+    fun capture(currentSubStepName:String ){
+        this.currentSubStepName = currentSubStepName
+        mBtnRecord.isGone = true
+        btnTakePicture.isVisible = true
+        tvTitleStep.isVisible = true
+    }
+
 }

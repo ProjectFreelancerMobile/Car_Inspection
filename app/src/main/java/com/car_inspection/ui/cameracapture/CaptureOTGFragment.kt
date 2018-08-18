@@ -5,6 +5,8 @@ import android.view.Surface
 import android.widget.Toast
 import com.car_inspection.R
 import com.car_inspection.ui.base.BaseFragment
+import com.car_inspection.utils.Constanst
+import com.car_inspection.utils.createFolderPicture
 import com.jiangdg.usbcamera.UVCCameraHelper
 import com.jiangdg.usbcamera.utils.FileUtils
 import com.orhanobut.logger.Logger
@@ -12,8 +14,7 @@ import com.serenegiant.usb.CameraDialog
 import com.serenegiant.usb.USBMonitor
 import com.serenegiant.usb.common.AbstractUVCCameraHandler
 import com.serenegiant.usb.widget.CameraViewInterface
-import kotlinx.android.synthetic.main.record_otg_fragment.*
-import java.util.*
+import kotlinx.android.synthetic.main.capture_otg_fragment.*
 
 class CaptureOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, CameraViewInterface.Callback{
 
@@ -74,7 +75,9 @@ class CaptureOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Came
         mBtnTake.setOnClickListener {
             mCameraHelper?.apply {
                 if(isCameraOpened){
-                    val picPath = (UVCCameraHelper.ROOT_PATH + System.currentTimeMillis() + UVCCameraHelper.SUFFIX_JPEG)
+                    createFolderPicture(Constanst.getFolderPicturePath())
+                    val picPath = Constanst.getFolderPicturePath()+ UVCCameraHelper.SUFFIX_JPEG
+                    //val picPath = (UVCCameraHelper.ROOT_PATH + System.currentTimeMillis() + UVCCameraHelper.SUFFIX_JPEG)
                     capturePicture(picPath) { path -> Logger.e( "save path：$path") }
                 }
             }
@@ -82,36 +85,24 @@ class CaptureOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Came
     }
 
     private fun initUVCCameraHelper(){
-        Logger.e("initUVCCameraHelper")
-        // step.1 initialize UVCCameraHelper
-        mUVCCameraView = cameraView
-        mUVCCameraView?.apply {
-            setCallback(this@CaptureOTGFragment)
-            mCameraHelper = UVCCameraHelper.getInstance()
-            mCameraHelper?.apply {
-                setDefaultFrameFormat(UVCCameraHelper.FRAME_FORMAT_YUYV)
-                initUSBMonitor(activity, mUVCCameraView, listener)
-                setOnPreviewFrameListener(AbstractUVCCameraHandler.OnPreViewResultListener { })
-                setModelValue(UVCCameraHelper.MODE_BRIGHTNESS, 80)
-                setModelValue(UVCCameraHelper.MODE_CONTRAST,60)
-            }
-        }
-    }
-
-    private fun getResolutionList(): List<String>? {
-        var resolutions: MutableList<String>? = null
-        mCameraHelper?.apply {
-            val list = supportedPreviewSizes
-            if (list != null && list.size != 0) {
-                resolutions = ArrayList()
-                for (size in list) {
-                    if (size != null) {
-                        resolutions?.add(size.width.toString() + "x" + size.height)
-                    }
+        try {
+            Logger.e("CaptureInitUVCCameraHelper")
+            // step.1 initialize UVCCameraHelper
+            mUVCCameraView = cameraView
+            mUVCCameraView?.apply {
+                setCallback(this@CaptureOTGFragment)
+                mCameraHelper = UVCCameraHelper.getInstance()
+                mCameraHelper?.apply {
+                    //setDefaultFrameFormat(UVCCameraHelper.FRAME_FORMAT_YUYV)
+                    //initUSBMonitor(activity, mUVCCameraView, listener)
+                    setOnPreviewFrameListener(AbstractUVCCameraHandler.OnPreViewResultListener { })
+                    setModelValue(UVCCameraHelper.MODE_BRIGHTNESS, 80)
+                    setModelValue(UVCCameraHelper.MODE_CONTRAST, 60)
                 }
             }
+        }catch (e:IllegalStateException){
+            e.printStackTrace()
         }
-        return resolutions
     }
 
     override fun getUSBMonitor(): USBMonitor = mCameraHelper?.usbMonitor!!

@@ -2,14 +2,11 @@ package com.car_inspection.ui.step
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Environment
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -24,21 +21,15 @@ import com.car_inspection.binding.FragmentDataBindingComponent
 import com.car_inspection.data.model.StepModifyModel
 import com.car_inspection.data.model.StepOrinalModel
 import com.car_inspection.databinding.StepFragmentBinding
-import com.car_inspection.ui.activity.MainActivity
 import com.car_inspection.ui.adapter.StepAdapter
 import com.car_inspection.ui.base.BaseDataFragment
-import com.car_inspection.ui.cameracapture.CaptureCameraFragment
-import com.car_inspection.ui.cameracapture.CaptureOTGFragment
 import com.car_inspection.ui.inputtext.SuggestTextActivity
 import com.car_inspection.ui.record.RecordFragment
 import com.car_inspection.ui.record.RecordOTGFragment
-import com.car_inspection.utils.*
-import com.github.florent37.camerafragment.CameraFragment
-import com.github.florent37.camerafragment.configuration.Configuration
-import com.github.florent37.camerafragment.listeners.CameraFragmentResultAdapter
+import com.car_inspection.utils.isCameraOTG
+import com.car_inspection.utils.listenToViews
 import com.toan_itc.core.architecture.autoCleared
 import com.toan_itc.core.utils.addFragment
-import com.toan_itc.core.utils.removeFragment
 import google.com.carinspection.DisposableImpl
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -47,16 +38,14 @@ import kotlinx.android.synthetic.main.step_fragment.*
 import java.util.concurrent.TimeUnit
 
 class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterListener, View.OnClickListener{
-    private val SAVE_PATH: String = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath
     private val REQUEST_SUGGEST_TEST = 0
-    var cameraFragment: CameraFragment? = null
-    var currentSubStepName = ""
-    private var captureFragment: Fragment? = null
-    var items: List<StepModifyModel> = mutableListOf()
+    private var currentSubStepName = ""
+    private var recordFragment: RecordOTGFragment? = null
+    private var items: List<StepModifyModel> = mutableListOf()
     lateinit var stepAdapter: StepAdapter
-    var isTakePicture = false
-    var currentPosition = 0
-    var currentStep = 2
+    private var isTakePicture = false
+    private var currentPosition = 0
+    private var currentStep = 2
     private var binding by autoCleared<StepFragmentBinding>()
     private var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
 
@@ -82,9 +71,8 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
     override fun initView() {
         rvSubStep.layoutManager = LinearLayoutManager(activity)
-        listenToViews(btnSave, btnContinue, btnFinish, btnTakePicture)
+        listenToViews(btnSave, btnContinue, btnFinish)
         addFragmentRecord()
-        //addFragmentTakePicture()
     }
 
     override fun initData() {
@@ -113,7 +101,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
             }
             R.id.btnFinish -> saveDataStep(currentStep)
             R.id.btnTakePicture -> {
-                if (cameraFragment != null) {
+                /*if (captureFragment != null) {
                     createFolderPicture(Constanst.getFolderPicturePath())
                     cameraFragment?.takePhotoOrCaptureVideo(object : CameraFragmentResultAdapter() {
                         override fun onPhotoTaken(bytes: ByteArray, filePath: String) {
@@ -124,42 +112,23 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
                         }
                     }, Constanst.getFolderPicturePath(), currentSubStepName)
 
-                }
+                }*/
             }
         }
     }
 
-    private fun addFragmentTakePicture() {
+    private fun addFragmentRecord() {
         Observable.just(1L).delay(2, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableImpl<Long>() {
                     @SuppressLint("MissingPermission")
                     override fun onNext(t: Long) {
-                        var builder = Configuration.Builder()
-                        builder
-                                .setCamera(Configuration.CAMERA_FACE_FRONT)
-                                .setFlashMode(Configuration.FLASH_MODE_OFF)
-                                .setMediaAction(Configuration.MEDIA_ACTION_PHOTO)
-
-                        cameraFragment = CameraFragment.newInstance(builder.build())
-//                        fragmentCamera.animate().rotation(-90f).start()
-                        activity?.addFragment(cameraFragment!!, R.id.fragmentCapture)
-                    }
-                })
-    }
-
-    private fun addFragmentRecord() {
-        Observable.just(1L).delay(5, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableImpl<Long>() {
-                    @SuppressLint("MissingPermission")
-                    override fun onNext(t: Long) {
-                        if (isCameraOTG())
-                            activity?.addFragment(RecordOTGFragment.newInstance(), R.id.fragmentRecord)
+                        recordFragment = if (isCameraOTG())
+                            RecordOTGFragment.newInstance()
                         else
-                            activity?.addFragment(RecordFragment.newInstance(), R.id.fragmentRecord)
+                            null//RecordFragment.newInstance()
+                        activity?.addFragment(recordFragment!!,R.id.fragmentRecord)
                     }
                 })
     }
@@ -296,21 +265,28 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
 
     private fun showLayoutTakepicture() {
+        recordFragment?.capture(currentSubStepName)
         isTakePicture = true
-        captureFragment = if (isCameraOTG())
-            CaptureOTGFragment.newInstance()
-        else
-            CaptureCameraFragment.newInstance()
-        captureFragment?.apply {
-            activity?.addFragment(this, R.id.fragmentCapture)
-        }
+        /*activity?.apply {
+            captureFragment = if (isCameraOTG())
+                CaptureOTGFragment.newInstance()
+            else {
+                val builder = Configuration.Builder()
+                builder.setCamera(Configuration.CAMERA_FACE_FRONT)
+                        .setFlashMode(Configuration.FLASH_MODE_OFF)
+                        .setMediaAction(Configuration.MEDIA_ACTION_PHOTO)
+                CameraFragment.newInstance(builder.build())
+            }
+            addFragment(captureFragment!!, R.id.fragmentCapture)
+        }*/
     }
 
     private fun showLayoutVideo() {
+        recordFragment?.record()
         isTakePicture = false
-        captureFragment?.apply {
+       /* captureFragment?.apply {
             activity?.removeFragment(this)
-        }
+        }*/
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
