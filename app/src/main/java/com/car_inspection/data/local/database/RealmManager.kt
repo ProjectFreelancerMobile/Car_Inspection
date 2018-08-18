@@ -26,30 +26,37 @@ class RealmManager : RepositoryData {
         Realm.setDefaultConfiguration(mRealmConfig)
     }
 
-    override fun initStepData(step : Int) :List<StepOrinalModel> {
+    override fun initStepData(step: Int): List<StepOrinalModel> {
         var listStep = mutableListOf<StepOrinalModel>()
         getDefaultInstance().executeTransaction { realm ->
-           realm.where(StepOrinalModel::class.java).findAll().let {
-                if(it !=null && it.size >0 ){
-                    Logger.e("stepOrinalModels="+it.toString())
+            realm.where(StepOrinalModel::class.java).equalTo("step", "$step").findAll().let {
+                if (it != null && it.size > 0) {
+                    Logger.e("stepOrinalModels=" + it.toString())
                     listStep = realm.copyFromRealm(it)
-                }
-                else{
+                    var a = 1
+                } else {
                     var size = 5
                     if (step % 2 == 0)
                         size = 4
                     for (i in 1..size) {
-                        val stepmodify = StepOrinalModel()
-                        stepmodify.step = "$step"
-                        stepmodify.subStep = "$step." + i
-                        stepmodify.subStepTitle1 = "bên ngoài xe"
-                        stepmodify.subStepTitle2 = "bên trái trước"
-                        stepmodify.subStepTitle3 = "bên ngoài cửa xe"
-                        listStep.add(stepmodify)
+                        val stepOrinal = StepOrinalModel()
+                        stepOrinal.step = "$step"
+                        when (step) {
+                            2 -> stepOrinal.stepTitle = "Kiểm tra bên ngoài xe"
+                            3 -> stepOrinal.stepTitle = "Kiểm tra dưới gầm xe"
+                            4 -> stepOrinal.stepTitle = "Kiểm tra khoang động cơ"
+                            5 -> stepOrinal.stepTitle = "Kiểm tra động cơ và hộp số"
+                            6 -> stepOrinal.stepTitle = "Kiểm tra bên trong xe"
+                            7 -> stepOrinal.stepTitle = "Kiểm tra lái thử xe"
+                        }
+                        stepOrinal.subStep = "$step." + i
+                        stepOrinal.subStepTitle1 = "bên ngoài xe"
+                        stepOrinal.subStepTitle2 = "bên trái trước"
+                        stepOrinal.subStepTitle3 = "bên ngoài cửa xe"
+                        listStep.add(stepOrinal)
                     }
-                    Logger.e("stepOrinalModels="+listStep.toString())
+                    Logger.e("stepOrinalModels=" + listStep.toString())
                     realm.copyToRealmOrUpdate(listStep)
-                    listStep
                 }
             }
         }
