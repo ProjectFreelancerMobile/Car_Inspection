@@ -37,6 +37,6 @@ class StepActivity : CoreBaseActivity(), HasSupportFragmentInjector {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        finishAffinity()
+        finish()
     }
 }

@@ -29,12 +29,12 @@ class RealmManager : RepositoryData {
     override fun initStepData(step: Int): List<StepOrinalModel> {
         var listStep = mutableListOf<StepOrinalModel>()
         /*getDefaultInstance().executeTransaction { realm ->
-            realm.where(StepOrinalModel::class.java).equalTo("step", step.toString()).findAll().let {
+            realm.where(StepOrinalModel::class.java).equalTo("step", "$step").findAll().let {
                 if (it != null && it.size > 0) {
                     Logger.e("stepOrinalModels=" + it.toString())
                     listStep = realm.copyFromRealm(it)
                 } else {
-                    var size = 5
+                    val size = 5
 //                    if (step == 2)
 //                        size = 6
 //                    else if (step % 2 == 0)
@@ -69,9 +69,12 @@ class RealmManager : RepositoryData {
                 }
             }
         }*/
-        var size = 5
-        if (step % 2 == 0)
-            size = 4
+        val size = 5
+//                    if (step == 2)
+//                        size = 6
+//                    else if (step % 2 == 0)
+//                        size = 4
+//                    else size = 5
         for (i in 1..size) {
             val stepOrinal = StepOrinalModel()
             stepOrinal.step = "$step"
@@ -86,7 +89,14 @@ class RealmManager : RepositoryData {
             stepOrinal.subStep = "$step." + i
             stepOrinal.subStepTitle1 = "bên ngoài xe"
             stepOrinal.subStepTitle2 = "bên trái trước"
-            stepOrinal.subStepTitle3 = "bên ngoài cửa xe"
+            when (i){
+                1-> stepOrinal.subStepTitle3 = "phía ngoài cửa xe"
+                2-> stepOrinal.subStepTitle3 = "Kính xe"
+                3-> stepOrinal.subStepTitle3 = "Bánh xe"
+                4-> stepOrinal.subStepTitle3 = "Kính chiếu hậu"
+                5-> stepOrinal.subStepTitle3 = "Độ kín khít"
+            }
+
             listStep.add(stepOrinal)
         }
         Logger.e("stepOrinalModels=" + listStep.toString())

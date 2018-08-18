@@ -40,6 +40,14 @@ class MainActivity : CoreBaseActivity(), HasSupportFragmentInjector {
         supportFragmentManager.popBackStack()
     }
 
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount == 1) {
+            finish()
+        } else {
+            super.onBackPressed()
+        }
+    }
+    
     fun setRequestedOrientationPortrait() {
         if (resources.configuration.orientation != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
