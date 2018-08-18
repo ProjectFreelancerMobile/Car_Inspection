@@ -1,7 +1,5 @@
 package com.car_inspection.ui.activity
 
-import android.content.pm.ActivityInfo
-import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.car_inspection.R
 import com.car_inspection.ui.step.StepFragment
@@ -30,7 +28,6 @@ class StepActivity : CoreBaseActivity(), HasSupportFragmentInjector {
     fun pushFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.stepContainer, fragment)
-                .addToBackStack(fragment.javaClass.simpleName)
                 .commit()
     }
 
@@ -38,4 +35,8 @@ class StepActivity : CoreBaseActivity(), HasSupportFragmentInjector {
         supportFragmentManager.popBackStack()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAffinity()
+    }
 }
