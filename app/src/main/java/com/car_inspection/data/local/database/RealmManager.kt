@@ -75,6 +75,7 @@ class RealmManager : RepositoryData {
             3 -> listStep = dataStep3()
             4 -> listStep = dataStep4()
             5 -> listStep = dataStep5()
+            6 -> listStep = dataStep6()
             else -> dataTest(step)
         }
 
@@ -882,6 +883,417 @@ class RealmManager : RepositoryData {
         stepOrinalStep5_25.subStepTitle2 = "Hệ thống điện"
         stepOrinalStep5_25.subStepTitle3 = "Ắc quy"
         listSteps.add(stepOrinalStep5_25)
+
+        return listSteps
+    }
+
+    fun dataStep6(): MutableList<StepOrinalModel> {
+        var listSteps = mutableListOf<StepOrinalModel>()
+
+        var stepOrinalStep6_1 = StepOrinalModel()
+        stepOrinalStep6_1.step = "6"
+        stepOrinalStep6_1.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_1.subStep = "6.1"
+        stepOrinalStep6_1.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_1.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_1.subStepTitle3 = "Mùi nội thất"
+        listSteps.add(stepOrinalStep6_1)
+
+        var stepOrinalStep6_2 = StepOrinalModel()
+        stepOrinalStep6_2.step = "6"
+        stepOrinalStep6_2.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_2.subStep = "6.1"
+        stepOrinalStep6_2.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_2.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_2.subStepTitle3 = "Cửa xe"
+        listSteps.add(stepOrinalStep6_2)
+
+        var stepOrinalStep6_3 = StepOrinalModel()
+        stepOrinalStep6_3.step = "6"
+        stepOrinalStep6_3.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_3.subStep = "6.1"
+        stepOrinalStep6_3.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_3.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_3.subStepTitle3 = "Tình trạng ghế"
+        listSteps.add(stepOrinalStep6_3)
+
+        var stepOrinalStep6_4 = StepOrinalModel()
+        stepOrinalStep6_4.step = "6"
+        stepOrinalStep6_4.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_4.subStep = "6.1"
+        stepOrinalStep6_4.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_4.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_4.subStepTitle3 = "Tình trạng dây an toàn"
+        listSteps.add(stepOrinalStep6_4)
+
+        var stepOrinalStep6_5 = StepOrinalModel()
+        stepOrinalStep6_5.step = "6"
+        stepOrinalStep6_5.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_5.subStep = "6.1"
+        stepOrinalStep6_5.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_5.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_5.subStepTitle3 = "Các chức năng và thông số trên taplo"
+        listSteps.add(stepOrinalStep6_5)
+
+        var stepOrinalStep6_6 = StepOrinalModel()
+        stepOrinalStep6_6.step = "6"
+        stepOrinalStep6_6.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_6.subStep = "6.1"
+        stepOrinalStep6_6.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_6.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_6.subStepTitle3 = "Hệ thống điều hòa không khí"
+        listSteps.add(stepOrinalStep6_6)
+
+        var stepOrinalStep6_7 = StepOrinalModel()
+        stepOrinalStep6_7.step = "6"
+        stepOrinalStep6_7.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_7.subStep = "6.1"
+        stepOrinalStep6_7.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_7.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_7.subStepTitle3 = "Hoạt động của đèn xe"
+        listSteps.add(stepOrinalStep6_7)
+
+        var stepOrinalStep6_8 = StepOrinalModel()
+        stepOrinalStep6_8.step = "6"
+        stepOrinalStep6_8.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_8.subStep = "6.1"
+        stepOrinalStep6_8.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_8.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_8.subStepTitle3 = "Hoạt động còi xe"
+        listSteps.add(stepOrinalStep6_8)
+
+        var stepOrinalStep6_9 = StepOrinalModel()
+        stepOrinalStep6_9.step = "6"
+        stepOrinalStep6_9.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_9.subStep = "6.1"
+        stepOrinalStep6_9.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_9.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_9.subStepTitle3 = "Sàn xe"
+        listSteps.add(stepOrinalStep6_9)
+
+        var stepOrinalStep6_10 = StepOrinalModel()
+        stepOrinalStep6_10.step = "6"
+        stepOrinalStep6_10.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_10.subStep = "6.1"
+        stepOrinalStep6_10.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_10.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_10.subStepTitle3 = "Tấm trần"
+        listSteps.add(stepOrinalStep6_10)
+
+        var stepOrinalStep6_11 = StepOrinalModel()
+        stepOrinalStep6_11.step = "6"
+        stepOrinalStep6_11.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_11.subStep = "6.1"
+        stepOrinalStep6_11.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_11.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_11.subStepTitle3 = "Mặt trong nắp cốp"
+        listSteps.add(stepOrinalStep6_11)
+
+        var stepOrinalStep6_12 = StepOrinalModel()
+        stepOrinalStep6_12.step = "6"
+        stepOrinalStep6_12.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_12.subStep = "6.2"
+        stepOrinalStep6_12.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_12.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_12.subStepTitle3 = "Túi khí"
+        listSteps.add(stepOrinalStep6_12)
+
+        var stepOrinalStep6_13 = StepOrinalModel()
+        stepOrinalStep6_13.step = "6"
+        stepOrinalStep6_13.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_13.subStep = "6.2"
+        stepOrinalStep6_13.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_13.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_13.subStepTitle3 = "Đài radio, Máy nghe băng, Máy nghe CD, Loa và Ăng ten"
+        listSteps.add(stepOrinalStep6_13)
+
+        var stepOrinalStep6_14 = StepOrinalModel()
+        stepOrinalStep6_14.step = "6"
+        stepOrinalStep6_14.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_14.subStep = "6.2"
+        stepOrinalStep6_14.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_14.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_14.subStepTitle3 = "Hệ thống chống trộm, báo động"
+        listSteps.add(stepOrinalStep6_14)
+
+        var stepOrinalStep6_15 = StepOrinalModel()
+        stepOrinalStep6_15.step = "6"
+        stepOrinalStep6_15.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_15.subStep = "6.2"
+        stepOrinalStep6_15.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_15.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_15.subStepTitle3 = "Hệ thống định vị (dẫn đường)"
+        listSteps.add(stepOrinalStep6_15)
+
+        var stepOrinalStep6_16 = StepOrinalModel()
+        stepOrinalStep6_16.step = "6"
+        stepOrinalStep6_16.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_16.subStep = "6.2"
+        stepOrinalStep6_16.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_16.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_16.subStepTitle3 = "Hệ thống làm tan sương/ xông kính"
+        listSteps.add(stepOrinalStep6_16)
+
+        var stepOrinalStep6_17 = StepOrinalModel()
+        stepOrinalStep6_17.step = "6"
+        stepOrinalStep6_17.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_17.subStep = "6.2"
+        stepOrinalStep6_17.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_17.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_17.subStepTitle3 = "Điều chỉnh độ nghiên/ khoảng cách tay lái"
+        listSteps.add(stepOrinalStep6_17)
+
+        var stepOrinalStep6_18 = StepOrinalModel()
+        stepOrinalStep6_18.step = "6"
+        stepOrinalStep6_18.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_18.subStep = "6.2"
+        stepOrinalStep6_18.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_18.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_18.subStepTitle3 = "Khóa tay lái"
+        listSteps.add(stepOrinalStep6_18)
+
+        var stepOrinalStep6_19 = StepOrinalModel()
+        stepOrinalStep6_19.step = "6"
+        stepOrinalStep6_19.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_19.subStep = "6.2"
+        stepOrinalStep6_19.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_19.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_19.subStepTitle3 = "Chức năng Gạt mưa"
+        listSteps.add(stepOrinalStep6_19)
+
+        var stepOrinalStep6_20 = StepOrinalModel()
+        stepOrinalStep6_20.step = "6"
+        stepOrinalStep6_20.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_20.subStep = "6.2"
+        stepOrinalStep6_20.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_20.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_20.subStepTitle3 = "Chức năng Rửa kính"
+        listSteps.add(stepOrinalStep6_20)
+
+        var stepOrinalStep6_21 = StepOrinalModel()
+        stepOrinalStep6_21.step = "6"
+        stepOrinalStep6_21.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_21.subStep = "6.2"
+        stepOrinalStep6_21.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_21.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_21.subStepTitle3 = "Các đèn chiếu sáng nội thất"
+        listSteps.add(stepOrinalStep6_21)
+
+        var stepOrinalStep6_22 = StepOrinalModel()
+        stepOrinalStep6_22.step = "6"
+        stepOrinalStep6_22.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_22.subStep = "6.2"
+        stepOrinalStep6_22.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_22.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_22.subStepTitle3 = "Kính chiếu hậu ngoài chỉnh bằng tay/ bằng điện và kính chiếu hậu chống chói"
+        listSteps.add(stepOrinalStep6_22)
+
+        var stepOrinalStep6_23 = StepOrinalModel()
+        stepOrinalStep6_23.step = "6"
+        stepOrinalStep6_23.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_23.subStep = "6.2"
+        stepOrinalStep6_23.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_23.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_23.subStepTitle3 = "Hệ thống cảnh báo điểm mù (BLS)"
+        listSteps.add(stepOrinalStep6_23)
+
+        var stepOrinalStep6_24 = StepOrinalModel()
+        stepOrinalStep6_24.step = "6"
+        stepOrinalStep6_24.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_24.subStep = "6.2"
+        stepOrinalStep6_24.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_24.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_24.subStepTitle3 = "Camera phía sau"
+        listSteps.add(stepOrinalStep6_24)
+
+        var stepOrinalStep6_25 = StepOrinalModel()
+        stepOrinalStep6_25.step = "6"
+        stepOrinalStep6_25.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_25.subStep = "6.2"
+        stepOrinalStep6_25.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_25.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_25.subStepTitle3 = "Hệ thống SYNC"
+        listSteps.add(stepOrinalStep6_25)
+
+        var stepOrinalStep6_26 = StepOrinalModel()
+        stepOrinalStep6_26.step = "6"
+        stepOrinalStep6_26.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_26.subStep = "6.2"
+        stepOrinalStep6_26.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_26.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_26.subStepTitle3 = "Hệ thống hổ trợ đổ xe"
+        listSteps.add(stepOrinalStep6_26)
+
+        var stepOrinalStep6_27 = StepOrinalModel()
+        stepOrinalStep6_27.step = "6"
+        stepOrinalStep6_27.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_27.subStep = "6.2"
+        stepOrinalStep6_27.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_27.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_27.subStepTitle3 = "Hệ thống giải trí phía sau"
+        listSteps.add(stepOrinalStep6_27)
+
+        var stepOrinalStep6_28 = StepOrinalModel()
+        stepOrinalStep6_28.step = "6"
+        stepOrinalStep6_28.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_28.subStep = "6.2"
+        stepOrinalStep6_28.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_28.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_28.subStepTitle3 = "Điểm cấp nguồn và mồi thuốc"
+        listSteps.add(stepOrinalStep6_28)
+
+        var stepOrinalStep6_29 = StepOrinalModel()
+        stepOrinalStep6_29.step = "6"
+        stepOrinalStep6_29.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_29.subStep = "6.2"
+        stepOrinalStep6_29.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_29.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_29.subStepTitle3 = "Gạt tàn"
+        listSteps.add(stepOrinalStep6_29)
+
+        var stepOrinalStep6_30 = StepOrinalModel()
+        stepOrinalStep6_30.step = "6"
+        stepOrinalStep6_30.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_30.subStep = "6.2"
+        stepOrinalStep6_30.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_30.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_30.subStepTitle3 = "Hộc găng tay, tự tay và Cốp giữa"
+        listSteps.add(stepOrinalStep6_30)
+
+        var stepOrinalStep6_31 = StepOrinalModel()
+        stepOrinalStep6_31.step = "6"
+        stepOrinalStep6_31.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_31.subStep = "6.2"
+        stepOrinalStep6_31.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_31.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_31.subStepTitle3 = "Che nắng, gương trang điểm và đèn"
+        listSteps.add(stepOrinalStep6_31)
+
+        var stepOrinalStep6_32 = StepOrinalModel()
+        stepOrinalStep6_32.step = "6"
+        stepOrinalStep6_32.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_32.subStep = "6.2"
+        stepOrinalStep6_32.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_32.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_32.subStepTitle3 = "Cơ cấu điều chỉnh bàn đạp nếu có"
+        listSteps.add(stepOrinalStep6_32)
+
+        var stepOrinalStep6_33 = StepOrinalModel()
+        stepOrinalStep6_33.step = "6"
+        stepOrinalStep6_33.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_33.subStep = "6.2"
+        stepOrinalStep6_33.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_33.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_33.subStepTitle3 = "Điều chỉnh ghế và tựa đầu"
+        listSteps.add(stepOrinalStep6_33)
+
+        var stepOrinalStep6_34 = StepOrinalModel()
+        stepOrinalStep6_34.step = "6"
+        stepOrinalStep6_34.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_34.subStep = "6.2"
+        stepOrinalStep6_34.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_34.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_34.subStepTitle3 = "Gập ghế"
+        listSteps.add(stepOrinalStep6_34)
+
+        var stepOrinalStep6_35 = StepOrinalModel()
+        stepOrinalStep6_35.step = "6"
+        stepOrinalStep6_35.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_35.subStep = "6.2"
+        stepOrinalStep6_35.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_35.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_35.subStepTitle3 = "Sưởi ghế"
+        listSteps.add(stepOrinalStep6_35)
+
+        var stepOrinalStep6_36 = StepOrinalModel()
+        stepOrinalStep6_36.step = "6"
+        stepOrinalStep6_36.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_36.subStep = "6.2"
+        stepOrinalStep6_36.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_36.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_36.subStepTitle3 = "Ghế an toàn cho trẻ em tích hợp"
+        listSteps.add(stepOrinalStep6_36)
+
+        var stepOrinalStep6_37 = StepOrinalModel()
+        stepOrinalStep6_37.step = "6"
+        stepOrinalStep6_37.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_37.subStep = "6.2"
+        stepOrinalStep6_37.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_37.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_37.subStepTitle3 = "Hệ thống điều khiển từ xa và Hệ thống khởi động bằng nút nhấn"
+        listSteps.add(stepOrinalStep6_37)
+
+        var stepOrinalStep6_38 = StepOrinalModel()
+        stepOrinalStep6_38.step = "6"
+        stepOrinalStep6_38.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_38.subStep = "6.2"
+        stepOrinalStep6_38.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_38.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_38.subStepTitle3 = "Khóa trẻ em"
+        listSteps.add(stepOrinalStep6_38)
+
+        var stepOrinalStep6_39 = StepOrinalModel()
+        stepOrinalStep6_39.step = "6"
+        stepOrinalStep6_39.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_39.subStep = "6.2"
+        stepOrinalStep6_39.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_39.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_39.subStepTitle3 = "Cơ cấu mở nặp nhiên liệu và Cốp sau điều khiển từ xa"
+        listSteps.add(stepOrinalStep6_39)
+
+        var stepOrinalStep6_40 = StepOrinalModel()
+        stepOrinalStep6_40.step = "6"
+        stepOrinalStep6_40.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_40.subStep = "6.2"
+        stepOrinalStep6_40.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_40.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_40.subStepTitle3 = "Đèn khoang hành lý/ khoang để đồ"
+        listSteps.add(stepOrinalStep6_40)
+
+        var stepOrinalStep6_41 = StepOrinalModel()
+        stepOrinalStep6_41.step = "6"
+        stepOrinalStep6_41.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_41.subStep = "6.2"
+        stepOrinalStep6_41.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_41.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_41.subStepTitle3 = "Bộ dụng cụ và kích nâng"
+        listSteps.add(stepOrinalStep6_41)
+
+        var stepOrinalStep6_42 = StepOrinalModel()
+        stepOrinalStep6_42.step = "6"
+        stepOrinalStep6_42.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_42.subStep = "6.2"
+        stepOrinalStep6_42.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_42.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_42.subStepTitle3 = "Kích thước/ Loại và tình trạng hông lốp bánh xe dự phòng"
+        listSteps.add(stepOrinalStep6_42)
+
+        var stepOrinalStep6_43 = StepOrinalModel()
+        stepOrinalStep6_43.step = "6"
+        stepOrinalStep6_43.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_43.subStep = "6.2"
+        stepOrinalStep6_43.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_43.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_43.subStepTitle3 = "Kiểm tra áp suất lốp/ độ sâu ta-lông lớp xe dự phòng"
+        listSteps.add(stepOrinalStep6_43)
+
+        var stepOrinalStep6_44 = StepOrinalModel()
+        stepOrinalStep6_44.step = "6"
+        stepOrinalStep6_44.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_44.subStep = "6.2"
+        stepOrinalStep6_44.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_44.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_44.subStepTitle3 = "Bộ dụng cụ sữa chữa lốp xe"
+        listSteps.add(stepOrinalStep6_44)
+
+        var stepOrinalStep6_45 = StepOrinalModel()
+        stepOrinalStep6_45.step = "6"
+        stepOrinalStep6_45.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_45.subStep = "6.2"
+        stepOrinalStep6_45.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_45.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep6_45.subStepTitle3 = "Cơ cấu mở khoang hành lý khẩn cấp"
+        listSteps.add(stepOrinalStep6_45)
 
         return listSteps
     }
