@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
+import android.os.AsyncTask
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
@@ -21,23 +23,30 @@ import com.car_inspection.binding.FragmentDataBindingComponent
 import com.car_inspection.data.model.StepModifyModel
 import com.car_inspection.data.model.StepOrinalModel
 import com.car_inspection.databinding.StepFragmentBinding
+import com.car_inspection.library.youtube.YoutubeUploadRequest
+import com.car_inspection.library.youtube.YoutubeUploader
 import com.car_inspection.ui.adapter.StepAdapter
 import com.car_inspection.ui.base.BaseDataFragment
 import com.car_inspection.ui.inputtext.SuggestTextActivity
 import com.car_inspection.ui.record.RecordFragment
 import com.car_inspection.ui.record.RecordOTGFragment
+import com.car_inspection.utils.Constanst
+import com.car_inspection.utils.createFolderPicture
 import com.car_inspection.utils.isCameraOTG
 import com.car_inspection.utils.listenToViews
+import com.orhanobut.logger.Logger
 import com.toan_itc.core.architecture.autoCleared
 import com.toan_itc.core.utils.addFragment
 import google.com.carinspection.DisposableImpl
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.step_fragment.*
+import java.io.File
 import java.util.concurrent.TimeUnit
 
-class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterListener, View.OnClickListener{
+class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterListener, View.OnClickListener {
     private val REQUEST_SUGGEST_TEST = 0
     private var currentSubStepName = ""
     private var recordFragment: RecordOTGFragment? = null
@@ -78,8 +87,25 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     override fun initData() {
         loadDataStep(currentStep)
         updateProgressStep(currentStep)
+
+        createFolderPicture(Constanst.getFolderVideoPath())
+        uploadYoutube(Constanst.getFolderVideoPath()+"test.mp4")
     }
 
+    fun uploadYoutube(path: String) {
+        var uri = Uri.parse( File(path).toString())
+        var request = YoutubeUploadRequest()
+        request.uri = uri
+        request.setTitle("MPRJ Video Tite");
+        request.setDescription("MPRJ Video Test");
+
+        YoutubeUploader.upload(request, object : YoutubeUploader.ProgressListner {
+            override fun onUploadProgressUpdate(progress: Int) {
+                Logger.e("percent upload", progress)
+            }
+
+        }, activity)
+    }
 
     override fun onClick(v: View?) {
         when (v?.id) {
@@ -128,7 +154,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
                             RecordOTGFragment.newInstance()
                         else
                             null//RecordFragment.newInstance()
-                        activity?.addFragment(recordFragment!!,R.id.fragmentRecord)
+                        activity?.addFragment(recordFragment!!, R.id.fragmentRecord)
                     }
                 })
     }
@@ -284,9 +310,9 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     private fun showLayoutVideo() {
         recordFragment?.record()
         isTakePicture = false
-       /* captureFragment?.apply {
-            activity?.removeFragment(this)
-        }*/
+        /* captureFragment?.apply {
+             activity?.removeFragment(this)
+         }*/
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {

@@ -152,6 +152,16 @@ dependencies {
     implementation project(':Core')
     implementation project(':libusbcamera')
     implementation 'com.android.support:design:27.1.1'
+
+    // youtube
+    implementation 'com.google.android.gms:play-services-auth:10.2.1'
+    implementation 'pub.devrel:easypermissions:0.3.0'
+    implementation('com.google.api-client:google-api-client-android:1.24.1') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+    implementation('com.google.apis:google-api-services-youtube:v3-rev205-1.24.1') {
+        exclude group: 'org.apache.httpcomponents'
+    }
     //picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
     //FlowLayout
