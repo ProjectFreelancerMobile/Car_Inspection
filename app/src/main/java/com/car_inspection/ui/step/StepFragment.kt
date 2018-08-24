@@ -21,6 +21,7 @@ import com.car_inspection.binding.FragmentDataBindingComponent
 import com.car_inspection.data.model.StepModifyModel
 import com.car_inspection.data.model.StepOrinalModel
 import com.car_inspection.databinding.StepFragmentBinding
+import com.car_inspection.event.RecordEvent
 import com.car_inspection.ui.adapter.StepAdapter
 import com.car_inspection.ui.base.BaseDataFragment
 import com.car_inspection.ui.inputtext.SuggestTextActivity
@@ -40,7 +41,6 @@ import java.util.concurrent.TimeUnit
 class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterListener, View.OnClickListener{
     private val REQUEST_SUGGEST_TEST = 0
     private var currentSubStepName = ""
-    private var recordFragment: RecordOTGFragment? = null
     private var items: List<StepModifyModel> = mutableListOf()
     lateinit var stepAdapter: StepAdapter
     private var isTakePicture = false
@@ -118,19 +118,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     }
 
     private fun addFragmentRecord() {
-        Observable.just(1L).delay(2, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableImpl<Long>() {
-                    @SuppressLint("MissingPermission")
-                    override fun onNext(t: Long) {
-                        recordFragment = if (isCameraOTG())
-                            RecordOTGFragment.newInstance()
-                        else
-                            null//RecordFragment.newInstance()
-                        activity?.addFragment(recordFragment!!,R.id.fragmentRecord)
-                    }
-                })
+        activity?.addFragment(RecordOTGFragment.newInstance(),R.id.fragmentRecord)
     }
 
     private fun saveDataStep(step: Int) {
@@ -265,7 +253,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
 
     private fun showLayoutTakepicture() {
-        recordFragment?.capture(currentSubStepName)
+        viewModel.sendEventBus(RecordEvent(true, currentSubStepName))
         isTakePicture = true
         /*activity?.apply {
             captureFragment = if (isCameraOTG())
@@ -282,11 +270,8 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     }
 
     private fun showLayoutVideo() {
-        recordFragment?.record()
+        viewModel.sendEventBus(RecordEvent())
         isTakePicture = false
-       /* captureFragment?.apply {
-            activity?.removeFragment(this)
-        }*/
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {

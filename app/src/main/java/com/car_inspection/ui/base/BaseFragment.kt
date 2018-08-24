@@ -1,5 +1,11 @@
 package com.car_inspection.ui.base
 
+import android.os.Build
+import android.view.Gravity
+import android.view.View
+import android.widget.TextView
+import com.car_inspection.R
+import com.google.android.material.snackbar.Snackbar
 import com.toan_itc.core.base.CoreBaseFragment
 import org.greenrobot.eventbus.EventBus
 
@@ -26,6 +32,21 @@ abstract class BaseFragment : CoreBaseFragment() {
             }
         }catch (e:Exception){}
         super.onDestroy()
+    }
+
+    fun showSnackBar(message: String) {
+        view?.let {
+            val snackBar = Snackbar.make(it, message, Snackbar.LENGTH_LONG)
+            val view = snackBar.view
+            val tv = view.findViewById(R.id.snackbar_text) as TextView
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
+            } else {
+                tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
+                tv.gravity = Gravity.CENTER_HORIZONTAL
+            }
+            snackBar.show()
+        }
     }
 
 }

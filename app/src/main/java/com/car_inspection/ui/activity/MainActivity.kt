@@ -1,5 +1,6 @@
 package com.car_inspection.ui.activity
 
+import android.Manifest
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,8 +11,11 @@ import com.toan_itc.core.base.CoreBaseActivity
 import com.toan_itc.core.utils.switchFragment
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.RuntimePermissions
 import javax.inject.Inject
 
+@RuntimePermissions
 class MainActivity : CoreBaseActivity(), HasSupportFragmentInjector {
 
     @Inject
@@ -21,7 +25,12 @@ class MainActivity : CoreBaseActivity(), HasSupportFragmentInjector {
 
     override fun setLayoutResourceID(): Int = R.layout.main_activity
 
+    @NeedsPermission(Manifest.permission.RECORD_AUDIO, Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.GET_ACCOUNTS)
+    fun startFragment() {}
+
     override fun initViews(){
+        startFragmentWithPermissionCheck()
         pushFragment(LoginFragment.newInstance())
     }
 

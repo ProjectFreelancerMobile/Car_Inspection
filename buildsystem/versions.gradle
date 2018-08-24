@@ -1,30 +1,31 @@
 ext.deps = [:]
 def versions = [:]
-versions.android_gradle_plugin = '3.3.0-alpha05'
-versions.realm_plugin       = "5.4.1"
+versions.android_gradle_plugin = '3.3.0-alpha03'
+versions.realm_plugin       = "5.4.2"
 //Support
-versions.arch               = "2.0.0-beta01"
-versions.support            = "1.0.0-beta01"
-versions.work               = "1.0.0-alpha04"
+versions.arch               = "2.0.0-rc01"
+versions.support            = "1.0.0-rc01"
+versions.work               = "1.0.0-alpha07"
 versions.supportAnko        = "0.10.5"
 versions.kotlin             = "1.2.60"
 versions.mutidex            = "2.0.0"
-versions.navigation         = "1.0.0-alpha03"
-versions.constraint_layout  = "2.0.0-alpha1"
+versions.navigation         = "1.0.0-alpha05"
+versions.constraint_layout  = "2.0.0-alpha2"
 versions.fabric             = "1.25.4"
 versions.crashlytics        = "2.9.3"
 //Libraries :Core
 versions.dagger             = "2.16"
 versions.logger             = "2.2.0"
-versions.glide              = "4.8.0-SNAPSHOT"
+versions.glide              = "4.8.0"
 versions.rxkotlin           = "2.2.0"
 versions.rxandroid          = "2.0.2"
 versions.eventbus           = "3.1.1"
 versions.retrofit           = "2.4.0"
 versions.okHttp             = "3.11.0"
 versions.okHttpLogging      = "2.0.7"
+versions.permisstion        = "4.0.0-alpha1"
 //Utils
-versions.utilcode           = "1.18.3"
+versions.utilcode           = "1.19.0"
 versions.realm_extensions   = "2.2.0"
 //Libraries: Development
 versions.leakCanary         = "1.6.1"
@@ -54,6 +55,7 @@ core.crashlytics            = "com.crashlytics.sdk.android:crashlytics:$versions
 deps.core = core
 
 def libCore =[:]
+libCore.permisstion         = "com.github.hotchemi:permissionsdispatcher:$versions.permisstion"
 libCore.ok_httpLogging      = "com.github.ihsanbal:LoggingInterceptor:$versions.okHttpLogging"
 libCore.glide_recycler      = "com.github.bumptech.glide:recyclerview-integration:$versions.glide"
 libCore.javacv              = "group: 'org.bytedeco', name: 'javacv-platform', version:$versions.javacv"
@@ -124,6 +126,7 @@ library.jodatime            = "joda-time:joda-time:$versions.jodatime"
 deps.library = library
 
 def compiler = [:]
+compiler.permisstion        = "com.github.hotchemi:permissionsdispatcher-processor:$versions.permisstion"
 compiler.glide              = "com.github.bumptech.glide:compiler:$versions.glide"
 compiler.lifecycle          = "androidx.lifecycle:lifecycle-compiler:$versions.arch"
 compiler.dagger_compiler    = "com.google.dagger:dagger-compiler:$versions.dagger"
@@ -181,10 +184,6 @@ def addRepos(RepositoryHandler handler) {
     handler.maven {
         url 'https://oss.sonatype.org/content/repositories/snapshots'
         url 'https://jitpack.io'
-    }
-    handler.maven {
-        name 'glide-snapshot'
-        url 'http://oss.sonatype.org/content/repositories/snapshots'
     }
     handler.maven {
         url 'https://maven.fabric.io/public'

@@ -72,7 +72,7 @@ internal class NetworkModule {
     @Singleton
     @Provides
     @MainUrl
-    fun provideMainRetrofit(client: OkHttpClient, gson: Gson): Retrofit = createRetrofit(client, gson, BuildConfig.ACUCORE_PATH)
+    fun provideMainRetrofit(client: OkHttpClient, gson: Gson): Retrofit = createRetrofit(client, gson, BuildConfig.BASE_PATH)
 
     @Singleton
     @Provides

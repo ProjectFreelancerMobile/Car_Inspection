@@ -22,11 +22,10 @@ class CheckDetailFragment : BaseFragment() {
     override fun initViews() {
         btnContinue.setOnClickListener {
             startActivity(Intent(activity,StepActivity::class.java))
-            //activity?.switchFragment(null,StepFragment.newInstance(), R.id.fragmentContainer)
+            activity?.finish()
         }
         btnPrevious.setOnClickListener {
             (activity as MainActivity).popFragment()
-            //activity?.popFragment()
         }
     }
 

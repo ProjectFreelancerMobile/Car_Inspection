@@ -61,16 +61,11 @@ android {
     productFlavors {
         uHotelDev {
             minSdkVersion build_versions.min_sdk
-            //buildConfigField "String", "ACUCORE_PATH", '"https://tuk-api.acuteksolutions.com/api/v1.1.2/sc/"'
-            buildConfigField "String", "ACUCORE_PATH", '"https://master-api.blendtv.net/api/v1.1.2/"'
-            buildConfigField "String", "CLIENT_ID", '"cloud:acumw_android_device"'
+            buildConfigField "String", "BASE_PATH", '"https://master-api.blendtv.net/api/v1.1.2/"'
             dimension "content"
         }
         uHotelRelease {
-            buildConfigField "String", "ACUCORE_PATH", '"https://master-api.blendtv.net/api/v1.1.2/"'
-            //buildConfigField "String", "ACUCORE_PATH", '"https://tuk-api.acuteksolutions.com/api/v1.1.2/sc/"'
-            buildConfigField "String", "CLIENT_ID", '"cloud:acumw_android_device"'
-            buildConfigField "String", "DEVICE_ID", '"toanthesingle"'
+            buildConfigField "String", "BASE_PATH", '"https://master-api.blendtv.net/api/v1.1.2/"'
             dimension "content"
         }
     }
@@ -168,6 +163,10 @@ dependencies {
     for (dependency in deps.support) {
         implementation dependency.value
     }
+    /*//Navigation
+    for (dependency in deps.navigation){
+        implementation dependency.value
+    }*/
     //Core
     for (dependency in deps.core) {
         implementation dependency.value
@@ -192,6 +191,9 @@ dependencies {
     }
     implementation(deps.libCore.ok_httpLogging, {
         exclude group: 'org.json', module: 'json'
+    })
+    implementation(deps.libCore.permisstion, {
+        exclude module: "support-v13"
     })
     /*implementation(deps.libCore.javacv, {
         exclude group: 'org.bytedeco.javacpp-presets'

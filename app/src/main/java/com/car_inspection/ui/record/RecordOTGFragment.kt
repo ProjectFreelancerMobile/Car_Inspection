@@ -7,6 +7,8 @@ import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.car_inspection.R
+import com.car_inspection.event.CameraDefaultEvent
+import com.car_inspection.event.RecordEvent
 import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.utils.Constanst
 import com.car_inspection.utils.createFolderPicture
@@ -21,11 +23,13 @@ import com.serenegiant.usb.common.AbstractUVCCameraHandler
 import com.serenegiant.usb.encoder.RecordParams
 import com.serenegiant.usb.widget.CameraViewInterface
 import kotlinx.android.synthetic.main.record_otg_fragment.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
 class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, CameraViewInterface.Callback, View.OnClickListener{
 
-    private val LOG_TAG = RecordOTGFragment::class.java.simpleName
     private var mCameraHelper: UVCCameraHelper? = null
     private var mUVCCameraView: CameraViewInterface? = null
     private var isRequest: Boolean = false
@@ -40,7 +44,8 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
 
         override fun onAttachDev(device: UsbDevice) {
             if (mCameraHelper == null || mCameraHelper?.usbDeviceCount == 0) {
-                Toast.makeText(context, "check no usb camera", Toast.LENGTH_LONG).show()
+                showSnackBar("check no usb camera")
+                EventBus.getDefault().post(CameraDefaultEvent())
                 return
             }
             // request open permission
@@ -60,18 +65,18 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
 
         override fun onConnectDev(device: UsbDevice, isConnected: Boolean) {
             if (!isConnected) {
-                Toast.makeText(context, "fail to connect,please check resolution params", Toast.LENGTH_LONG).show()
+                showSnackBar("fail to connect,please check resolution params")
                 isPreview = false
             } else {
                 isPreview = true
-                Toast.makeText(context, "connecting", Toast.LENGTH_LONG).show()
+                showSnackBar("connecting")
             }
         }
 
         override fun onDisConnectDev(device: UsbDevice) {
             activity?.apply {
                 if(!isFinishing)
-                    Toast.makeText(context, "disconnecting", Toast.LENGTH_LONG).show()
+                    showSnackBar("disconnecting")
             }
         }
     }
@@ -147,16 +152,16 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
 
                                 override fun onRecordResult(videoPath: String) {
                                     Logger.e( "videoPath = $videoPath")
-                                    Toast.makeText(context, "videoPath = $videoPath", Toast.LENGTH_LONG).show()
+                                    showSnackBar("videoPath = $videoPath")
                                 }
                             })
                             // if you only want to push stream,please call like this
                             // mCameraHelper.startPusher(listener);
                             mBtnRecord.text = "Stop Record"
-                            Toast.makeText(context, "start record...", Toast.LENGTH_LONG).show()
+                            showSnackBar("start record...")
                         } else {
                             mBtnRecord.text = "Start Record"
-                            Toast.makeText(context, "stop record...", Toast.LENGTH_LONG).show()
+                            showSnackBar("stop record...")
                             FileUtils.releaseFile()
                             stopPusher()
                         }
@@ -233,18 +238,25 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
         mCameraHelper?.release()
     }
 
-    fun record(){
-        mBtnRecord.isVisible = true
-        btnTakePicture.isGone = true
-        tvTitleStep.isGone = true
-    }
-
-
-    fun capture(currentSubStepName:String ){
-        this.currentSubStepName = currentSubStepName
-        mBtnRecord.isGone = true
-        btnTakePicture.isVisible = true
-        tvTitleStep.isVisible = true
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onRecordEvent(event: RecordEvent) {
+        activity?.apply {
+            if(!isFinishing){
+                when(event.isTake){
+                    true ->{
+                        this@RecordOTGFragment.currentSubStepName = event.step
+                        mBtnRecord.isGone = true
+                        btnTakePicture.isVisible = true
+                        tvTitleStep.isVisible = true
+                    }
+                    false -> {
+                        mBtnRecord.isVisible = true
+                        btnTakePicture.isGone = true
+                        tvTitleStep.isGone = true
+                    }
+                }
+            }
+        }
     }
 
 }
