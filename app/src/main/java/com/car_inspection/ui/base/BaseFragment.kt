@@ -16,7 +16,7 @@ import org.greenrobot.eventbus.EventBus
 
 abstract class BaseFragment : CoreBaseFragment() {
 
-    override fun onStart() {
+   /* override fun onStart() {
         try {
             if (!EventBus.getDefault().isRegistered(this)) {
                 EventBus.getDefault().register(this)
@@ -32,7 +32,7 @@ abstract class BaseFragment : CoreBaseFragment() {
             }
         }catch (e:Exception){}
         super.onDestroy()
-    }
+    }*/
 
     fun showSnackBar(message: String) {
         view?.let {

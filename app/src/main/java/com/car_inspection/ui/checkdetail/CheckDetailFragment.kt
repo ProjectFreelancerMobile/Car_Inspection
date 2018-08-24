@@ -1,5 +1,6 @@
 package com.car_inspection.ui.checkdetail
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.view.Gravity
@@ -41,6 +42,7 @@ class CheckDetailFragment : BaseFragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateProgressStep(step: Int) {
         val percent = step * 1f / 8
         pgStep.setMaximumPercentage(percent)

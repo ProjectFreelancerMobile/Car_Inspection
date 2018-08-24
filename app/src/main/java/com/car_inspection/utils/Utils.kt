@@ -37,44 +37,11 @@ fun textEmty(vararg view: TextView?) = view.forEach { it?.text = Constants.BLANK
 
 fun isDebug(): Boolean = BuildConfig.BUILD_TYPE == Constants.DEBUG
 
-fun isCameraOTG(): Boolean = true
-
 fun disposableAll(vararg disposable: Disposable?) = disposable.forEach { it?.dispose() }
 
 fun returnBody(value: String): RequestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), value)
 
 fun getStringFromEditText(content: EditText): String = content.text.toString().trim()
-
-fun getTimeStamFromDate(dateString: String): Long {
-    var result: Long = 0
-    val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm")
-    var date: Date? = null
-    try {
-        date = formatter.parse(dateString) as Date
-        result = date.time
-    } catch (e: ParseException) {
-        e.printStackTrace()
-    }
-
-    return result
-}
-
-fun getDate(timstamp: Long): String {
-    val calendar = Calendar.getInstance()
-    calendar.time = Date(timstamp)
-    val day = calendar.get(Calendar.DAY_OF_MONTH)
-    val month = calendar.get(Calendar.MONTH)
-    val year = calendar.get(Calendar.YEAR)
-    return formatTimeNumber(day) + "/" + formatTimeNumber(month + 1) + "/" + formatTimeNumber(year)
-}
-
-fun getTime(timestamp: Long): String {
-    val calendar = Calendar.getInstance()
-    calendar.time = Date(timestamp)
-    val h = calendar.get(Calendar.HOUR_OF_DAY)
-    val m = calendar.get(Calendar.MINUTE)
-    return formatTimeNumber(h) + ":" + formatTimeNumber(m)
-}
 
 fun formatTimeNumber(number: Int): String {
     return if (number < 10)

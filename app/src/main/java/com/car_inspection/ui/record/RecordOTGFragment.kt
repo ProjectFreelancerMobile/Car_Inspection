@@ -1,13 +1,16 @@
 package com.car_inspection.ui.record
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.hardware.usb.UsbDevice
 import android.view.Surface
 import android.view.View
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.car_inspection.R
-import com.car_inspection.event.CameraDefaultEvent
 import com.car_inspection.event.RecordEvent
+import com.car_inspection.listener.CameraDefaultListener
+import com.car_inspection.listener.CameraRecordListener
 import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.utils.Constanst
 import com.car_inspection.utils.createFolderPicture
@@ -22,12 +25,11 @@ import com.serenegiant.usb.common.AbstractUVCCameraHandler
 import com.serenegiant.usb.encoder.RecordParams
 import com.serenegiant.usb.widget.CameraViewInterface
 import kotlinx.android.synthetic.main.record_otg_fragment.*
-import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
-class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, CameraViewInterface.Callback, View.OnClickListener{
+class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, CameraViewInterface.Callback, View.OnClickListener, CameraRecordListener{
 
     private var mCameraHelper: UVCCameraHelper? = null
     private var mUVCCameraView: CameraViewInterface? = null
@@ -36,7 +38,11 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
     private var currentSubStepName :String = ""
 
     companion object {
-        fun newInstance() = RecordOTGFragment()
+        lateinit var cameraCallbackListener: CameraDefaultListener
+        fun newInstance(cameraRecord: CameraDefaultListener) :RecordOTGFragment{
+            cameraCallbackListener = cameraRecord
+            return RecordOTGFragment()
+        }
     }
 
     private val listener = object : UVCCameraHelper.OnMyDevConnectListener {
@@ -44,7 +50,7 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
         override fun onAttachDev(device: UsbDevice) {
             if (mCameraHelper == null || mCameraHelper?.usbDeviceCount == 0) {
                 showSnackBar("check no usb camera")
-                EventBus.getDefault().post(CameraDefaultEvent())
+                cameraCallbackListener.showCameraDefault()
                 return
             }
             // request open permission
@@ -101,6 +107,11 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
                 mCameraHelper?.apply {
                     setDefaultFrameFormat(UVCCameraHelper.FRAME_FORMAT_YUYV)
                     initUSBMonitor(activity, mUVCCameraView, listener)
+                    if (mCameraHelper == null || mCameraHelper?.usbDeviceCount == 0) {
+                        showSnackBar("check no usb camera")
+                        cameraCallbackListener.showCameraDefault()
+                        return
+                    }
                     setOnPreviewFrameListener(AbstractUVCCameraHandler.OnPreViewResultListener { })
                     setModelValue(UVCCameraHelper.MODE_BRIGHTNESS, 80)
                     setModelValue(UVCCameraHelper.MODE_CONTRAST, 60)
@@ -111,6 +122,7 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.btnTakePicture -> {
@@ -119,7 +131,7 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
                         createFolderPicture(Constanst.getFolderPicturePath())
                         val picPath = Constanst.getFolderPicturePath() + System.currentTimeMillis()+ UVCCameraHelper.SUFFIX_JPEG
                         capturePicture(picPath) { path ->
-                            Logger.e( "save path：$path")
+                            showSnackBar("Save picture path：$path")
                             overlay(activity!!, path, currentSubStepName)
                         }
                     }
@@ -150,8 +162,7 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
                                 }
 
                                 override fun onRecordResult(videoPath: String) {
-                                    Logger.e( "videoPath = $videoPath")
-                                    showSnackBar("videoPath = $videoPath")
+                                    showSnackBar("Save video path: $videoPath")
                                 }
                             })
                             // if you only want to push stream,please call like this
@@ -237,21 +248,20 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
         mCameraHelper?.release()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onRecordEvent(event: RecordEvent) {
+    override fun recordEvent(isTake: Boolean, step: String) {
         activity?.apply {
             if(!isFinishing){
-                when(event.isTake){
+                when(isTake){
                     true ->{
-                        this@RecordOTGFragment.currentSubStepName = event.step
-                        mBtnRecord.isGone = true
-                        btnTakePicture.isVisible = true
-                        tvTitleStep.isVisible = true
+                        this@RecordOTGFragment.currentSubStepName = step
+                        mBtnRecord?.isGone = true
+                        btnTakePicture?.isVisible = true
+                        tvTitleStep?.isVisible = true
                     }
                     false -> {
-                        mBtnRecord.isVisible = true
-                        btnTakePicture.isGone = true
-                        tvTitleStep.isGone = true
+                        mBtnRecord?.isVisible = true
+                        btnTakePicture?.isGone = true
+                        tvTitleStep?.isGone = true
                     }
                 }
             }

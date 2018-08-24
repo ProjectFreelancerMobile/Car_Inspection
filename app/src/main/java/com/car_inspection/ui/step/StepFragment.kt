@@ -20,12 +20,16 @@ import com.car_inspection.binding.FragmentDataBindingComponent
 import com.car_inspection.data.model.StepModifyModel
 import com.car_inspection.data.model.StepOrinalModel
 import com.car_inspection.databinding.StepFragmentBinding
+import com.car_inspection.event.CameraDefaultEvent
 import com.car_inspection.event.RecordEvent
 import com.car_inspection.library.youtube.YoutubeUploadRequest
 import com.car_inspection.library.youtube.YoutubeUploader
+import com.car_inspection.listener.CameraDefaultListener
+import com.car_inspection.listener.CameraRecordListener
 import com.car_inspection.ui.adapter.StepAdapter
 import com.car_inspection.ui.base.BaseDataFragment
 import com.car_inspection.ui.inputtext.SuggestTextActivity
+import com.car_inspection.ui.record.RecordFragment
 import com.car_inspection.ui.record.RecordOTGFragment
 import com.car_inspection.utils.Constanst
 import com.car_inspection.utils.createFolderPicture
@@ -33,6 +37,7 @@ import com.car_inspection.utils.listenToViews
 import com.orhanobut.logger.Logger
 import com.toan_itc.core.architecture.autoCleared
 import com.toan_itc.core.utils.addFragment
+import com.toan_itc.core.utils.switchFragment
 import google.com.carinspection.DisposableImpl
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -41,7 +46,8 @@ import kotlinx.android.synthetic.main.step_fragment.*
 import java.io.File
 import java.util.concurrent.TimeUnit
 
-class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterListener, View.OnClickListener {
+class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterListener, View.OnClickListener,CameraDefaultListener {
+
     private val REQUEST_SUGGEST_TEST = 0
     private var currentSubStepName = ""
     private var items: List<StepModifyModel> = mutableListOf()
@@ -49,6 +55,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     private var isTakePicture = false
     private var currentPosition = 0
     private var currentStep = 2
+    private var cameraRecordListener : CameraRecordListener? = null
     private var binding by autoCleared<StepFragmentBinding>()
     private var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
 
@@ -90,15 +97,10 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
         var uri = Uri.parse(File(path).toString())
         var request = YoutubeUploadRequest()
         request.uri = uri
-        request.setTitle("MPRJ Video Tite");
-        request.setDescription("MPRJ Video Test");
+        request.title = "MPRJ Video Tite"
+        request.description = "MPRJ Video Test"
 
-        YoutubeUploader.upload(request, object : YoutubeUploader.ProgressListner {
-            override fun onUploadProgressUpdate(progress: Int) {
-                Logger.e("percent upload", progress)
-            }
-
-        }, activity)
+        YoutubeUploader.upload(request, { progress -> Logger.e("percent upload", progress) }, activity)
     }
 
     override fun onClick(v: View?) {
@@ -121,41 +123,15 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
             }
             R.id.btnFinish -> saveDataStep(currentStep)
             R.id.btnTakePicture -> {
-                /*if (captureFragment != null) {
-                    createFolderPicture(Constanst.getFolderPicturePath())
-                    cameraFragment?.takePhotoOrCaptureVideo(object : CameraFragmentResultAdapter() {
-                        override fun onPhotoTaken(bytes: ByteArray, filePath: String) {
-                            Log.e("file images", "----------@@@@@@@@@@@@@@   $filePath")
-                            stepAdapter.items?.get(currentPosition)?.imagepaths?.add(filePath)
-                            showLayoutVideo()
-                            overlay(activity!!, filePath, R.mipmap.ic_launcher_foreground, currentSubStepName)
-                        }
-                    }, Constanst.getFolderPicturePath(), currentSubStepName)
 
-                }*/
             }
         }
     }
 
     private fun addFragmentRecord() {
-        activity?.addFragment(RecordOTGFragment.newInstance(), R.id.fragmentRecord)
-/*<<<<<<< HEAD
-
-=======
-        Observable.just(1L).delay(2, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableImpl<Long>() {
-                    @SuppressLint("MissingPermission")
-                    override fun onNext(t: Long) {
-                        recordFragment = if (isCameraOTG())
-                            RecordOTGFragment.newInstance()
-                        else
-                            null//RecordFragment.newInstance()
-                        activity?.addFragment(recordFragment!!, R.id.fragmentRecord)
-                    }
-                })
->>>>>>> aaedb05d7f0db317ca6d3a610ca73e8d27f19e62*/
+        val fragment = RecordOTGFragment.newInstance(this)
+        cameraRecordListener = fragment
+        activity?.addFragment(fragment, R.id.fragmentRecord)
     }
 
     private fun saveDataStep(step: Int) {
@@ -290,24 +266,12 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
 
     private fun showLayoutTakepicture() {
-        viewModel.sendEventBus(RecordEvent(true, currentSubStepName))
+        cameraRecordListener?.recordEvent(true,currentSubStepName)
         isTakePicture = true
-        /*activity?.apply {
-            captureFragment = if (isCameraOTG())
-                CaptureOTGFragment.newInstance()
-            else {
-                val builder = Configuration.Builder()
-                builder.setCamera(Configuration.CAMERA_FACE_FRONT)
-                        .setFlashMode(Configuration.FLASH_MODE_OFF)
-                        .setMediaAction(Configuration.MEDIA_ACTION_PHOTO)
-                CameraFragment.newInstance(builder.build())
-            }
-            addFragment(captureFragment!!, R.id.fragmentCapture)
-        }*/
     }
 
     private fun showLayoutVideo() {
-        viewModel.sendEventBus(RecordEvent())
+        cameraRecordListener?.recordEvent()
         isTakePicture = false
     }
 
@@ -317,6 +281,18 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
             if (resultCode == Activity.RESULT_OK) {
                 val position = data.getIntExtra("position", 0)
                 items[position].note = data.getStringExtra("note")
+            }
+        }
+    }
+
+    override fun showCameraDefault() {
+        Logger.e("onCameraDefaultEventonCameraDefaultEvent")
+        activity?.apply {
+            if(!isFinishing){
+                Logger.e("onCameraDefaultEventonCameraDefaultEven111t")
+                val fragment = RecordFragment.newInstance()
+                cameraRecordListener = fragment
+                activity?.addFragment(fragment, R.id.fragmentRecordDefault)
             }
         }
     }

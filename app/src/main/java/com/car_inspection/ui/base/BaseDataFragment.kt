@@ -10,6 +10,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.orhanobut.logger.Logger
 import com.toan_itc.core.base.BaseViewModel
 import com.toan_itc.core.base.CoreBaseDataFragment
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.EventBusException
 
 /**
  * Created by ToanDev on 28/2/18.

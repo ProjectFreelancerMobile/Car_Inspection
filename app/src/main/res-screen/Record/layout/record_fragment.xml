@@ -8,6 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <FrameLayout
+        android:id="@+id/fragmentCapture"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -24,10 +29,19 @@
             android:visibility="invisible" />
 
         <Button
+            android:id="@+id/mBtnTake"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="10sp"
+            android:text="@string/take_picture" />
+
+        <Button
             android:id="@+id/mBtnSwitchCamera"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textSize="10sp"
             android:text="@string/switch_camera" />
 
         <Button
@@ -35,6 +49,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textSize="10sp"
             android:text="@string/resume" />
 
         <Button
@@ -42,6 +57,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textSize="10sp"
             android:text="@string/done" />
     </LinearLayout>
 </RelativeLayout>

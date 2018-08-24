@@ -80,6 +80,7 @@
     <!--RECORD -->
     <string name="reset">Reset</string>
     <string name="switch_camera">Switch</string>
+    <string name="take_picture">Capture</string>
     <string name="pause">Pause</string>
     <string name="resume">Resume</string>
     <string name="done">Done</string>

@@ -18,14 +18,27 @@ import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import com.car_inspection.R
 import com.car_inspection.data.model.FrameToRecord
 import com.car_inspection.data.model.RecordModel
+import com.car_inspection.event.RecordEvent
 import com.car_inspection.library.CameraHelper
 import com.car_inspection.library.MiscUtils
+import com.car_inspection.listener.CameraRecordListener
 import com.car_inspection.ui.base.BaseFragment
+import com.car_inspection.utils.Constanst
+import com.car_inspection.utils.createFolderPicture
 import com.car_inspection.utils.listenToViews
+import com.car_inspection.utils.overlay
+import com.github.florent37.camerafragment.CameraFragment
+import com.github.florent37.camerafragment.configuration.Configuration
+import com.github.florent37.camerafragment.listeners.CameraFragmentResultAdapter
 import com.orhanobut.logger.Logger
+import com.toan_itc.core.utils.addFragment
+import com.toan_itc.core.utils.removeFragment
+import kotlinx.android.synthetic.main.camera_fragment.*
 import kotlinx.android.synthetic.main.record_fragment.*
 import org.bytedeco.javacpp.avcodec
 import org.bytedeco.javacpp.avutil
@@ -33,6 +46,8 @@ import org.bytedeco.javacv.FFmpegFrameFilter
 import org.bytedeco.javacv.FFmpegFrameRecorder
 import org.bytedeco.javacv.Frame
 import org.bytedeco.javacv.FrameFilter
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.io.File
 import java.io.IOException
 import java.nio.ByteBuffer
@@ -41,12 +56,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 
-class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.OnClickListener{
+class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.OnClickListener, CameraRecordListener {
     private val LOG_TAG = RecordOTGFragment::class.java.simpleName
 
     private val REQUEST_PERMISSIONS = 1
 
-    private val PREFERRED_PREVIEW_WIDTH = 640
+    private val PREFERRED_PREVIEW_WIDTH = 720
     private val PREFERRED_PREVIEW_HEIGHT = 480
 
     // both in milliseconds
@@ -66,7 +81,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
     private var mFrameRecordedCount: Int = 0
     private var mTotalProcessFrameTime: Long = 0
     private var mRecordFragments: Stack<RecordModel>? = null
-
+    private var currentSubStepName = ""
     private val sampleAudioRateInHz = 44100
     /* The sides of width and height are based on camera orientation.
     That is, the preview size is the size before it is rotated. */
@@ -78,7 +93,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
     private val frameRate = 30
     private val frameDepth = Frame.DEPTH_UBYTE
     private val frameChannels = 2
-
+    private var takeFragment : CameraFragment?= null
     // Workaround for https://code.google.com/p/android/issues/detail?id=190966
     private var doAfterAllPermissionsGranted: Runnable? = null
 
@@ -102,7 +117,31 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
     companion object {
         fun newInstance() = RecordFragment()
     }
+    /*activity?.apply {
+                captureFragment = if (isCameraOTG())
+                    CaptureOTGFragment.newInstance()
+                else {
+                    val builder = Configuration.Builder()
+                    builder.setCamera(Configuration.CAMERA_FACE_FRONT)
+                            .setFlashMode(Configuration.FLASH_MODE_OFF)
+                            .setMediaAction(Configuration.MEDIA_ACTION_PHOTO)
+                    CameraFragment.newInstance(builder.build())
+                }
+                addFragment(captureFragment!!, R.id.fragmentCapture)
+            }*/
 
+    /*if (captureFragment != null) {
+                    createFolderPicture(Constanst.getFolderPicturePath())
+                    cameraFragment?.takePhotoOrCaptureVideo(object : CameraFragmentResultAdapter() {
+                        override fun onPhotoTaken(bytes: ByteArray, filePath: String) {
+                            Log.e("file images", "----------@@@@@@@@@@@@@@   $filePath")
+                            stepAdapter.items?.get(currentPosition)?.imagepaths?.add(filePath)
+                            showLayoutVideo()
+                            overlay(activity!!, filePath, R.mipmap.ic_launcher_foreground, currentSubStepName)
+                        }
+                    }, Constanst.getFolderPicturePath(), currentSubStepName)
+
+                }*/
     override fun onClick(view: View?) {
         when(view?.id){
             R.id.mBtnReset -> {
@@ -154,6 +193,22 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
                     }.execute()
                 }
             }
+            R.id.mBtnTake ->{
+                if (takeFragment != null) {
+                    createFolderPicture(Constanst.getFolderPicturePath())
+                    takeFragment?.takePhotoOrCaptureVideo(object : CameraFragmentResultAdapter() {
+                        override fun onPhotoTaken(bytes: ByteArray, filePath: String) {
+                            Logger.e("file images----------@@@@@@@@@@@@@@   $filePath")
+                           // stepAdapter.items?.get(currentPosition)?.imagepaths?.add(filePath)
+                            //showLayoutVideo()
+                            showSnackBar("Save picture path：$filePath")
+                            overlay(activity!!, filePath, currentSubStepName)
+                            activity?.removeFragment(takeFragment!!)
+                        }
+                    }, Constanst.getFolderPicturePath(), currentSubStepName)
+
+                }
+            }
         }
     }
 
@@ -177,7 +232,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
         // At most recycle 2 Frame
         mRecycledFrameQueue = LinkedBlockingQueue(2)
         mRecordFragments = Stack()
-        listenToViews(mBtnReset,mBtnDone,mBtnResumeOrPause,mBtnSwitchCamera)
+        listenToViews(mBtnReset,mBtnDone,mBtnResumeOrPause,mBtnSwitchCamera,mBtnTake)
     }
 
     override fun onDestroy() {
@@ -530,7 +585,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
         override fun run() {
             android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO)
             mAudioRecord?.apply {
-                Logger.e(LOG_TAG+"mAudioRecord startRecording")
+                //Logger.e(LOG_TAG+"mAudioRecord startRecording")
                 startRecording()
                 isRunning = true
                 /* ffmpeg_audio encoding loop */
@@ -743,5 +798,32 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
             return null
         }
 
+    }
+
+    override fun recordEvent(isTake: Boolean, step: String) {
+        activity?.apply {
+            if(!isFinishing){
+                when(isTake){
+                    true ->{
+                        Logger.e("RecordEvent")
+                        currentSubStepName = step
+                        pauseRecording()
+                        val builder = Configuration.Builder()
+                        builder.setCamera(Configuration.CAMERA_FACE_FRONT)
+                                .setFlashMode(Configuration.FLASH_MODE_OFF)
+                                .setMediaAction(Configuration.MEDIA_ACTION_PHOTO)
+                        takeFragment = CameraFragment.newInstance(builder.build())
+                        activity?.addFragment(takeFragment!!, R.id.fragmentCapture)
+                    }
+                    false -> {
+                        Logger.e("RecordEvent11111")
+                        resumeRecording()
+                        takeFragment?.apply {
+                            removeFragment(this)
+                        }
+                    }
+                }
+            }
+        }
     }
 }
