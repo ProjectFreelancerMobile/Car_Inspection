@@ -5,8 +5,8 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import com.car_inspection.ui.activity.MainActivity
 import com.car_inspection.app.App
+import com.car_inspection.ui.activity.MainActivity
 
 /**
  * Created by ToanDev on 07/08/18.

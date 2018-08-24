@@ -8,9 +8,6 @@ import com.car_inspection.R
 import com.car_inspection.ui.activity.MainActivity
 import com.car_inspection.ui.activity.StepActivity
 import com.car_inspection.ui.base.BaseFragment
-import com.car_inspection.ui.step.StepFragment
-import com.toan_itc.core.utils.popFragment
-import com.toan_itc.core.utils.switchFragment
 import kotlinx.android.synthetic.main.check_detail_fragment.*
 
 class CheckDetailFragment : BaseFragment() {

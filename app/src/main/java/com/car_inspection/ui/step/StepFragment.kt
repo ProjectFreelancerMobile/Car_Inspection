@@ -1,9 +1,9 @@
 package com.car_inspection.ui.step
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
@@ -14,7 +14,6 @@ import android.view.ViewGroup
 import android.widget.RadioGroup
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.car_inspection.R
 import com.car_inspection.binding.FragmentDataBindingComponent
@@ -22,13 +21,16 @@ import com.car_inspection.data.model.StepModifyModel
 import com.car_inspection.data.model.StepOrinalModel
 import com.car_inspection.databinding.StepFragmentBinding
 import com.car_inspection.event.RecordEvent
+import com.car_inspection.library.youtube.YoutubeUploadRequest
+import com.car_inspection.library.youtube.YoutubeUploader
 import com.car_inspection.ui.adapter.StepAdapter
 import com.car_inspection.ui.base.BaseDataFragment
 import com.car_inspection.ui.inputtext.SuggestTextActivity
-import com.car_inspection.ui.record.RecordFragment
 import com.car_inspection.ui.record.RecordOTGFragment
-import com.car_inspection.utils.isCameraOTG
+import com.car_inspection.utils.Constanst
+import com.car_inspection.utils.createFolderPicture
 import com.car_inspection.utils.listenToViews
+import com.orhanobut.logger.Logger
 import com.toan_itc.core.architecture.autoCleared
 import com.toan_itc.core.utils.addFragment
 import google.com.carinspection.DisposableImpl
@@ -36,9 +38,10 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.step_fragment.*
+import java.io.File
 import java.util.concurrent.TimeUnit
 
-class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterListener, View.OnClickListener{
+class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterListener, View.OnClickListener {
     private val REQUEST_SUGGEST_TEST = 0
     private var currentSubStepName = ""
     private var items: List<StepModifyModel> = mutableListOf()
@@ -78,8 +81,25 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     override fun initData() {
         loadDataStep(currentStep)
         updateProgressStep(currentStep)
+
+        createFolderPicture(Constanst.getFolderVideoPath())
+        uploadYoutube(Constanst.getFolderVideoPath() + "test.mp4")
     }
 
+    fun uploadYoutube(path: String) {
+        var uri = Uri.parse(File(path).toString())
+        var request = YoutubeUploadRequest()
+        request.uri = uri
+        request.setTitle("MPRJ Video Tite");
+        request.setDescription("MPRJ Video Test");
+
+        YoutubeUploader.upload(request, object : YoutubeUploader.ProgressListner {
+            override fun onUploadProgressUpdate(progress: Int) {
+                Logger.e("percent upload", progress)
+            }
+
+        }, activity)
+    }
 
     override fun onClick(v: View?) {
         when (v?.id) {
@@ -118,7 +138,24 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     }
 
     private fun addFragmentRecord() {
-        activity?.addFragment(RecordOTGFragment.newInstance(),R.id.fragmentRecord)
+        activity?.addFragment(RecordOTGFragment.newInstance(), R.id.fragmentRecord)
+/*<<<<<<< HEAD
+
+=======
+        Observable.just(1L).delay(2, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableImpl<Long>() {
+                    @SuppressLint("MissingPermission")
+                    override fun onNext(t: Long) {
+                        recordFragment = if (isCameraOTG())
+                            RecordOTGFragment.newInstance()
+                        else
+                            null//RecordFragment.newInstance()
+                        activity?.addFragment(recordFragment!!, R.id.fragmentRecord)
+                    }
+                })
+>>>>>>> aaedb05d7f0db317ca6d3a610ca73e8d27f19e62*/
     }
 
     private fun saveDataStep(step: Int) {

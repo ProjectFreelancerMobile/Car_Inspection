@@ -15,8 +15,6 @@ import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.ui.checkdetail.CheckDetailFragment
 import com.car_inspection.utils.Constanst
 import com.car_inspection.utils.formatTimeNumber
-import com.toan_itc.core.utils.popFragment
-import com.toan_itc.core.utils.switchFragment
 import kotlinx.android.synthetic.main.check_info_fragment.*
 
 class CheckInfoFragment : BaseFragment() {

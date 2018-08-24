@@ -1,7 +1,7 @@
 package com.car_inspection.di.module
 
-import com.car_inspection.ui.activity.MainActivity
 import com.car_inspection.di.ActivityScope
+import com.car_inspection.ui.activity.MainActivity
 import com.car_inspection.ui.activity.StepActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector

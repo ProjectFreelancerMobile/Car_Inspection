@@ -2,13 +2,10 @@ package com.car_inspection.ui.activity
 
 import android.Manifest
 import android.content.pm.ActivityInfo
-import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.car_inspection.R
 import com.car_inspection.ui.login.LoginFragment
-import com.car_inspection.ui.main.MainFragment
 import com.toan_itc.core.base.CoreBaseActivity
-import com.toan_itc.core.utils.switchFragment
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import permissions.dispatcher.NeedsPermission

@@ -4,7 +4,6 @@ import com.car_inspection.R
 import com.car_inspection.ui.activity.MainActivity
 import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.ui.checkinfo.CheckInfoFragment
-import com.toan_itc.core.utils.switchFragment
 import kotlinx.android.synthetic.main.home_fragment.*
 
 class HomeFragment : BaseFragment() {

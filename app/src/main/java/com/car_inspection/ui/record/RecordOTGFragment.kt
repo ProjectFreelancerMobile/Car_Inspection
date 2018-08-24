@@ -3,7 +3,6 @@ package com.car_inspection.ui.record
 import android.hardware.usb.UsbDevice
 import android.view.Surface
 import android.view.View
-import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.car_inspection.R

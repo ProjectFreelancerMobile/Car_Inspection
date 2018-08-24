@@ -4,7 +4,6 @@ import com.car_inspection.R
 import com.car_inspection.ui.activity.MainActivity
 import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.ui.home.HomeFragment
-import com.toan_itc.core.utils.switchFragment
 import kotlinx.android.synthetic.main.login_fragment.*
 
 class LoginFragment : BaseFragment() {

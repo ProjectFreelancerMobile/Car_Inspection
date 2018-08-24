@@ -76,7 +76,7 @@ class RealmManager : RepositoryData {
             4 -> listStep = dataStep4()
             5 -> listStep = dataStep5()
             6 -> listStep = dataStep6()
-            else -> dataTest(step)
+            7->listStep = dataStep7()
         }
 
         return listStep
@@ -1297,4 +1297,146 @@ class RealmManager : RepositoryData {
 
         return listSteps
     }
+
+    fun dataStep7(): MutableList<StepOrinalModel> {
+        var listSteps = mutableListOf<StepOrinalModel>()
+
+        var stepOrinalStep7_1 = StepOrinalModel()
+        stepOrinalStep7_1.step = "7"
+        stepOrinalStep7_1.stepTitle = "Kiểm tra lái thử xe"
+        stepOrinalStep7_1.subStep = "7.1"
+        stepOrinalStep7_1.subStepTitle1 = "Lái thử"
+        stepOrinalStep7_1.subStepTitle2 = "Khởi động"
+        stepOrinalStep7_1.subStepTitle3 = "Hoạt động của ắc quy"
+        listSteps.add(stepOrinalStep7_1)
+
+        var stepOrinalStep7_2 = StepOrinalModel()
+        stepOrinalStep7_2.step = "7"
+        stepOrinalStep7_2.stepTitle = "Kiểm tra lái thử xe"
+        stepOrinalStep7_2.subStep = "7.1"
+        stepOrinalStep7_2.subStepTitle1 = "Lái thử"
+        stepOrinalStep7_2.subStepTitle2 = "Khởi động"
+        stepOrinalStep7_2.subStepTitle3 = "Hoạt động của bộ đề"
+        listSteps.add(stepOrinalStep7_2)
+
+        var stepOrinalStep7_3 = StepOrinalModel()
+        stepOrinalStep7_3.step = "7"
+        stepOrinalStep7_3.stepTitle = "Kiểm tra lái thử xe"
+        stepOrinalStep7_3.subStep = "7.1"
+        stepOrinalStep7_3.subStepTitle1 = "Lái thử"
+        stepOrinalStep7_3.subStepTitle2 = "Khởi động"
+        stepOrinalStep7_3.subStepTitle3 = "Hoạt động của đánh lửa"
+        listSteps.add(stepOrinalStep7_3)
+
+        var stepOrinalStep7_4 = StepOrinalModel()
+        stepOrinalStep7_4.step = "7"
+        stepOrinalStep7_4.stepTitle = "Kiểm tra lái thử xe"
+        stepOrinalStep7_4.subStep = "7.1"
+        stepOrinalStep7_4.subStepTitle1 = "Lái thử"
+        stepOrinalStep7_4.subStepTitle2 = "Khởi động"
+        stepOrinalStep7_4.subStepTitle3 = "Hoạt động phun nhiên liệu"
+        listSteps.add(stepOrinalStep7_4)
+
+        var stepOrinalStep7_5 = StepOrinalModel()
+        stepOrinalStep7_5.step = "7"
+        stepOrinalStep7_5.stepTitle = "Kiểm tra lái thử xe"
+        stepOrinalStep7_5.subStep = "7.1"
+        stepOrinalStep7_5.subStepTitle1 = "Lái thử"
+        stepOrinalStep7_5.subStepTitle2 = "Khởi động"
+        stepOrinalStep7_5.subStepTitle3 = "Hoạt động của hệ thống làm mát"
+        listSteps.add(stepOrinalStep7_5)
+
+        var stepOrinalStep7_6 = StepOrinalModel()
+        stepOrinalStep7_6.step = "7"
+        stepOrinalStep7_6.stepTitle = "Kiểm tra lái thử xe"
+        stepOrinalStep7_6.subStep = "7.1"
+        stepOrinalStep7_6.subStepTitle1 = "Lái thử"
+        stepOrinalStep7_6.subStepTitle2 = "Khởi động"
+        stepOrinalStep7_6.subStepTitle3 = "Hoạt động của hệ thống điều hòa"
+        listSteps.add(stepOrinalStep7_6)
+
+        var stepOrinalStep7_7 = StepOrinalModel()
+        stepOrinalStep7_7.step = "7"
+        stepOrinalStep7_7.stepTitle = "Kiểm tra lái thử xe"
+        stepOrinalStep7_7.subStep = "7.1"
+        stepOrinalStep7_7.subStepTitle1 = "Lái thử"
+        stepOrinalStep7_7.subStepTitle2 = "Khởi động"
+        stepOrinalStep7_7.subStepTitle3 = "Tiếng ồn khoang động cơ"
+        listSteps.add(stepOrinalStep7_7)
+
+        var stepOrinalStep7_8 = StepOrinalModel()
+        stepOrinalStep7_8.step = "7"
+        stepOrinalStep7_8.stepTitle = "Kiểm tra lái thử xe"
+        stepOrinalStep7_8.subStep = "7.2"
+        stepOrinalStep7_8.subStepTitle1 = "Lái thử"
+        stepOrinalStep7_8.subStepTitle2 = "Chạy trên làn đường"
+        stepOrinalStep7_8.subStepTitle3 = "Hệ thống lái"
+        listSteps.add(stepOrinalStep7_8)
+
+        var stepOrinalStep7_9 = StepOrinalModel()
+        stepOrinalStep7_9.step = "7"
+        stepOrinalStep7_9.stepTitle = "Kiểm tra lái thử xe"
+        stepOrinalStep7_9.subStep = "7.2"
+        stepOrinalStep7_9.subStepTitle1 = "Lái thử"
+        stepOrinalStep7_9.subStepTitle2 = "Chạy trên làn đường"
+        stepOrinalStep7_9.subStepTitle3 = "Hệ thống phanh"
+        listSteps.add(stepOrinalStep7_9)
+
+        var stepOrinalStep7_10 = StepOrinalModel()
+        stepOrinalStep7_10.step = "7"
+        stepOrinalStep7_10.stepTitle = "Kiểm tra lái thử xe"
+        stepOrinalStep7_10.subStep = "7.2"
+        stepOrinalStep7_10.subStepTitle1 = "Lái thử"
+        stepOrinalStep7_10.subStepTitle2 = "Chạy trên làn đường"
+        stepOrinalStep7_10.subStepTitle3 = "Hệ thống ly hợp"
+        listSteps.add(stepOrinalStep7_10)
+
+        var stepOrinalStep7_11 = StepOrinalModel()
+        stepOrinalStep7_11.step = "7"
+        stepOrinalStep7_11.stepTitle = "Kiểm tra lái thử xe"
+        stepOrinalStep7_11.subStep = "7.2"
+        stepOrinalStep7_11.subStepTitle1 = "Lái thử"
+        stepOrinalStep7_11.subStepTitle2 = "Chạy trên làn đường"
+        stepOrinalStep7_11.subStepTitle3 = "Tiếng ồn bất thường"
+        listSteps.add(stepOrinalStep7_11)
+
+        var stepOrinalStep7_12 = StepOrinalModel()
+        stepOrinalStep7_12.step = "7"
+        stepOrinalStep7_12.stepTitle = "Kiểm tra lái thử xe"
+        stepOrinalStep7_12.subStep = "7.2"
+        stepOrinalStep7_12.subStepTitle1 = "Lái thử"
+        stepOrinalStep7_12.subStepTitle2 = "Chạy trên làn đường"
+        stepOrinalStep7_12.subStepTitle3 = "Sang số"
+        listSteps.add(stepOrinalStep7_12)
+
+        var stepOrinalStep7_13 = StepOrinalModel()
+        stepOrinalStep7_13.step = "7"
+        stepOrinalStep7_13.stepTitle = "Kiểm tra lái thử xe"
+        stepOrinalStep7_13.subStep = "7.2"
+        stepOrinalStep7_13.subStepTitle1 = "Lái thử"
+        stepOrinalStep7_13.subStepTitle2 = "Chạy trên làn đường"
+        stepOrinalStep7_13.subStepTitle3 = "Tăng tốc"
+        listSteps.add(stepOrinalStep7_13)
+
+        var stepOrinalStep7_14 = StepOrinalModel()
+        stepOrinalStep7_14.step = "7"
+        stepOrinalStep7_14.stepTitle = "Kiểm tra lái thử xe"
+        stepOrinalStep7_14.subStep = "7.3"
+        stepOrinalStep7_14.subStepTitle1 = "Lái thử"
+        stepOrinalStep7_14.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep7_14.subStepTitle3 = "Điều khiển ga tự động"
+        listSteps.add(stepOrinalStep7_14)
+
+        var stepOrinalStep7_15 = StepOrinalModel()
+        stepOrinalStep7_15.step = "7"
+        stepOrinalStep7_15.stepTitle = "Kiểm tra lái thử xe"
+        stepOrinalStep7_15.subStep = "7.3"
+        stepOrinalStep7_15.subStepTitle1 = "Lái thử"
+        stepOrinalStep7_15.subStepTitle2 = "Tiện ích khác"
+        stepOrinalStep7_15.subStepTitle3 = "Lựa chọn vị trí ghế lái/Bộ nhớ"
+        listSteps.add(stepOrinalStep7_15)
+
+        return listSteps
+    }
+
 }
