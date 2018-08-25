@@ -8,6 +8,8 @@ import android.os.StrictMode
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.multidex.MultiDex
+import com.blankj.utilcode.util.AppUtils
+import com.blankj.utilcode.util.CrashUtils
 import com.blankj.utilcode.util.Utils
 import com.car_inspection.R
 import com.car_inspection.data.local.prefs.PreferenceManager
@@ -66,6 +68,7 @@ class App : Application(), HasActivityInjector {
             setupLogger()
             //setupTest()
         }
+        initCrash()
         rxJava()
         setupData()
     }
@@ -92,6 +95,13 @@ class App : Application(), HasActivityInjector {
                 .lifecycle
                 .addObserver(ForegroundBackgroundListener()
                 .also { appObserver = it })
+    }
+
+    private fun initCrash(){
+        CrashUtils.init{crashInfo, _->
+            Logger.e(crashInfo)
+            AppUtils.relaunchApp()
+        }
     }
 
     private fun setupData() {

@@ -1,8 +1,11 @@
 package com.car_inspection.utils
 
+import android.content.ContentValues
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.*
+import android.net.Uri
+import android.provider.MediaStore
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
@@ -54,6 +57,23 @@ fun createFolderPicture(path: String) {
     var folder = File(path)
     if (!folder.exists())
         folder.mkdirs()
+}
+
+fun getImageContentUri(context: Context?, absPath: String): Uri? {
+    val cursor = context?.contentResolver?.query(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, arrayOf(MediaStore.Images.Media._ID), MediaStore.Images.Media.DATA + "=? ", arrayOf(absPath), null)
+    return if (cursor != null && cursor.moveToFirst()) {
+        val id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID))
+        Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, Integer.toString(id))
+
+    } else if (!absPath.isEmpty()) {
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.DATA, absPath)
+        context?.contentResolver?.insert(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+    } else {
+        null
+    }
 }
 
 private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {

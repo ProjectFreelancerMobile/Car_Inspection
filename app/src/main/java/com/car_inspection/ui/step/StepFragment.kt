@@ -23,9 +23,7 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.toolbox.ImageLoader
-import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.UriUtils
-import com.bumptech.glide.load.data.mediastore.MediaStoreUtil
 import com.car_inspection.R
 import com.car_inspection.binding.FragmentDataBindingComponent
 import com.car_inspection.data.model.StepModifyModel
@@ -43,6 +41,7 @@ import com.car_inspection.ui.record.RecordFragment
 import com.car_inspection.ui.record.RecordOTGFragment
 import com.car_inspection.utils.Constanst
 import com.car_inspection.utils.createFolderPicture
+import com.car_inspection.utils.getImageContentUri
 import com.car_inspection.utils.listenToViews
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
@@ -190,7 +189,6 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     }
 
     private fun uploadVideo(uri: Uri?) {
-        Logger.e("uploadYoutube=$uri")
         loadAccount()
         if (mChosenAccountName == null) {
             return
@@ -204,6 +202,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
             activity?.runOnUiThread {
                 showSnackBar(getString(R.string.youtube_upload_started))
             }
+            Logger.e("uploadYoutube=$uri")
             // Go back to MainActivity after upload
         }
     }
@@ -400,11 +399,11 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     }
 
     override fun uploadFileYoutube(path: File?) {
-        uploadVideo(UriUtils.file2Uri(path))
+        uploadVideo(getImageContentUri(context,path?.absolutePath?:""))
     }
 
     override fun uploadYoutube(path: String) {
-        uploadVideo(UriUtils.file2Uri(FileUtils.getFileByPath(path)))
+        uploadVideo(getImageContentUri(context,path))
     }
 
     interface Callbacks {
