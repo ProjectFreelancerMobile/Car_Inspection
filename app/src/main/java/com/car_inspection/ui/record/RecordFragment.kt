@@ -765,7 +765,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
             stopRecording()
             stopRecorder()
             releaseRecorder(false)
-            RecordOTGFragment.cameraCallbackListener.uploadFileYoutube(mVideo)
+            RecordOTGFragment.cameraCallbackListener.uploadYoutube(mVideo?.path?:"")
             return null
         }
 

@@ -398,10 +398,6 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
         }
     }
 
-    override fun uploadFileYoutube(path: File?) {
-        uploadVideo(getImageContentUri(context,path?.absolutePath?:""))
-    }
-
     override fun uploadYoutube(path: String) {
         uploadVideo(getImageContentUri(context,path))
     }
