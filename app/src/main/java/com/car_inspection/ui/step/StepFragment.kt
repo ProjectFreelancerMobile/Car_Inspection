@@ -162,7 +162,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
     override fun initView() {
         rvSubStep.layoutManager = LinearLayoutManager(activity)
-        listenToViews(btnSave, btnContinue, btnFinish, btnUpload)
+        listenToViews(btnSave, btnContinue, btnFinish)
         addFragmentRecord()
     }
 
