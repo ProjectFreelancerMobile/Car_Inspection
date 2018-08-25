@@ -1,33 +1,41 @@
 package com.car_inspection.ui.step
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.RadioGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.toolbox.ImageLoader
+import com.android.volley.toolbox.NetworkImageView
 import com.car_inspection.R
 import com.car_inspection.binding.FragmentDataBindingComponent
 import com.car_inspection.data.model.StepModifyModel
 import com.car_inspection.data.model.StepOrinalModel
 import com.car_inspection.databinding.StepFragmentBinding
-import com.car_inspection.event.CameraDefaultEvent
-import com.car_inspection.event.RecordEvent
-import com.car_inspection.library.youtube.YoutubeUploadRequest
-import com.car_inspection.library.youtube.YoutubeUploader
+import com.car_inspection.library.youtube.UploadService
+import com.car_inspection.library.youtube.util.VideoData
 import com.car_inspection.listener.CameraDefaultListener
 import com.car_inspection.listener.CameraRecordListener
+import com.car_inspection.ui.activity.StepActivity
 import com.car_inspection.ui.adapter.StepAdapter
 import com.car_inspection.ui.base.BaseDataFragment
 import com.car_inspection.ui.inputtext.SuggestTextActivity
@@ -36,10 +44,12 @@ import com.car_inspection.ui.record.RecordOTGFragment
 import com.car_inspection.utils.Constanst
 import com.car_inspection.utils.createFolderPicture
 import com.car_inspection.utils.listenToViews
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.plus.Plus
 import com.orhanobut.logger.Logger
 import com.toan_itc.core.architecture.autoCleared
 import com.toan_itc.core.utils.addFragment
-import com.toan_itc.core.utils.switchFragment
 import google.com.carinspection.DisposableImpl
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -48,8 +58,10 @@ import kotlinx.android.synthetic.main.step_fragment.*
 import java.io.File
 import java.util.concurrent.TimeUnit
 
-class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterListener, View.OnClickListener,CameraDefaultListener {
+class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterListener, View.OnClickListener, CameraDefaultListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
+
+    private val TAG = StepFragment::class.java!!.getName()
     private val REQUEST_SUGGEST_TEST = 0
     private var currentSubStepName = ""
     private var items: List<StepModifyModel> = mutableListOf()
@@ -57,12 +69,80 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     private var isTakePicture = false
     private var currentPosition = 0
     private var currentStep = 2
-    private var cameraRecordListener : CameraRecordListener? = null
+    private var cameraRecordListener: CameraRecordListener? = null
     private var binding by autoCleared<StepFragmentBinding>()
     private var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
 
+    private var mGoogleApiClient: GoogleApiClient? = null
+    private var mChosenAccountName: String? = null
+    private var mCallbacks: Callbacks? = null
+
     companion object {
         fun newInstance() = StepFragment()
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        mCallbacks = activity as Callbacks
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        mCallbacks = null
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mGoogleApiClient = GoogleApiClient.Builder(activity)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_PROFILE)
+                .build()
+    }
+
+    private fun loadAccount() {
+        val sp = PreferenceManager
+                .getDefaultSharedPreferences(activity)
+        mChosenAccountName = sp.getString(StepActivity.ACCOUNT_KEY, null)
+    }
+
+    override fun onConnected(bundle: Bundle?) {
+        mCallbacks?.onConnected(Plus.AccountApi.getAccountName(mGoogleApiClient))
+    }
+
+    override fun onConnectionSuspended(p0: Int) {
+
+    }
+
+    override fun onConnectionFailed(connectionResult: ConnectionResult?) {
+        if (connectionResult!!.hasResolution()) {
+            Toast.makeText(activity,
+                    R.string.connection_to_google_play_failed, Toast.LENGTH_SHORT)
+                    .show()
+
+            Log.e(TAG,
+                    String.format(
+                            "Connection to Play Services Failed, error: %d, reason: %s",
+                            connectionResult!!.getErrorCode(),
+                            connectionResult!!.toString()))
+            try {
+                connectionResult!!.startResolutionForResult(activity, 0)
+            } catch (e: IntentSender.SendIntentException) {
+                Log.e(TAG, e.toString(), e)
+            }
+
+        }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        mGoogleApiClient?.connect()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mGoogleApiClient?.disconnect()
     }
 
     override fun setLayoutResourceID() = R.layout.step_fragment
@@ -83,7 +163,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
     override fun initView() {
         rvSubStep.layoutManager = LinearLayoutManager(activity)
-        listenToViews(btnSave, btnContinue, btnFinish)
+        listenToViews(btnSave, btnContinue, btnFinish, btnUpload)
         addFragmentRecord()
     }
 
@@ -92,21 +172,46 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
         updateProgressStep(currentStep)
 
         createFolderPicture(Constanst.getFolderVideoPath())
-        uploadYoutube(Constanst.getFolderVideoPath() + "test.mp4")
     }
 
-    fun uploadYoutube(path: String) {
-        var uri = Uri.parse(File(path).toString())
-        var request = YoutubeUploadRequest()
-        request.uri = uri
-        request.title = "MPRJ Video Tite"
-        request.description = "MPRJ Video Test"
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setProfileInfo()
+        loadAccount()
+    }
 
-        YoutubeUploader.upload(request, { progress -> Logger.e("percent upload", progress) }, activity)
+    fun setProfileInfo() {
+        //not sure if mGoogleapiClient.isConnect is appropriate...
+        if (!mGoogleApiClient!!.isConnected() || Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) == null) {
+
+        } else {
+            val currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient)
+        }
+    }
+    fun uploadVideo(uri: Uri) {
+        loadAccount()
+        if (mChosenAccountName == null) {
+            return
+        }
+        // if a video is picked or recorded.
+        if (uri != null) {
+            val uploadIntent = Intent(activity, UploadService::class.java)
+            uploadIntent.setData(uri)
+            uploadIntent.putExtra(StepActivity.ACCOUNT_KEY, mChosenAccountName)
+            activity?.startService(uploadIntent)
+            Toast.makeText(activity, R.string.youtube_upload_started,
+                    Toast.LENGTH_LONG).show()
+            // Go back to MainActivity after upload
+        }
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.btnUpload ->  {
+                val uri = Uri.parse("content://media/external/video/media/2192")
+                uploadVideo(uri)
+            }
+
             R.id.btnSave -> {
                 saveDataStep(currentStep)
                 btnContinue.isActive = true
@@ -285,7 +390,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
     override fun showCameraDefault() {
         activity?.apply {
-            if(!isFinishing){
+            if (!isFinishing) {
                 fragmentRecord.isGone = true
                 fragmentRecordDefault.isVisible = true
                 Logger.e("onCameraDefaultEventonCameraDefaultEvent")
@@ -294,5 +399,13 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
                 activity?.addFragment(fragment, R.id.fragmentRecordDefault)
             }
         }
+    }
+
+    interface Callbacks {
+        fun onGetImageLoader(): ImageLoader
+
+        fun onVideoSelected(video: VideoData)
+
+        fun onConnected(connectedAccountName: String)
     }
 }

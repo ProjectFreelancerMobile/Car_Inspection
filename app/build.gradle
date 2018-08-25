@@ -81,6 +81,7 @@ android {
         lintConfig file("$projectDir/lint.xml")
     }
     packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/services/javax.annotation.processing.Processor'
         exclude 'LICENSE.txt'
         exclude 'META-INF/license/LICENSE.base64.txt'
@@ -149,14 +150,13 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
 
     // youtube
-    implementation 'com.google.android.gms:play-services-auth:10.2.1'
-    implementation 'pub.devrel:easypermissions:0.3.0'
-    implementation('com.google.api-client:google-api-client-android:1.24.1') {
-        exclude group: 'org.apache.httpcomponents'
-    }
-    implementation('com.google.apis:google-api-services-youtube:v3-rev205-1.24.1') {
-        exclude group: 'org.apache.httpcomponents'
-    }
+    implementation 'com.google.apis:google-api-services-youtube:v3-rev120-1.19.0'
+    implementation 'com.google.http-client:google-http-client-android:+'
+    implementation 'com.google.api-client:google-api-client-android:+'
+    implementation 'com.google.api-client:google-api-client-gson:+'
+    implementation 'com.google.code.gson:gson:2.2.4'
+    implementation 'com.mcxiaoke.volley:library:1.0.18'
+    implementation 'com.google.android.gms:play-services-plus:7.8.0'
     //picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
     //FlowLayout
