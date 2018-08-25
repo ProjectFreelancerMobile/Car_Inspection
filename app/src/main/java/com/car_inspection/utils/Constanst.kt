@@ -4,7 +4,7 @@ import com.jiangdg.usbcamera.UVCCameraHelper
 
 class Constanst {
     companion object {
-        val SAVE_PATH: String = UVCCameraHelper.ROOT_PATH +"CarInspection"
+        private val SAVE_PATH: String = UVCCameraHelper.ROOT_PATH +"CarInspection"
         var CAR_CODE = ""
 
         fun getFolderPicturePath(): String = "$SAVE_PATH/Picture/"

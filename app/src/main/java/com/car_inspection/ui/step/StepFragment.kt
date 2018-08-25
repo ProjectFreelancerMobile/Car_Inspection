@@ -12,6 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioGroup
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -175,7 +177,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
         if (stepOrinalModels != null && stepOrinalModels.size > 0) {
             for (stepOrinalModel in stepOrinalModels)
                 run {
-                    var stepModifyModel = StepModifyModel()
+                    val stepModifyModel = StepModifyModel()
                     stepModifyModel.step = stepOrinalModel.step
                     stepModifyModel.subStep = stepOrinalModel.subStep
                     stepModifyModel.stepTitle = stepOrinalModel.stepTitle
@@ -217,15 +219,11 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     }
 
     fun autoScrollAfterCheckComplete() {
-        rvSubStep.post(object : Runnable {
-            override fun run() {
-                rvSubStep.smoothScrollBy(0, stepAdapter.heightItem)
-            }
-        })
+        rvSubStep.post { rvSubStep.smoothScrollBy(0, stepAdapter.heightItem) }
     }
 
     override fun onTextNoteClickListener(v: View, position: Int) {
-        var intent = Intent(activity, SuggestTextActivity::class.java)
+        val intent = Intent(activity, SuggestTextActivity::class.java)
         intent.putExtra("position", position)
         intent.putExtra("note", items.get(position).note)
         startActivityForResult(intent, REQUEST_SUGGEST_TEST)
@@ -266,7 +264,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
 
     private fun showLayoutTakepicture() {
-        cameraRecordListener?.recordEvent(true,currentSubStepName)
+        cameraRecordListener?.recordEvent(true, currentStep, currentSubStepName)
         isTakePicture = true
     }
 
@@ -286,10 +284,11 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     }
 
     override fun showCameraDefault() {
-        Logger.e("onCameraDefaultEventonCameraDefaultEvent")
         activity?.apply {
             if(!isFinishing){
-                Logger.e("onCameraDefaultEventonCameraDefaultEven111t")
+                fragmentRecord.isGone = true
+                fragmentRecordDefault.isVisible = true
+                Logger.e("onCameraDefaultEventonCameraDefaultEvent")
                 val fragment = RecordFragment.newInstance()
                 cameraRecordListener = fragment
                 activity?.addFragment(fragment, R.id.fragmentRecordDefault)

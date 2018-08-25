@@ -1,14 +1,12 @@
 package com.car_inspection.ui.record
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.hardware.usb.UsbDevice
 import android.view.Surface
 import android.view.View
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.car_inspection.R
-import com.car_inspection.event.RecordEvent
 import com.car_inspection.listener.CameraDefaultListener
 import com.car_inspection.listener.CameraRecordListener
 import com.car_inspection.ui.base.BaseFragment
@@ -25,8 +23,6 @@ import com.serenegiant.usb.common.AbstractUVCCameraHandler
 import com.serenegiant.usb.encoder.RecordParams
 import com.serenegiant.usb.widget.CameraViewInterface
 import kotlinx.android.synthetic.main.record_otg_fragment.*
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
 class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, CameraViewInterface.Callback, View.OnClickListener, CameraRecordListener{
@@ -36,6 +32,7 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
     private var isRequest: Boolean = false
     private var isPreview: Boolean = false
     private var currentSubStepName :String = ""
+    private var currentStep = 2
 
     companion object {
         lateinit var cameraCallbackListener: CameraDefaultListener
@@ -107,12 +104,12 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
                 mCameraHelper?.apply {
                     setDefaultFrameFormat(UVCCameraHelper.FRAME_FORMAT_YUYV)
                     initUSBMonitor(activity, mUVCCameraView, listener)
+                    setOnPreviewFrameListener(AbstractUVCCameraHandler.OnPreViewResultListener { })
                     if (mCameraHelper == null || mCameraHelper?.usbDeviceCount == 0) {
                         showSnackBar("check no usb camera")
                         cameraCallbackListener.showCameraDefault()
                         return
                     }
-                    setOnPreviewFrameListener(AbstractUVCCameraHandler.OnPreViewResultListener { })
                     setModelValue(UVCCameraHelper.MODE_BRIGHTNESS, 80)
                     setModelValue(UVCCameraHelper.MODE_CONTRAST, 60)
                 }
@@ -128,8 +125,8 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
             R.id.btnTakePicture -> {
                 mCameraHelper?.apply {
                     if(isCameraOpened){
-                        createFolderPicture(Constanst.getFolderPicturePath())
-                        val picPath = Constanst.getFolderPicturePath() + System.currentTimeMillis()+ UVCCameraHelper.SUFFIX_JPEG
+                        com.blankj.utilcode.util.FileUtils.createOrExistsDir(Constanst.getFolderPicturePath()+ "Step$currentStep")
+                        val picPath = Constanst.getFolderPicturePath() + "Step$currentStep/$currentSubStepName"+ UVCCameraHelper.SUFFIX_JPEG
                         capturePicture(picPath) { path ->
                             showSnackBar("Save picture path：$path")
                             overlay(activity!!, path, currentSubStepName)
@@ -248,12 +245,13 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
         mCameraHelper?.release()
     }
 
-    override fun recordEvent(isTake: Boolean, step: String) {
+    override fun recordEvent(isTake: Boolean, step: Int, subStep: String) {
         activity?.apply {
             if(!isFinishing){
                 when(isTake){
                     true ->{
-                        this@RecordOTGFragment.currentSubStepName = step
+                        this@RecordOTGFragment.currentStep = step
+                        this@RecordOTGFragment.currentSubStepName = subStep
                         mBtnRecord?.isGone = true
                         btnTakePicture?.isVisible = true
                         tvTitleStep?.isVisible = true

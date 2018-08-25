@@ -82,6 +82,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
     private var mTotalProcessFrameTime: Long = 0
     private var mRecordFragments: Stack<RecordModel>? = null
     private var currentSubStepName = ""
+    private var currentStep = 2
     private val sampleAudioRateInHz = 44100
     /* The sides of width and height are based on camera orientation.
     That is, the preview size is the size before it is rotated. */
@@ -117,31 +118,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
     companion object {
         fun newInstance() = RecordFragment()
     }
-    /*activity?.apply {
-                captureFragment = if (isCameraOTG())
-                    CaptureOTGFragment.newInstance()
-                else {
-                    val builder = Configuration.Builder()
-                    builder.setCamera(Configuration.CAMERA_FACE_FRONT)
-                            .setFlashMode(Configuration.FLASH_MODE_OFF)
-                            .setMediaAction(Configuration.MEDIA_ACTION_PHOTO)
-                    CameraFragment.newInstance(builder.build())
-                }
-                addFragment(captureFragment!!, R.id.fragmentCapture)
-            }*/
 
-    /*if (captureFragment != null) {
-                    createFolderPicture(Constanst.getFolderPicturePath())
-                    cameraFragment?.takePhotoOrCaptureVideo(object : CameraFragmentResultAdapter() {
-                        override fun onPhotoTaken(bytes: ByteArray, filePath: String) {
-                            Log.e("file images", "----------@@@@@@@@@@@@@@   $filePath")
-                            stepAdapter.items?.get(currentPosition)?.imagepaths?.add(filePath)
-                            showLayoutVideo()
-                            overlay(activity!!, filePath, R.mipmap.ic_launcher_foreground, currentSubStepName)
-                        }
-                    }, Constanst.getFolderPicturePath(), currentSubStepName)
-
-                }*/
     override fun onClick(view: View?) {
         when(view?.id){
             R.id.mBtnReset -> {
@@ -204,8 +181,9 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
                             showSnackBar("Save picture path：$filePath")
                             overlay(activity!!, filePath, currentSubStepName)
                             activity?.removeFragment(takeFragment!!)
+                            recordEvent()
                         }
-                    }, Constanst.getFolderPicturePath(), currentSubStepName)
+                    }, Constanst.getFolderPicturePath(), "Step$currentStep/$currentSubStepName")
 
                 }
             }
@@ -800,13 +778,14 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
 
     }
 
-    override fun recordEvent(isTake: Boolean, step: String) {
+    override fun recordEvent(isTake: Boolean, step: Int, subStep: String) {
         activity?.apply {
             if(!isFinishing){
                 when(isTake){
                     true ->{
                         Logger.e("RecordEvent")
-                        currentSubStepName = step
+                        currentStep = step
+                        currentSubStepName = subStep
                         pauseRecording()
                         val builder = Configuration.Builder()
                         builder.setCamera(Configuration.CAMERA_FACE_FRONT)
