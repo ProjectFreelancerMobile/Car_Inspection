@@ -160,6 +160,7 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
 
                                 override fun onRecordResult(videoPath: String) {
                                     showSnackBar("Save video path: $videoPath")
+                                    cameraCallbackListener.uploadYoutube(videoPath)
                                 }
                             })
                             // if you only want to push stream,please call like this

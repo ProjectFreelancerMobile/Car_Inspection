@@ -18,12 +18,9 @@ import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import com.car_inspection.R
 import com.car_inspection.data.model.FrameToRecord
 import com.car_inspection.data.model.RecordModel
-import com.car_inspection.event.RecordEvent
 import com.car_inspection.library.CameraHelper
 import com.car_inspection.library.MiscUtils
 import com.car_inspection.listener.CameraRecordListener
@@ -38,7 +35,6 @@ import com.github.florent37.camerafragment.listeners.CameraFragmentResultAdapter
 import com.orhanobut.logger.Logger
 import com.toan_itc.core.utils.addFragment
 import com.toan_itc.core.utils.removeFragment
-import kotlinx.android.synthetic.main.camera_fragment.*
 import kotlinx.android.synthetic.main.record_fragment.*
 import org.bytedeco.javacpp.avcodec
 import org.bytedeco.javacpp.avutil
@@ -46,8 +42,6 @@ import org.bytedeco.javacv.FFmpegFrameFilter
 import org.bytedeco.javacv.FFmpegFrameRecorder
 import org.bytedeco.javacv.Frame
 import org.bytedeco.javacv.FrameFilter
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import java.io.File
 import java.io.IOException
 import java.nio.ByteBuffer
@@ -471,7 +465,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
             }
         }
         mRecordFragments?.clear()
-        activity?.runOnUiThread(Runnable { mBtnReset?.visibility = View.INVISIBLE })
+        activity?.runOnUiThread { mBtnReset?.visibility = View.INVISIBLE }
     }
 
     private fun startRecording() {
@@ -508,11 +502,11 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
             val recordModel = RecordModel()
             recordModel.startTimestamp = System.currentTimeMillis()
             mRecordFragments?.push(recordModel)
-            activity?.runOnUiThread(Runnable {
+            activity?.runOnUiThread {
                 mBtnReset.visibility = View.VISIBLE
                 mBtnSwitchCamera.visibility = View.INVISIBLE
                 mBtnResumeOrPause.setText(R.string.pause)
-            })
+            }
             mRecording = true
         }
     }
@@ -550,13 +544,11 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
     internal inner class AudioRecordThread : RunningThread() {
         private var mAudioRecord: AudioRecord? = null
         private val audioData: ShortBuffer
-
         init {
             val bufferSize = AudioRecord.getMinBufferSize(sampleAudioRateInHz,
                     AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT)
             mAudioRecord = AudioRecord(MediaRecorder.AudioSource.MIC, sampleAudioRateInHz,
                     AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, bufferSize)
-
             audioData = ShortBuffer.allocate(bufferSize)
         }
 
@@ -773,6 +765,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
             stopRecording()
             stopRecorder()
             releaseRecorder(false)
+            RecordOTGFragment.cameraCallbackListener.uploadFileYoutube(mVideo)
             return null
         }
 

@@ -182,8 +182,11 @@ public class UploadService extends IntentService {
             Log.e(getApplicationContext().toString(), e.getMessage());
         } finally {
             try {
-                fileInputStream.close();
-            } catch (IOException e) {
+                if (fileInputStream != null) {
+                    fileInputStream.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 // ignore
             }
         }

@@ -15,9 +15,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.RadioGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -25,7 +23,9 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.toolbox.ImageLoader
-import com.android.volley.toolbox.NetworkImageView
+import com.blankj.utilcode.util.FileUtils
+import com.blankj.utilcode.util.UriUtils
+import com.bumptech.glide.load.data.mediastore.MediaStoreUtil
 import com.car_inspection.R
 import com.car_inspection.binding.FragmentDataBindingComponent
 import com.car_inspection.data.model.StepModifyModel
@@ -61,7 +61,7 @@ import java.util.concurrent.TimeUnit
 class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterListener, View.OnClickListener, CameraDefaultListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
 
-    private val TAG = StepFragment::class.java!!.getName()
+    private val TAG = StepFragment::class.java.name
     private val REQUEST_SUGGEST_TEST = 0
     private var currentSubStepName = ""
     private var items: List<StepModifyModel> = mutableListOf()
@@ -123,10 +123,10 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
             Log.e(TAG,
                     String.format(
                             "Connection to Play Services Failed, error: %d, reason: %s",
-                            connectionResult!!.getErrorCode(),
-                            connectionResult!!.toString()))
+                            connectionResult.errorCode,
+                            connectionResult.toString()))
             try {
-                connectionResult!!.startResolutionForResult(activity, 0)
+                connectionResult.startResolutionForResult(activity, 0)
             } catch (e: IntentSender.SendIntentException) {
                 Log.e(TAG, e.toString(), e)
             }
@@ -180,15 +180,17 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
         loadAccount()
     }
 
-    fun setProfileInfo() {
+    private fun setProfileInfo() {
         //not sure if mGoogleapiClient.isConnect is appropriate...
-        if (!mGoogleApiClient!!.isConnected() || Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) == null) {
+        if (!mGoogleApiClient!!.isConnected || Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) == null) {
 
         } else {
             val currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient)
         }
     }
-    fun uploadVideo(uri: Uri) {
+
+    private fun uploadVideo(uri: Uri?) {
+        Logger.e("uploadYoutube=$uri")
         loadAccount()
         if (mChosenAccountName == null) {
             return
@@ -196,22 +198,18 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
         // if a video is picked or recorded.
         if (uri != null) {
             val uploadIntent = Intent(activity, UploadService::class.java)
-            uploadIntent.setData(uri)
+            uploadIntent.data = uri
             uploadIntent.putExtra(StepActivity.ACCOUNT_KEY, mChosenAccountName)
             activity?.startService(uploadIntent)
-            Toast.makeText(activity, R.string.youtube_upload_started,
-                    Toast.LENGTH_LONG).show()
+            activity?.runOnUiThread {
+                showSnackBar(getString(R.string.youtube_upload_started))
+            }
             // Go back to MainActivity after upload
         }
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.btnUpload ->  {
-                val uri = Uri.parse("content://media/external/video/media/2192")
-                uploadVideo(uri)
-            }
-
             R.id.btnSave -> {
                 saveDataStep(currentStep)
                 btnContinue.isActive = true
@@ -399,6 +397,14 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
                 activity?.addFragment(fragment, R.id.fragmentRecordDefault)
             }
         }
+    }
+
+    override fun uploadFileYoutube(path: File?) {
+        uploadVideo(UriUtils.file2Uri(path))
+    }
+
+    override fun uploadYoutube(path: String) {
+        uploadVideo(UriUtils.file2Uri(FileUtils.getFileByPath(path)))
     }
 
     interface Callbacks {
