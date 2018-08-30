@@ -6,21 +6,30 @@ import android.content.res.Resources
 import android.graphics.*
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import com.car_inspection.BuildConfig
 import com.car_inspection.R
 import com.car_inspection.app.Constants
+import com.car_inspection.data.model.PictureScreenShot
+import google.com.carinspection.DisposableImpl
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.io.OutputStream
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -92,6 +101,7 @@ private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int,
     }
     return inSampleSize
 }
+
 private fun decodeSampledBitmapFromResource(res: Resources, resId: Int,
                                             reqWidth: Int, reqHeight: Int): Bitmap {
     // First decode with inJustDecodeBounds=true to check dimensions
@@ -106,11 +116,12 @@ private fun decodeSampledBitmapFromResource(res: Resources, resId: Int,
     options.inJustDecodeBounds = false
     return BitmapFactory.decodeResource(res, resId, options)
 }
+
 fun overlay(context: Context, filePath: String, text: String) {
-    var icon = decodeSampledBitmapFromResource(context.resources, R.drawable.logo, 150,60)
+    var icon = decodeSampledBitmapFromResource(context.resources, R.drawable.logo, 150, 60)
     icon = Bitmap.createScaledBitmap(icon, 150, 60, true)
     val bmp1 = BitmapFactory.decodeFile(filePath)
-    if(icon == null || bmp1 == null){
+    if (icon == null || bmp1 == null) {
         return
     }
     val bmOverlay = Bitmap.createBitmap(bmp1.width, bmp1.height, bmp1.config)
@@ -144,5 +155,94 @@ fun overlay(context: Context, filePath: String, text: String) {
         }
 
     }
+
+}
+
+fun getSaveImageFilePath(fileName: String, view: View): String {
+
+    createFolderPicture(Constanst.getFolderPictureInsertVideoPath())
+
+    var imageFile = File(Constanst.getFolderPictureInsertVideoPath() + "$fileName")
+
+    val selectedOutputPath = imageFile.absolutePath
+
+    view.setDrawingCacheEnabled(true)
+    view.buildDrawingCache()
+    var bitmap = Bitmap.createBitmap(view.getDrawingCache())
+
+    val maxSize = 1080
+
+    val bWidth = bitmap.getWidth()
+    val bHeight = bitmap.getHeight()
+
+    if (bWidth > bHeight) {
+        val imageHeight = Math.abs(maxSize * (bitmap.getWidth() as Float / bitmap.getHeight() as Float)).toInt()
+        bitmap = Bitmap.createScaledBitmap(bitmap, maxSize, imageHeight, true)
+    } else {
+        val imageWidth = Math.abs(maxSize * (bitmap.getWidth() as Float / bitmap.getHeight() as Float)).toInt()
+        bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, maxSize, true)
+    }
+    view.setDrawingCacheEnabled(false)
+    view.destroyDrawingCache()
+
+    var fOut: OutputStream? = null
+    try {
+        fOut = FileOutputStream(imageFile)
+
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut)
+        fOut!!.flush()
+        fOut!!.close()
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+
+    return selectedOutputPath
+}
+
+var compositeDisposable = CompositeDisposable()
+var currentMiliSeconds: Long = 0
+var listPictureVideo = mutableListOf<PictureScreenShot>()
+
+fun prepareScreenShotView() {
+    compositeDisposable?.clear()
+    listPictureVideo?.clear()
+    currentMiliSeconds = 0
+    compositeDisposable.add(Observable.interval(10, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(Schedulers.newThread())
+            .subscribeWith(object : DisposableImpl<Long>() {
+                override fun onNext(t: Long) {
+                    currentMiliSeconds += 10
+                }
+            })
+    )
+}
+
+fun disableScreenShotView() {
+    compositeDisposable.clear()
+}
+
+fun screenShot(view: View) {
+    val bitmap = Bitmap.createBitmap(view.width,
+            view.height, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(bitmap)
+    view.draw(canvas)
+    createFolderPicture(Constanst.getFolderPictureInsertVideoPath())
+    var imageFile = File(Constanst.getFolderPictureInsertVideoPath() + "$currentMiliSeconds.png")
+    store(bitmap, imageFile)
+    listPictureVideo.add(PictureScreenShot(imageFile.absolutePath, currentMiliSeconds))
+    Log.e("thời gian video", "thời gian của video là: $currentMiliSeconds")
+}
+
+fun store(bm: Bitmap, imageFile: File) {
+    try {
+        val fOut = FileOutputStream(imageFile)
+        bm.compress(Bitmap.CompressFormat.PNG, 85, fOut)
+        fOut.flush()
+        fOut.close()
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+
 }
 

@@ -56,10 +56,11 @@ class StepAdapter(var context: Context) : RecyclerView.Adapter<StepAdapter.StepV
             }
         } else holder.rgGPF.clearCheck()
         binding = false
-        if (!binding)
-            holder.rgGPF.setOnCheckedChangeListener { group, checkId ->
+
+        holder.rgGPF.setOnCheckedChangeListener { group, checkId ->
+            if (!binding)
                 stepAdapterListener?.onRadioGroupCheckChangeListner(group, checkId, position)
-            }
+        }
 
         holder.tvNote.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {

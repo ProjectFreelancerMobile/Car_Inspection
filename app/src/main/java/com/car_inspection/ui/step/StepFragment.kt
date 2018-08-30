@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -30,6 +31,7 @@ import com.car_inspection.data.model.StepModifyModel
 import com.car_inspection.data.model.StepOrinalModel
 import com.car_inspection.databinding.StepFragmentBinding
 import com.car_inspection.library.youtube.UploadService
+import com.car_inspection.library.youtube.util.Utils
 import com.car_inspection.library.youtube.util.VideoData
 import com.car_inspection.listener.CameraDefaultListener
 import com.car_inspection.listener.CameraRecordListener
@@ -39,10 +41,7 @@ import com.car_inspection.ui.base.BaseDataFragment
 import com.car_inspection.ui.inputtext.SuggestTextActivity
 import com.car_inspection.ui.record.RecordFragment
 import com.car_inspection.ui.record.RecordOTGFragment
-import com.car_inspection.utils.Constanst
-import com.car_inspection.utils.createFolderPicture
-import com.car_inspection.utils.getImageContentUri
-import com.car_inspection.utils.listenToViews
+import com.car_inspection.utils.*
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.plus.Plus
@@ -55,10 +54,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.step_fragment.*
 import java.io.File
+import java.io.FileOutputStream
 import java.util.concurrent.TimeUnit
 
 class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterListener, View.OnClickListener, CameraDefaultListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-
 
     private val TAG = StepFragment::class.java.name
     private val REQUEST_SUGGEST_TEST = 0
@@ -89,6 +88,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
         super.onDetach()
         mCallbacks = null
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mGoogleApiClient = GoogleApiClient.Builder(activity)
@@ -177,6 +177,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
         super.onViewCreated(view, savedInstanceState)
         setProfileInfo()
         loadAccount()
+        // getSaveImageFilePath("test",layoutStep)
     }
 
     private fun setProfileInfo() {
@@ -333,6 +334,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
     override fun onRadioGroupCheckChangeListner(group: RadioGroup, checkId: Int, position: Int) {
         currentPosition = position
+        screenShot(layoutStep)
         currentSubStepName = stepAdapter.items?.get(position)?.subStepTitle3!!
         when (checkId) {
             R.id.cbG -> {
@@ -399,7 +401,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     }
 
     override fun uploadYoutube(path: String) {
-        uploadVideo(getImageContentUri(context,path))
+        uploadVideo(getImageContentUri(context, path))
     }
 
     interface Callbacks {

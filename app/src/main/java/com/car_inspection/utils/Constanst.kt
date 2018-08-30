@@ -11,5 +11,6 @@ class Constanst {
 
         fun getFolderPicturePath(): String = "$SAVE_PATH/Picture/"
         fun getFolderVideoPath(): String = "$SAVE_PATH/Record/"
+        fun getFolderPictureInsertVideoPath() =  "$SAVE_PATH/PictureVideo/"
     }
 }
