@@ -26,6 +26,7 @@ versions.okHttpLogging      = "2.0.7"
 versions.permisstion        = "4.0.0-alpha1"
 //Utils
 versions.utilcode           = "1.19.2"
+versions.rich               = "2.3.1"
 versions.realm_extensions   = "2.2.0"
 //Libraries: Development
 versions.leakCanary         = "1.6.1"
@@ -66,7 +67,7 @@ utils.utilcode              = "com.blankj:utilcode:$versions.utilcode"
 utils.ktx                   = "androidx.core:core-ktx:$versions.support"
 //utils.anko_commons          = "org.jetbrains.anko:anko-commons:$versions.supportAnko"
 //utils.kotlinify             = "com.github.GilGoldzweig.kotlinify:reactive:$versions.kotlinify"
-//utils.rich                  = "com.github.WindSekirun:RichUtilsKt:$versions.rich"
+utils.rich                  = "com.github.WindSekirun:RichUtilsKt:$versions.rich"
 //utils.realm_extensions      = "com.github.vicpinm:krealmextensions:$versions.realm_extensions"
 deps.utils = utils
 

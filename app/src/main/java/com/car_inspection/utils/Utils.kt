@@ -228,13 +228,13 @@ fun screenShot(view: View) {
     val canvas = Canvas(bitmap)
     view.draw(canvas)
     createFolderPicture(Constanst.getFolderPictureInsertVideoPath())
-    var imageFile = File(Constanst.getFolderPictureInsertVideoPath() + "$currentMiliSeconds.png")
+    val imageFile = File(Constanst.getFolderPictureInsertVideoPath() + "$currentMiliSeconds.png")
     store(bitmap, imageFile)
     listPictureVideo.add(PictureScreenShot(imageFile.absolutePath, currentMiliSeconds))
     Log.e("thời gian video", "thời gian của video là: $currentMiliSeconds")
 }
 
-fun store(bm: Bitmap, imageFile: File) {
+private fun store(bm: Bitmap, imageFile: File) {
     try {
         val fOut = FileOutputStream(imageFile)
         bm.compress(Bitmap.CompressFormat.PNG, 85, fOut)

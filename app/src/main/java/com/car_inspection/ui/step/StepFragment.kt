@@ -53,6 +53,9 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.step_fragment.*
+import nl.bravobit.ffmpeg.ExecuteBinaryResponseHandler
+import nl.bravobit.ffmpeg.FFmpeg
+import pyxis.uzuki.live.richutilskt.utils.runDelayed
 import java.io.File
 import java.io.FileOutputStream
 import java.util.concurrent.TimeUnit
@@ -401,7 +404,13 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     }
 
     override fun uploadYoutube(path: String) {
-        uploadVideo(getImageContentUri(context, path))
+        if (FFmpeg.getInstance(context).isSupported) {
+            // ffmpeg is supported
+            ffmpegAddPicture(path)
+        }
+        else {
+            uploadVideo(getImageContentUri(context, path))
+        }
     }
 
     interface Callbacks {
@@ -412,75 +421,45 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
         fun onConnected(connectedAccountName: String)
     }
 
+    /*filter_complex : hiệu ứng của video và audio, [1:v] lấy input logo.png (1 index của logo trong câu lệnh,
+     v: video vd [0:a] thì trong đó 0 là indext và a là audio tức audio của video);
+     fade=out:st=30:d=1:alpha=1 di chuyển trong 30px 1s có alpha di chuyển bằng 1, overlay vị trí hiển thị của logo.*/
+    private fun ffmpegAddPicture(pathvideo: String) {
+        val pathvideoNew = pathvideo.replace(".mp4","_record.mp4")
+        //TODO:Test
+       /* val command =  arrayOf("ffmpeg -i in.mp4 -framerate 30000/1001 -loop 1 -i logo.png -filter_complex\n" +
+                "  \"[1:v] fade=out:st=30:d=1:alpha=1 [ov]; [0:v][ov] overlay=10:10 [v]\" -map \"[v]\"\n" +
+                "  -map 0:a -c:v libx264 -c:a copy -shortest out.mp4")*/
+        val command =  arrayOf("ffmpeg -i $pathvideo -framerate 25 -loop 1 -i logo.png -filter_complex \"[1:v] " +
+                "fade=out:st=30:d=1:alpha=1 [ov]; [0:v][ov] overlay=10:10 [v]\" -map \"[v]\" -map 0:a -c:v libx264 -c:a copy -shortest $pathvideoNew")
+        val task = FFmpeg.getInstance(context).execute(command,object : ExecuteBinaryResponseHandler() {
 
-   /* if (FFmpeg.getInstance(this).isSupported())
-    {
-        // ffmpeg is supported
-        versionFFmpeg()
-        //ffmpegTestTaskQuit();
+            override fun onStart() {
+                super.onStart()
+                Logger.e("onStart")
+            }
+
+            override fun onSuccess(message: String?) {
+                super.onSuccess(message)
+                Logger.e("onSuccess:$message")
+            }
+
+            override fun onProgress(message: String?) {
+                super.onProgress(message)
+                Logger.e("onProgress:$message")
+            }
+
+            override fun onFinish() {
+                super.onFinish()
+                Logger.e("onFinish")
+                uploadVideo(getImageContentUri(context, pathvideoNew))
+            }
+
+            override fun onFailure(message: String?) {
+                super.onFailure(message)
+                Logger.e("onFailure:$message")
+            }
+        })
+        runDelayed(1000) { task.sendQuitSignal()}
     }
-    else
-    {
-        // ffmpeg is not supported
-        Timber.e("ffmpeg not supported!")
-    }
-
-    if (FFprobe.getInstance(this).isSupported())
-    {
-        // ffprobe is supported
-        versionFFprobe()
-    }
-    else
-    {
-        // ffprobe is not supported
-        Timber.e("ffprobe not supported!")
-    }
-
-    private void ffmpegTestTaskQuit() {
-        String[] command = {"-i", "input.mp4", "output.mov"};
-
-        final FFtask task = FFmpeg.getInstance(this).execute(command, new ExecuteBinaryResponseHandler() {
-            @Override
-            public void onStart() {
-                Timber.d( "on start");
-            }
-
-            @Override
-            public void onFinish() {
-                Timber.d("on finish");
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Timber.d("RESTART RENDERING");
-                        ffmpegTestTaskQuit();
-                    }
-                }, 5000);
-            }
-
-            @Override
-            public void onSuccess(String message) {
-                Timber.d(message);
-            }
-
-            @Override
-            public void onProgress(String message) {
-                Timber.d(message);
-            }
-
-            @Override
-            public void onFailure(String message) {
-                Timber.d(message);
-            }
-        });
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Timber.d( "STOPPING THE RENDERING!");
-                task.sendQuitSignal();
-            }
-        }, 8000);
-    }
-
-    */
 }
