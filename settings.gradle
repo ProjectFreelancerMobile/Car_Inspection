@@ -1,3 +1,4 @@
 include ':app'
 include ':Core'
 include ':libusbcamera'
+include ':android-ffmpeg'

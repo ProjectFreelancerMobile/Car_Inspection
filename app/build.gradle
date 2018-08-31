@@ -147,6 +147,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':Core')
     implementation project(':libusbcamera')
+    implementation project(':android-ffmpeg')
     implementation 'com.android.support:design:27.1.1'
 
     // youtube
