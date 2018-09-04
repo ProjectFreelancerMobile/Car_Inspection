@@ -43,7 +43,7 @@ class StepAdapter(var context: Context) : RecyclerView.Adapter<StepAdapter.StepV
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: StepViewHolder, position: Int) {
         if (!TextUtils.isEmpty(items?.get(position)?.subStep) && !TextUtils.isEmpty(items?.get(position)?.subStepTitle2))
-            holder.tvSubStep.text = items?.get(position)?.subStep + " " + items?.get(position)?.subStepTitle2
+            holder.tvSubStep.text = items?.get(position)?.subStepTitle2
         else holder.tvSubStep.visibility = View.GONE
         if (!TextUtils.isEmpty(items?.get(position)?.subStepTitle3))
             holder.tvSubStepTitle.text = items?.get(position)?.subStepTitle3
@@ -83,7 +83,7 @@ class StepAdapter(var context: Context) : RecyclerView.Adapter<StepAdapter.StepV
 
     fun isFinishCheckItem(): Boolean {
         for (item in this.items!!)
-            if (TextUtils.isEmpty(item.rating))
+            if (TextUtils.isEmpty(item.rating) && !item.canIgnore)
                 return false
         return true
     }

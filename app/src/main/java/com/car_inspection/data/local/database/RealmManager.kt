@@ -1,3 +1,4 @@
+
 package com.car_inspection.data.local.database
 
 import com.car_inspection.app.Constants
@@ -61,7 +62,6 @@ class RealmManager : RepositoryData {
                             4-> stepOrinal.subStepTitle3 = "Kính chiếu hậu"
                             5-> stepOrinal.subStepTitle3 = "Độ kín khít"
                         }
-
                         listStep.add(stepOrinal)
                     }
                     Logger.e("stepOrinalModels=" + listStep.toString())
@@ -76,7 +76,16 @@ class RealmManager : RepositoryData {
             4 -> listStep = dataStep4()
             5 -> listStep = dataStep5()
             6 -> listStep = dataStep6()
-            7->listStep = dataStep7()
+            7-> listStep = dataStep7()
+            8->listStep = dataStep8()
+            9->listStep = dataStep9()
+            10->listStep = dataStep10()
+            11->listStep = dataStep11()
+            12->listStep = dataStep12()
+            13->listStep = dataStep13()
+            14->listStep = dataStep14()
+            15->listStep = dataStep15()
+            16->listStep = dataStep16()
         }
 
         return listStep
@@ -125,10 +134,77 @@ class RealmManager : RepositoryData {
             }
         }
     }
+fun dataStep2(): MutableList<StepOrinalModel> {
+    var listSteps = mutableListOf<StepOrinalModel>()
+    var stepOrinalStep2_7 = StepOrinalModel()
+    stepOrinalStep2_7.step = "2"
+    stepOrinalStep2_7.stepTitle = "Kiểm tra bên ngoài xe"
+    stepOrinalStep2_7.subStep = "2.2"
+    stepOrinalStep2_7.subStepTitle1 = "bên ngoài xe"
+    stepOrinalStep2_7.subStepTitle2 = "Phía trước"
+    stepOrinalStep2_7.subStepTitle3 = "Nắp capo"
+    listSteps.add(stepOrinalStep2_7)
 
-    fun dataStep2(): MutableList<StepOrinalModel> {
+    var stepOrinalStep2_8 = StepOrinalModel()
+    stepOrinalStep2_8.step = "2"
+    stepOrinalStep2_8.stepTitle = "Kiểm tra bên ngoài xe"
+    stepOrinalStep2_8.subStep = "2.2"
+    stepOrinalStep2_8.subStepTitle1 = "bên ngoài xe"
+    stepOrinalStep2_8.subStepTitle2 = "Phía trước"
+    stepOrinalStep2_8.subStepTitle3 = "Kính xe"
+    listSteps.add(stepOrinalStep2_8)
+
+    var stepOrinalStep2_9 = StepOrinalModel()
+    stepOrinalStep2_9.step = "2"
+    stepOrinalStep2_9.stepTitle = "Kiểm tra bên ngoài xe"
+    stepOrinalStep2_9.subStep = "2.2"
+    stepOrinalStep2_9.subStepTitle1 = "bên ngoài xe"
+    stepOrinalStep2_9.subStepTitle2 = "Phía trước"
+    stepOrinalStep2_9.subStepTitle3 = "Ba đờ sốc"
+    listSteps.add(stepOrinalStep2_9)
+
+    var stepOrinalStep2_10 = StepOrinalModel()
+    stepOrinalStep2_10.step = "2"
+    stepOrinalStep2_10.stepTitle = "Kiểm tra bên ngoài xe"
+    stepOrinalStep2_10.subStep = "2.2"
+    stepOrinalStep2_10.subStepTitle1 = "bên ngoài xe"
+    stepOrinalStep2_10.subStepTitle2 = "Phía trước"
+    stepOrinalStep2_10.subStepTitle3 = "Lưới tán nhiệt"
+    listSteps.add(stepOrinalStep2_10)
+
+    var stepOrinalStep2_11 = StepOrinalModel()
+    stepOrinalStep2_11.step = "2"
+    stepOrinalStep2_11.stepTitle = "Kiểm tra bên ngoài xe"
+    stepOrinalStep2_11.subStep = "2.2"
+    stepOrinalStep2_11.subStepTitle1 = "bên ngoài xe"
+    stepOrinalStep2_11.subStepTitle2 = "Phía trước"
+    stepOrinalStep2_11.subStepTitle3 = "Các đèn xe phía trước"
+    listSteps.add(stepOrinalStep2_11)
+
+    var stepOrinalStep2_12 = StepOrinalModel()
+    stepOrinalStep2_12.step = "2"
+    stepOrinalStep2_12.stepTitle = "Kiểm tra bên ngoài xe"
+    stepOrinalStep2_12.subStep = "2.2"
+    stepOrinalStep2_12.subStepTitle1 = "bên ngoài xe"
+    stepOrinalStep2_12.subStepTitle2 = "Phía trước"
+    stepOrinalStep2_12.subStepTitle3 = "Độ kín khít"
+    listSteps.add(stepOrinalStep2_12)
+    return listSteps
+}
+    fun dataStep3(): MutableList<StepOrinalModel>{
         var listSteps = mutableListOf<StepOrinalModel>()
-        // step 2
+        var stepOrinalStep2_34 = StepOrinalModel()
+        stepOrinalStep2_34.step = "2"
+        stepOrinalStep2_34.stepTitle = "Kiểm tra bên ngoài xe"
+        stepOrinalStep2_34.subStep = "2.7"
+        stepOrinalStep2_34.subStepTitle1 = "bên ngoài xe"
+        stepOrinalStep2_34.subStepTitle2 = "Phía trên"
+        stepOrinalStep2_34.subStepTitle3 = "Bên ngoài trần xe"
+        listSteps.add(stepOrinalStep2_34)
+        return listSteps
+    }
+    fun dataStep4(): MutableList<StepOrinalModel>{
+        var listSteps = mutableListOf<StepOrinalModel>()
         var stepOrinalStep2_1 = StepOrinalModel()
         stepOrinalStep2_1.step = "2"
         stepOrinalStep2_1.stepTitle = "Kiểm tra bên ngoài xe"
@@ -182,61 +258,375 @@ class RealmManager : RepositoryData {
         stepOrinalStep2_6.subStepTitle2 = "Bên trái trước"
         stepOrinalStep2_6.subStepTitle3 = "Độ kín khít"
         listSteps.add(stepOrinalStep2_6)
+        return listSteps
+    }
+    fun dataStep5(): MutableList<StepOrinalModel> {
+        var listSteps = mutableListOf<StepOrinalModel>()
 
-        var stepOrinalStep2_7 = StepOrinalModel()
-        stepOrinalStep2_7.step = "2"
-        stepOrinalStep2_7.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_7.subStep = "2.2"
-        stepOrinalStep2_7.subStepTitle1 = "bên ngoài xe"
-        stepOrinalStep2_7.subStepTitle2 = "Phía trước"
-        stepOrinalStep2_7.subStepTitle3 = "Nắp capo"
-        listSteps.add(stepOrinalStep2_7)
+        var stepOrinalStep2_13 = StepOrinalModel()
+        stepOrinalStep2_13.step = "2"
+        stepOrinalStep2_13.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_13.subStep = "2.3"
+        stepOrinalStep2_13.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_13.subStepTitle2 = "Phía trước"
+        stepOrinalStep2_13.subStepTitle3 = "Kính xe"
+        listSteps.add(stepOrinalStep2_13)
 
-        var stepOrinalStep2_8 = StepOrinalModel()
-        stepOrinalStep2_8.step = "2"
-        stepOrinalStep2_8.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_8.subStep = "2.2"
-        stepOrinalStep2_8.subStepTitle1 = "bên ngoài xe"
-        stepOrinalStep2_8.subStepTitle2 = "Phía trước"
-        stepOrinalStep2_8.subStepTitle3 = "Kính xe"
-        listSteps.add(stepOrinalStep2_8)
+        var stepOrinalStep2_14 = StepOrinalModel()
+        stepOrinalStep2_14.step = "2"
+        stepOrinalStep2_14.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_14.subStep = "2.3"
+        stepOrinalStep2_14.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_14.subStepTitle2 = "Phía trước"
+        stepOrinalStep2_14.subStepTitle3 = "Tình trạng ghế trước"
+        listSteps.add(stepOrinalStep2_14)
 
-        var stepOrinalStep2_9 = StepOrinalModel()
-        stepOrinalStep2_9.step = "2"
-        stepOrinalStep2_9.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_9.subStep = "2.2"
-        stepOrinalStep2_9.subStepTitle1 = "bên ngoài xe"
-        stepOrinalStep2_9.subStepTitle2 = "Phía trước"
-        stepOrinalStep2_9.subStepTitle3 = "Ba đờ sốc"
-        listSteps.add(stepOrinalStep2_9)
+        var stepOrinalStep2_15 = StepOrinalModel()
+        stepOrinalStep2_15.step = "2"
+        stepOrinalStep2_15.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_15.subStep = "2.3"
+        stepOrinalStep2_15.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_15.subStepTitle2 = "Phía trước"
+        stepOrinalStep2_15.subStepTitle3 = "Tình trạng dây an toàn trước"
+        listSteps.add(stepOrinalStep2_15)
 
-        var stepOrinalStep2_10 = StepOrinalModel()
-        stepOrinalStep2_10.step = "2"
-        stepOrinalStep2_10.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_10.subStep = "2.2"
-        stepOrinalStep2_10.subStepTitle1 = "bên ngoài xe"
-        stepOrinalStep2_10.subStepTitle2 = "Phía trước"
-        stepOrinalStep2_10.subStepTitle3 = "Lưới tán nhiệt"
-        listSteps.add(stepOrinalStep2_10)
+        var stepOrinalStep2_16 = StepOrinalModel()
+        stepOrinalStep2_16.step = "2"
+        stepOrinalStep2_16.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_16.subStep = "2.3"
+        stepOrinalStep2_16.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_16.subStepTitle2 = "Phía trước"
+        stepOrinalStep2_16.subStepTitle3 = "Dấu vết ngập nước ở dây an toàn trước"
+        listSteps.add(stepOrinalStep2_16)
+
+        var stepOrinalStep2_17 = StepOrinalModel()
+        stepOrinalStep2_17.step = "2"
+        stepOrinalStep2_17.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_17.subStep = "2.3"
+        stepOrinalStep2_17.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_17.subStepTitle2 = "Phía trước"
+        stepOrinalStep2_17.subStepTitle3 = "La phông trần"
+        listSteps.add(stepOrinalStep2_17)
+
+        var stepOrinalStep2_18 = StepOrinalModel()
+        stepOrinalStep2_18.step = "2"
+        stepOrinalStep2_18.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_18.subStep = "2.3"
+        stepOrinalStep2_18.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_18.subStepTitle2 = "Phía trước"
+        stepOrinalStep2_18.subStepTitle3 = "Hệ thống điều hòa không khí"
+        listSteps.add(stepOrinalStep2_18)
+
+        var stepOrinalStep2_19 = StepOrinalModel()
+        stepOrinalStep2_19.step = "2"
+        stepOrinalStep2_19.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_19.subStep = "2.3"
+        stepOrinalStep2_19.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_19.subStepTitle2 = "Phía trước"
+        stepOrinalStep2_19.subStepTitle3 = "Hoạt động của đèn xe"
+        listSteps.add(stepOrinalStep2_19)
 
         var stepOrinalStep2_11 = StepOrinalModel()
         stepOrinalStep2_11.step = "2"
-        stepOrinalStep2_11.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_11.subStep = "2.2"
-        stepOrinalStep2_11.subStepTitle1 = "bên ngoài xe"
+        stepOrinalStep2_11.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_11.subStep = "2.3"
+        stepOrinalStep2_11.subStepTitle1 = "bên trong xe"
         stepOrinalStep2_11.subStepTitle2 = "Phía trước"
-        stepOrinalStep2_11.subStepTitle3 = "Các đèn xe phía trước"
+        stepOrinalStep2_11.subStepTitle3 = "Hoạt động còi xe"
         listSteps.add(stepOrinalStep2_11)
 
         var stepOrinalStep2_12 = StepOrinalModel()
         stepOrinalStep2_12.step = "2"
-        stepOrinalStep2_12.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_12.subStep = "2.2"
-        stepOrinalStep2_12.subStepTitle1 = "bên ngoài xe"
+        stepOrinalStep2_12.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_12.subStep = "2.3"
+        stepOrinalStep2_12.subStepTitle1 = "bên trong xe"
         stepOrinalStep2_12.subStepTitle2 = "Phía trước"
-        stepOrinalStep2_12.subStepTitle3 = "Độ kín khít"
+        stepOrinalStep2_12.subStepTitle3 = "Mùi nội thất"
         listSteps.add(stepOrinalStep2_12)
 
+        var stepOrinalStep2_10 = StepOrinalModel()
+        stepOrinalStep2_10.step = "2"
+        stepOrinalStep2_10.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_10.subStep = "2.3"
+        stepOrinalStep2_10.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_10.subStepTitle2 = "Phía trước"
+        stepOrinalStep2_10.subStepTitle3 = "Rỉ sét ở chân thắng, chân ga"
+        listSteps.add(stepOrinalStep2_10)
+
+        var stepOrinalStep2_20 = StepOrinalModel()
+        stepOrinalStep2_20.step = "2"
+        stepOrinalStep2_20.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_20.subStep = "2.3"
+        stepOrinalStep2_20.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_20.subStepTitle2 = "Phía trước"
+        stepOrinalStep2_20.subStepTitle3 = "Rỉ sét ở các bu lông, ốc vít dưới ghế"
+        listSteps.add(stepOrinalStep2_20)
+
+        var stepOrinalStep2_9 = StepOrinalModel()
+        stepOrinalStep2_9.step = "2"
+        stepOrinalStep2_9.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_9.subStep = "2.3"
+        stepOrinalStep2_9.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_9.subStepTitle2 = "Phía trước"
+        stepOrinalStep2_9.subStepTitle3 = "Rỉ sét ở các bộ phận khác (sau tablo, các khe, kẽ trong xe)"
+        listSteps.add(stepOrinalStep2_9)
+
+        return listSteps
+    }
+    fun dataStep6(): MutableList<StepOrinalModel> {
+        var listSteps = mutableListOf<StepOrinalModel>()
+        var stepOrinalStep2_29 = StepOrinalModel()
+        stepOrinalStep2_29.step = "2"
+        stepOrinalStep2_29.stepTitle = "Kiểm tra bên ngoài xe"
+        stepOrinalStep2_29.subStep = "2.6"
+        stepOrinalStep2_29.subStepTitle1 = "bên ngoài xe"
+        stepOrinalStep2_29.subStepTitle2 = "Bên trái sau"
+        stepOrinalStep2_29.subStepTitle3 = "Phía ngoài cửa xe"
+        listSteps.add(stepOrinalStep2_29)
+
+        var stepOrinalStep2_30 = StepOrinalModel()
+        stepOrinalStep2_30.step = "2"
+        stepOrinalStep2_30.stepTitle = "Kiểm tra bên ngoài xe"
+        stepOrinalStep2_30.subStep = "2.6"
+        stepOrinalStep2_30.subStepTitle1 = "bên ngoài xe"
+        stepOrinalStep2_30.subStepTitle2 = "Bên trái sau"
+        stepOrinalStep2_30.subStepTitle3 = "Kính xe"
+        listSteps.add(stepOrinalStep2_30)
+
+        var stepOrinalStep2_31 = StepOrinalModel()
+        stepOrinalStep2_31.step = "2"
+        stepOrinalStep2_31.stepTitle = "Kiểm tra bên ngoài xe"
+        stepOrinalStep2_31.subStep = "2.6"
+        stepOrinalStep2_31.subStepTitle1 = "bên ngoài xe"
+        stepOrinalStep2_31.subStepTitle2 = "Bên trái sau"
+        stepOrinalStep2_31.subStepTitle3 = "Vè xe"
+        listSteps.add(stepOrinalStep2_31)
+
+        var stepOrinalStep2_32 = StepOrinalModel()
+        stepOrinalStep2_32.step = "2"
+        stepOrinalStep2_32.stepTitle = "Kiểm tra bên ngoài xe"
+        stepOrinalStep2_32.subStep = "2.6"
+        stepOrinalStep2_32.subStepTitle1 = "bên ngoài xe"
+        stepOrinalStep2_32.subStepTitle2 = "Bên trái sau"
+        stepOrinalStep2_32.subStepTitle3 = "Bánh xe"
+        listSteps.add(stepOrinalStep2_32)
+
+        var stepOrinalStep2_33 = StepOrinalModel()
+        stepOrinalStep2_33.step = "2"
+        stepOrinalStep2_33.stepTitle = "Kiểm tra bên ngoài xe"
+        stepOrinalStep2_33.subStep = "2.6"
+        stepOrinalStep2_33.subStepTitle1 = "bên ngoài xe"
+        stepOrinalStep2_33.subStepTitle2 = "Bên trái sau"
+        stepOrinalStep2_33.subStepTitle3 = "Độ kín khít"
+        listSteps.add(stepOrinalStep2_33)
+        return listSteps
+    }
+    fun dataStep7(): MutableList<StepOrinalModel> {
+        var listSteps = mutableListOf<StepOrinalModel>()
+        var stepOrinalStep2_24 = StepOrinalModel()
+        stepOrinalStep2_24.step = "2"
+        stepOrinalStep2_24.stepTitle = "Kiểm tra bên ngoài xe"
+        stepOrinalStep2_24.subStep = "2.5"
+        stepOrinalStep2_24.subStepTitle1 = "bên ngoài xe"
+        stepOrinalStep2_24.subStepTitle2 = "Phía sau"
+        stepOrinalStep2_24.subStepTitle3 = "Nắp cốp"
+        listSteps.add(stepOrinalStep2_24)
+
+        var stepOrinalStep2_25 = StepOrinalModel()
+        stepOrinalStep2_25.step = "2"
+        stepOrinalStep2_25.stepTitle = "Kiểm tra bên ngoài xe"
+        stepOrinalStep2_25.subStep = "2.5"
+        stepOrinalStep2_25.subStepTitle1 = "bên ngoài xe"
+        stepOrinalStep2_25.subStepTitle2 = "Phía sau"
+        stepOrinalStep2_25.subStepTitle3 = "Kính xe"
+        listSteps.add(stepOrinalStep2_25)
+
+        var stepOrinalStep2_26 = StepOrinalModel()
+        stepOrinalStep2_26.step = "2"
+        stepOrinalStep2_26.stepTitle = "Kiểm tra bên ngoài xe"
+        stepOrinalStep2_26.subStep = "2.5"
+        stepOrinalStep2_26.subStepTitle1 = "bên ngoài xe"
+        stepOrinalStep2_26.subStepTitle2 = "Phía sau"
+        stepOrinalStep2_26.subStepTitle3 = "Ba đờ sốc"
+        listSteps.add(stepOrinalStep2_26)
+
+        var stepOrinalStep2_27 = StepOrinalModel()
+        stepOrinalStep2_27.step = "2"
+        stepOrinalStep2_27.stepTitle = "Kiểm tra bên ngoài xe"
+        stepOrinalStep2_27.subStep = "2.5"
+        stepOrinalStep2_27.subStepTitle1 = "bên ngoài xe"
+        stepOrinalStep2_27.subStepTitle2 = "Phía sau"
+        stepOrinalStep2_27.subStepTitle3 = "Các đèn xe phía sau"
+        listSteps.add(stepOrinalStep2_27)
+
+        var stepOrinalStep2_28 = StepOrinalModel()
+        stepOrinalStep2_28.step = "2"
+        stepOrinalStep2_28.stepTitle = "Kiểm tra bên ngoài xe"
+        stepOrinalStep2_28.subStep = "2.5"
+        stepOrinalStep2_28.subStepTitle1 = "bên ngoài xe"
+        stepOrinalStep2_28.subStepTitle2 = "Phía sau"
+        stepOrinalStep2_28.subStepTitle3 = "Độ kín khít"
+        listSteps.add(stepOrinalStep2_28)
+        return listSteps
+    }
+    fun dataStep8(): MutableList<StepOrinalModel> {
+        var listSteps = mutableListOf<StepOrinalModel>()
+        var stepOrinalStep2_13 = StepOrinalModel()
+        stepOrinalStep2_13.step = "2"
+        stepOrinalStep2_13.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_13.subStep = "2.3"
+        stepOrinalStep2_13.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_13.subStepTitle2 = "Cốp xe"
+        stepOrinalStep2_13.subStepTitle3 = "Mặt trong nắp cốp"
+        listSteps.add(stepOrinalStep2_13)
+
+        var stepOrinalStep2_10 = StepOrinalModel()
+        stepOrinalStep2_10.step = "2"
+        stepOrinalStep2_10.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_10.subStep = "2.3"
+        stepOrinalStep2_10.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_10.subStepTitle2 = "Cốp xe"
+        stepOrinalStep2_10.subStepTitle3 = "Sàn cốp xe"
+        listSteps.add(stepOrinalStep2_10)
+
+        var stepOrinalStep2_11 = StepOrinalModel()
+        stepOrinalStep2_11.step = "2"
+        stepOrinalStep2_11.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_11.subStep = "2.3"
+        stepOrinalStep2_11.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_11.subStepTitle2 = "Cốp xe"
+        stepOrinalStep2_11.subStepTitle3 = "Bộ dụng cụ và kích nâng"
+        listSteps.add(stepOrinalStep2_11)
+
+        var stepOrinalStep2_12 = StepOrinalModel()
+        stepOrinalStep2_12.step = "2"
+        stepOrinalStep2_12.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_12.subStep = "2.3"
+        stepOrinalStep2_12.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_12.subStepTitle2 = "Cốp xe"
+        stepOrinalStep2_12.subStepTitle3 = "Kích thước/Loại và tình trạng hông lốp bánh xe dự phòng"
+        listSteps.add(stepOrinalStep2_12)
+
+        var stepOrinalStep2_14 = StepOrinalModel()
+        stepOrinalStep2_14.step = "2"
+        stepOrinalStep2_14.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_14.subStep = "2.3"
+        stepOrinalStep2_14.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_14.subStepTitle2 = "Cốp xe"
+        stepOrinalStep2_14.subStepTitle3 = "Đèn khoang hành lý/ khoang để đồ"
+        listSteps.add(stepOrinalStep2_14)
+
+        return listSteps
+    }
+
+    fun dataStep9(): MutableList<StepOrinalModel> {
+        var listSteps = mutableListOf<StepOrinalModel>()
+        var stepOrinalStep2_19 = StepOrinalModel()
+        stepOrinalStep2_19.step = "2"
+        stepOrinalStep2_19.stepTitle = "Kiểm tra bên ngoài xe"
+        stepOrinalStep2_19.subStep = "2.4"
+        stepOrinalStep2_19.subStepTitle1 = "bên ngoài xe"
+        stepOrinalStep2_19.subStepTitle2 = "Bên phải sau"
+        stepOrinalStep2_19.subStepTitle3 = "Phía ngoài cửa xe"
+        listSteps.add(stepOrinalStep2_19)
+
+        var stepOrinalStep2_20 = StepOrinalModel()
+        stepOrinalStep2_20.step = "2"
+        stepOrinalStep2_20.stepTitle = "Kiểm tra bên ngoài xe"
+        stepOrinalStep2_20.subStep = "2.4"
+        stepOrinalStep2_20.subStepTitle1 = "bên ngoài xe"
+        stepOrinalStep2_20.subStepTitle2 = "Bên phải sau"
+        stepOrinalStep2_20.subStepTitle3 = "Kính xe"
+        listSteps.add(stepOrinalStep2_20)
+
+        var stepOrinalStep2_21 = StepOrinalModel()
+        stepOrinalStep2_21.step = "2"
+        stepOrinalStep2_21.stepTitle = "Kiểm tra bên ngoài xe"
+        stepOrinalStep2_21.subStep = "2.4"
+        stepOrinalStep2_21.subStepTitle1 = "bên ngoài xe"
+        stepOrinalStep2_21.subStepTitle2 = "Bên phải sau"
+        stepOrinalStep2_21.subStepTitle3 = "Vè xe"
+        listSteps.add(stepOrinalStep2_21)
+
+        var stepOrinalStep2_22 = StepOrinalModel()
+        stepOrinalStep2_22.step = "2"
+        stepOrinalStep2_22.stepTitle = "Kiểm tra bên ngoài xe"
+        stepOrinalStep2_22.subStep = "2.4"
+        stepOrinalStep2_22.subStepTitle1 = "bên ngoài xe"
+        stepOrinalStep2_22.subStepTitle2 = "Bên phải sau"
+        stepOrinalStep2_22.subStepTitle3 = "Bánh xe"
+        listSteps.add(stepOrinalStep2_22)
+
+        var stepOrinalStep2_23 = StepOrinalModel()
+        stepOrinalStep2_23.step = "2"
+        stepOrinalStep2_23.stepTitle = "Kiểm tra bên ngoài xe"
+        stepOrinalStep2_23.subStep = "2.4"
+        stepOrinalStep2_23.subStepTitle1 = "bên ngoài xe"
+        stepOrinalStep2_23.subStepTitle2 = "Bên phải sau"
+        stepOrinalStep2_23.subStepTitle3 = "Độ kín khít"
+        listSteps.add(stepOrinalStep2_23)
+        return listSteps
+    }
+    fun dataStep10(): MutableList<StepOrinalModel> {
+        var listSteps = mutableListOf<StepOrinalModel>()
+
+        var stepOrinalStep2_13 = StepOrinalModel()
+        stepOrinalStep2_13.step = "2"
+        stepOrinalStep2_13.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_13.subStep = "2.3"
+        stepOrinalStep2_13.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_13.subStepTitle2 = "Phía sau"
+        stepOrinalStep2_13.subStepTitle3 = "Tình trạng ghế sau"
+        listSteps.add(stepOrinalStep2_13)
+
+        var stepOrinalStep2_14 = StepOrinalModel()
+        stepOrinalStep2_14.step = "2"
+        stepOrinalStep2_14.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_14.subStep = "2.3"
+        stepOrinalStep2_14.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_14.subStepTitle2 = "Phía sau"
+        stepOrinalStep2_14.subStepTitle3 = "Tình trạng dây an toàn sau"
+        listSteps.add(stepOrinalStep2_14)
+
+        var stepOrinalStep2_15 = StepOrinalModel()
+        stepOrinalStep2_15.step = "2"
+        stepOrinalStep2_15.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_15.subStep = "2.3"
+        stepOrinalStep2_15.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_15.subStepTitle2 = "Phía sau"
+        stepOrinalStep2_15.subStepTitle3 = "Dấu vết ngập nước ở dây an toàn sau"
+        listSteps.add(stepOrinalStep2_15)
+
+        var stepOrinalStep2_16 = StepOrinalModel()
+        stepOrinalStep2_16.step = "2"
+        stepOrinalStep2_16.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_16.subStep = "2.3"
+        stepOrinalStep2_16.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_16.subStepTitle2 = "Phía sau"
+        stepOrinalStep2_16.subStepTitle3 = "Tấm trần"
+        listSteps.add(stepOrinalStep2_16)
+
+        var stepOrinalStep2_17 = StepOrinalModel()
+        stepOrinalStep2_17.step = "2"
+        stepOrinalStep2_17.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_17.subStep = "2.3"
+        stepOrinalStep2_17.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_17.subStepTitle2 = "Phía sau"
+        stepOrinalStep2_17.subStepTitle3 = "Rỉ sét ở các bu lông, ốc vít dưới ghế"
+        listSteps.add(stepOrinalStep2_17)
+
+        var stepOrinalStep2_18 = StepOrinalModel()
+        stepOrinalStep2_18.step = "2"
+        stepOrinalStep2_18.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep2_18.subStep = "2.3"
+        stepOrinalStep2_18.subStepTitle1 = "bên trong xe"
+        stepOrinalStep2_18.subStepTitle2 = "Phía sau"
+        stepOrinalStep2_18.subStepTitle3 = "Rỉ sét ở các bộ phận khác (sau tablo, các khe, kẽ trong xe)"
+        listSteps.add(stepOrinalStep2_18)
+        return listSteps
+    }
+    fun dataStep11(): MutableList<StepOrinalModel> {
+        var listSteps = mutableListOf<StepOrinalModel>()
         var stepOrinalStep2_13 = StepOrinalModel()
         stepOrinalStep2_13.step = "2"
         stepOrinalStep2_13.stepTitle = "Kiểm tra bên ngoài xe"
@@ -290,154 +680,9 @@ class RealmManager : RepositoryData {
         stepOrinalStep2_18.subStepTitle2 = "Bên phải trước"
         stepOrinalStep2_18.subStepTitle3 = "Độ kín khít"
         listSteps.add(stepOrinalStep2_18)
-
-        var stepOrinalStep2_19 = StepOrinalModel()
-        stepOrinalStep2_19.step = "2"
-        stepOrinalStep2_19.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_19.subStep = "2.4"
-        stepOrinalStep2_19.subStepTitle1 = "bên ngoài xe"
-        stepOrinalStep2_19.subStepTitle2 = "Bên phải sau"
-        stepOrinalStep2_19.subStepTitle3 = "Phía ngoài cửa xe"
-        listSteps.add(stepOrinalStep2_19)
-
-        var stepOrinalStep2_20 = StepOrinalModel()
-        stepOrinalStep2_20.step = "2"
-        stepOrinalStep2_20.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_20.subStep = "2.4"
-        stepOrinalStep2_20.subStepTitle1 = "bên ngoài xe"
-        stepOrinalStep2_20.subStepTitle2 = "Bên phải sau"
-        stepOrinalStep2_20.subStepTitle3 = "Kính xe"
-        listSteps.add(stepOrinalStep2_20)
-
-        var stepOrinalStep2_21 = StepOrinalModel()
-        stepOrinalStep2_21.step = "2"
-        stepOrinalStep2_21.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_21.subStep = "2.4"
-        stepOrinalStep2_21.subStepTitle1 = "bên ngoài xe"
-        stepOrinalStep2_21.subStepTitle2 = "Bên phải sau"
-        stepOrinalStep2_21.subStepTitle3 = "Vè xe"
-        listSteps.add(stepOrinalStep2_21)
-
-        var stepOrinalStep2_22 = StepOrinalModel()
-        stepOrinalStep2_22.step = "2"
-        stepOrinalStep2_22.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_22.subStep = "2.4"
-        stepOrinalStep2_22.subStepTitle1 = "bên ngoài xe"
-        stepOrinalStep2_22.subStepTitle2 = "Bên phải sau"
-        stepOrinalStep2_22.subStepTitle3 = "Bánh xe"
-        listSteps.add(stepOrinalStep2_22)
-
-        var stepOrinalStep2_23 = StepOrinalModel()
-        stepOrinalStep2_23.step = "2"
-        stepOrinalStep2_23.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_23.subStep = "2.4"
-        stepOrinalStep2_23.subStepTitle1 = "bên ngoài xe"
-        stepOrinalStep2_23.subStepTitle2 = "Bên phải sau"
-        stepOrinalStep2_23.subStepTitle3 = "Độ kín khít"
-        listSteps.add(stepOrinalStep2_23)
-
-        var stepOrinalStep2_24 = StepOrinalModel()
-        stepOrinalStep2_24.step = "2"
-        stepOrinalStep2_24.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_24.subStep = "2.5"
-        stepOrinalStep2_24.subStepTitle1 = "bên ngoài xe"
-        stepOrinalStep2_24.subStepTitle2 = "Phía sau"
-        stepOrinalStep2_24.subStepTitle3 = "Nắp cốp"
-        listSteps.add(stepOrinalStep2_24)
-
-        var stepOrinalStep2_25 = StepOrinalModel()
-        stepOrinalStep2_25.step = "2"
-        stepOrinalStep2_25.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_25.subStep = "2.5"
-        stepOrinalStep2_25.subStepTitle1 = "bên ngoài xe"
-        stepOrinalStep2_25.subStepTitle2 = "Phía sau"
-        stepOrinalStep2_25.subStepTitle3 = "Kính xe"
-        listSteps.add(stepOrinalStep2_25)
-
-        var stepOrinalStep2_26 = StepOrinalModel()
-        stepOrinalStep2_26.step = "2"
-        stepOrinalStep2_26.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_26.subStep = "2.5"
-        stepOrinalStep2_26.subStepTitle1 = "bên ngoài xe"
-        stepOrinalStep2_26.subStepTitle2 = "Phía sau"
-        stepOrinalStep2_26.subStepTitle3 = "Ba đờ sốc"
-        listSteps.add(stepOrinalStep2_26)
-
-        var stepOrinalStep2_27 = StepOrinalModel()
-        stepOrinalStep2_27.step = "2"
-        stepOrinalStep2_27.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_27.subStep = "2.5"
-        stepOrinalStep2_27.subStepTitle1 = "bên ngoài xe"
-        stepOrinalStep2_27.subStepTitle2 = "Phía sau"
-        stepOrinalStep2_27.subStepTitle3 = "Các đèn xe phía sau"
-        listSteps.add(stepOrinalStep2_27)
-
-        var stepOrinalStep2_28 = StepOrinalModel()
-        stepOrinalStep2_28.step = "2"
-        stepOrinalStep2_28.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_28.subStep = "2.5"
-        stepOrinalStep2_28.subStepTitle1 = "bên ngoài xe"
-        stepOrinalStep2_28.subStepTitle2 = "Phía sau"
-        stepOrinalStep2_28.subStepTitle3 = "Độ kín khít"
-        listSteps.add(stepOrinalStep2_28)
-
-        var stepOrinalStep2_29 = StepOrinalModel()
-        stepOrinalStep2_29.step = "2"
-        stepOrinalStep2_29.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_29.subStep = "2.6"
-        stepOrinalStep2_29.subStepTitle1 = "bên ngoài xe"
-        stepOrinalStep2_29.subStepTitle2 = "Bên trái sau"
-        stepOrinalStep2_29.subStepTitle3 = "Phía ngoài cửa xe"
-        listSteps.add(stepOrinalStep2_29)
-
-        var stepOrinalStep2_30 = StepOrinalModel()
-        stepOrinalStep2_30.step = "2"
-        stepOrinalStep2_30.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_30.subStep = "2.6"
-        stepOrinalStep2_30.subStepTitle1 = "bên ngoài xe"
-        stepOrinalStep2_30.subStepTitle2 = "Bên trái sau"
-        stepOrinalStep2_30.subStepTitle3 = "Kính xe"
-        listSteps.add(stepOrinalStep2_30)
-
-        var stepOrinalStep2_31 = StepOrinalModel()
-        stepOrinalStep2_31.step = "2"
-        stepOrinalStep2_31.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_31.subStep = "2.6"
-        stepOrinalStep2_31.subStepTitle1 = "bên ngoài xe"
-        stepOrinalStep2_31.subStepTitle2 = "Bên trái sau"
-        stepOrinalStep2_31.subStepTitle3 = "Vè xe"
-        listSteps.add(stepOrinalStep2_31)
-
-        var stepOrinalStep2_32 = StepOrinalModel()
-        stepOrinalStep2_32.step = "2"
-        stepOrinalStep2_32.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_32.subStep = "2.6"
-        stepOrinalStep2_32.subStepTitle1 = "bên ngoài xe"
-        stepOrinalStep2_32.subStepTitle2 = "Bên trái sau"
-        stepOrinalStep2_32.subStepTitle3 = "Bánh xe"
-        listSteps.add(stepOrinalStep2_32)
-
-        var stepOrinalStep2_33 = StepOrinalModel()
-        stepOrinalStep2_33.step = "2"
-        stepOrinalStep2_33.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_33.subStep = "2.6"
-        stepOrinalStep2_33.subStepTitle1 = "bên ngoài xe"
-        stepOrinalStep2_33.subStepTitle2 = "Bên trái sau"
-        stepOrinalStep2_33.subStepTitle3 = "Độ kín khít"
-        listSteps.add(stepOrinalStep2_33)
-
-        var stepOrinalStep2_34 = StepOrinalModel()
-        stepOrinalStep2_33.step = "2"
-        stepOrinalStep2_33.stepTitle = "Kiểm tra bên ngoài xe"
-        stepOrinalStep2_33.subStep = "2.7"
-        stepOrinalStep2_33.subStepTitle1 = "bên ngoài xe"
-        stepOrinalStep2_33.subStepTitle2 = "Phía trên"
-        stepOrinalStep2_33.subStepTitle3 = "Bên ngoài trần xe"
-        listSteps.add(stepOrinalStep2_33)
         return listSteps
     }
-
-    fun dataStep3(): MutableList<StepOrinalModel> {
+    fun dataStep12(): MutableList<StepOrinalModel> {
         var listSteps = mutableListOf<StepOrinalModel>()
 
         var stepOrinalStep3_1 = StepOrinalModel()
@@ -613,8 +858,7 @@ class RealmManager : RepositoryData {
 
         return listSteps
     }
-
-    fun dataStep4(): MutableList<StepOrinalModel> {
+    fun dataStep13(): MutableList<StepOrinalModel> {
         var listSteps = mutableListOf<StepOrinalModel>()
 
         var stepOrinalStep4_1 = StepOrinalModel()
@@ -655,8 +899,7 @@ class RealmManager : RepositoryData {
 
         return listSteps
     }
-
-    fun dataStep5(): MutableList<StepOrinalModel> {
+    fun dataStep14(): MutableList<StepOrinalModel> {
         var listSteps = mutableListOf<StepOrinalModel>()
 
         var stepOrinalStep5_1 = StepOrinalModel()
@@ -886,109 +1129,8 @@ class RealmManager : RepositoryData {
 
         return listSteps
     }
-
-    fun dataStep6(): MutableList<StepOrinalModel> {
+    fun dataStep15(): MutableList<StepOrinalModel> {
         var listSteps = mutableListOf<StepOrinalModel>()
-
-        var stepOrinalStep6_1 = StepOrinalModel()
-        stepOrinalStep6_1.step = "6"
-        stepOrinalStep6_1.stepTitle = "Kiểm tra bên trong xe"
-        stepOrinalStep6_1.subStep = "6.1"
-        stepOrinalStep6_1.subStepTitle1 = "Bên trong xe"
-        stepOrinalStep6_1.subStepTitle2 = "Chức năng"
-        stepOrinalStep6_1.subStepTitle3 = "Mùi nội thất"
-        listSteps.add(stepOrinalStep6_1)
-
-        var stepOrinalStep6_2 = StepOrinalModel()
-        stepOrinalStep6_2.step = "6"
-        stepOrinalStep6_2.stepTitle = "Kiểm tra bên trong xe"
-        stepOrinalStep6_2.subStep = "6.1"
-        stepOrinalStep6_2.subStepTitle1 = "Bên trong xe"
-        stepOrinalStep6_2.subStepTitle2 = "Chức năng"
-        stepOrinalStep6_2.subStepTitle3 = "Cửa xe"
-        listSteps.add(stepOrinalStep6_2)
-
-        var stepOrinalStep6_3 = StepOrinalModel()
-        stepOrinalStep6_3.step = "6"
-        stepOrinalStep6_3.stepTitle = "Kiểm tra bên trong xe"
-        stepOrinalStep6_3.subStep = "6.1"
-        stepOrinalStep6_3.subStepTitle1 = "Bên trong xe"
-        stepOrinalStep6_3.subStepTitle2 = "Chức năng"
-        stepOrinalStep6_3.subStepTitle3 = "Tình trạng ghế"
-        listSteps.add(stepOrinalStep6_3)
-
-        var stepOrinalStep6_4 = StepOrinalModel()
-        stepOrinalStep6_4.step = "6"
-        stepOrinalStep6_4.stepTitle = "Kiểm tra bên trong xe"
-        stepOrinalStep6_4.subStep = "6.1"
-        stepOrinalStep6_4.subStepTitle1 = "Bên trong xe"
-        stepOrinalStep6_4.subStepTitle2 = "Chức năng"
-        stepOrinalStep6_4.subStepTitle3 = "Tình trạng dây an toàn"
-        listSteps.add(stepOrinalStep6_4)
-
-        var stepOrinalStep6_5 = StepOrinalModel()
-        stepOrinalStep6_5.step = "6"
-        stepOrinalStep6_5.stepTitle = "Kiểm tra bên trong xe"
-        stepOrinalStep6_5.subStep = "6.1"
-        stepOrinalStep6_5.subStepTitle1 = "Bên trong xe"
-        stepOrinalStep6_5.subStepTitle2 = "Chức năng"
-        stepOrinalStep6_5.subStepTitle3 = "Các chức năng và thông số trên taplo"
-        listSteps.add(stepOrinalStep6_5)
-
-        var stepOrinalStep6_6 = StepOrinalModel()
-        stepOrinalStep6_6.step = "6"
-        stepOrinalStep6_6.stepTitle = "Kiểm tra bên trong xe"
-        stepOrinalStep6_6.subStep = "6.1"
-        stepOrinalStep6_6.subStepTitle1 = "Bên trong xe"
-        stepOrinalStep6_6.subStepTitle2 = "Chức năng"
-        stepOrinalStep6_6.subStepTitle3 = "Hệ thống điều hòa không khí"
-        listSteps.add(stepOrinalStep6_6)
-
-        var stepOrinalStep6_7 = StepOrinalModel()
-        stepOrinalStep6_7.step = "6"
-        stepOrinalStep6_7.stepTitle = "Kiểm tra bên trong xe"
-        stepOrinalStep6_7.subStep = "6.1"
-        stepOrinalStep6_7.subStepTitle1 = "Bên trong xe"
-        stepOrinalStep6_7.subStepTitle2 = "Chức năng"
-        stepOrinalStep6_7.subStepTitle3 = "Hoạt động của đèn xe"
-        listSteps.add(stepOrinalStep6_7)
-
-        var stepOrinalStep6_8 = StepOrinalModel()
-        stepOrinalStep6_8.step = "6"
-        stepOrinalStep6_8.stepTitle = "Kiểm tra bên trong xe"
-        stepOrinalStep6_8.subStep = "6.1"
-        stepOrinalStep6_8.subStepTitle1 = "Bên trong xe"
-        stepOrinalStep6_8.subStepTitle2 = "Chức năng"
-        stepOrinalStep6_8.subStepTitle3 = "Hoạt động còi xe"
-        listSteps.add(stepOrinalStep6_8)
-
-        var stepOrinalStep6_9 = StepOrinalModel()
-        stepOrinalStep6_9.step = "6"
-        stepOrinalStep6_9.stepTitle = "Kiểm tra bên trong xe"
-        stepOrinalStep6_9.subStep = "6.1"
-        stepOrinalStep6_9.subStepTitle1 = "Bên trong xe"
-        stepOrinalStep6_9.subStepTitle2 = "Chức năng"
-        stepOrinalStep6_9.subStepTitle3 = "Sàn xe"
-        listSteps.add(stepOrinalStep6_9)
-
-        var stepOrinalStep6_10 = StepOrinalModel()
-        stepOrinalStep6_10.step = "6"
-        stepOrinalStep6_10.stepTitle = "Kiểm tra bên trong xe"
-        stepOrinalStep6_10.subStep = "6.1"
-        stepOrinalStep6_10.subStepTitle1 = "Bên trong xe"
-        stepOrinalStep6_10.subStepTitle2 = "Chức năng"
-        stepOrinalStep6_10.subStepTitle3 = "Tấm trần"
-        listSteps.add(stepOrinalStep6_10)
-
-        var stepOrinalStep6_11 = StepOrinalModel()
-        stepOrinalStep6_11.step = "6"
-        stepOrinalStep6_11.stepTitle = "Kiểm tra bên trong xe"
-        stepOrinalStep6_11.subStep = "6.1"
-        stepOrinalStep6_11.subStepTitle1 = "Bên trong xe"
-        stepOrinalStep6_11.subStepTitle2 = "Chức năng"
-        stepOrinalStep6_11.subStepTitle3 = "Mặt trong nắp cốp"
-        listSteps.add(stepOrinalStep6_11)
-
         var stepOrinalStep6_12 = StepOrinalModel()
         stepOrinalStep6_12.step = "6"
         stepOrinalStep6_12.stepTitle = "Kiểm tra bên trong xe"
@@ -1023,6 +1165,7 @@ class RealmManager : RepositoryData {
         stepOrinalStep6_15.subStepTitle1 = "Bên trong xe"
         stepOrinalStep6_15.subStepTitle2 = "Tiện ích khác"
         stepOrinalStep6_15.subStepTitle3 = "Hệ thống định vị (dẫn đường)"
+        stepOrinalStep6_15.canIgnore  = true
         listSteps.add(stepOrinalStep6_15)
 
         var stepOrinalStep6_16 = StepOrinalModel()
@@ -1113,6 +1256,7 @@ class RealmManager : RepositoryData {
         stepOrinalStep6_25.subStepTitle1 = "Bên trong xe"
         stepOrinalStep6_25.subStepTitle2 = "Tiện ích khác"
         stepOrinalStep6_25.subStepTitle3 = "Hệ thống SYNC"
+        stepOrinalStep6_25.canIgnore = true
         listSteps.add(stepOrinalStep6_25)
 
         var stepOrinalStep6_26 = StepOrinalModel()
@@ -1122,6 +1266,7 @@ class RealmManager : RepositoryData {
         stepOrinalStep6_26.subStepTitle1 = "Bên trong xe"
         stepOrinalStep6_26.subStepTitle2 = "Tiện ích khác"
         stepOrinalStep6_26.subStepTitle3 = "Hệ thống hổ trợ đổ xe"
+        stepOrinalStep6_26.canIgnore = true
         listSteps.add(stepOrinalStep6_26)
 
         var stepOrinalStep6_27 = StepOrinalModel()
@@ -1131,6 +1276,7 @@ class RealmManager : RepositoryData {
         stepOrinalStep6_27.subStepTitle1 = "Bên trong xe"
         stepOrinalStep6_27.subStepTitle2 = "Tiện ích khác"
         stepOrinalStep6_27.subStepTitle3 = "Hệ thống giải trí phía sau"
+        stepOrinalStep6_27.canIgnore = true
         listSteps.add(stepOrinalStep6_27)
 
         var stepOrinalStep6_28 = StepOrinalModel()
@@ -1176,6 +1322,7 @@ class RealmManager : RepositoryData {
         stepOrinalStep6_32.subStepTitle1 = "Bên trong xe"
         stepOrinalStep6_32.subStepTitle2 = "Tiện ích khác"
         stepOrinalStep6_32.subStepTitle3 = "Cơ cấu điều chỉnh bàn đạp nếu có"
+        stepOrinalStep6_32.canIgnore = true
         listSteps.add(stepOrinalStep6_32)
 
         var stepOrinalStep6_33 = StepOrinalModel()
@@ -1212,6 +1359,7 @@ class RealmManager : RepositoryData {
         stepOrinalStep6_36.subStepTitle1 = "Bên trong xe"
         stepOrinalStep6_36.subStepTitle2 = "Tiện ích khác"
         stepOrinalStep6_36.subStepTitle3 = "Ghế an toàn cho trẻ em tích hợp"
+        stepOrinalStep6_36.canIgnore = true
         listSteps.add(stepOrinalStep6_36)
 
         var stepOrinalStep6_37 = StepOrinalModel()
@@ -1294,11 +1442,9 @@ class RealmManager : RepositoryData {
         stepOrinalStep6_45.subStepTitle2 = "Tiện ích khác"
         stepOrinalStep6_45.subStepTitle3 = "Cơ cấu mở khoang hành lý khẩn cấp"
         listSteps.add(stepOrinalStep6_45)
-
         return listSteps
     }
-
-    fun dataStep7(): MutableList<StepOrinalModel> {
+    fun dataStep16(): MutableList<StepOrinalModel> {
         var listSteps = mutableListOf<StepOrinalModel>()
 
         var stepOrinalStep7_1 = StepOrinalModel()
@@ -1435,6 +1581,113 @@ class RealmManager : RepositoryData {
         stepOrinalStep7_15.subStepTitle2 = "Tiện ích khác"
         stepOrinalStep7_15.subStepTitle3 = "Lựa chọn vị trí ghế lái/Bộ nhớ"
         listSteps.add(stepOrinalStep7_15)
+
+        return listSteps
+    }
+
+    fun dataStep17(): MutableList<StepOrinalModel> {
+        var listSteps = mutableListOf<StepOrinalModel>()
+
+        var stepOrinalStep6_1 = StepOrinalModel()
+        stepOrinalStep6_1.step = "6"
+        stepOrinalStep6_1.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_1.subStep = "6.1"
+        stepOrinalStep6_1.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_1.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_1.subStepTitle3 = "Mùi nội thất"
+        listSteps.add(stepOrinalStep6_1)
+
+        var stepOrinalStep6_2 = StepOrinalModel()
+        stepOrinalStep6_2.step = "6"
+        stepOrinalStep6_2.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_2.subStep = "6.1"
+        stepOrinalStep6_2.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_2.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_2.subStepTitle3 = "Cửa xe"
+        listSteps.add(stepOrinalStep6_2)
+
+        var stepOrinalStep6_3 = StepOrinalModel()
+        stepOrinalStep6_3.step = "6"
+        stepOrinalStep6_3.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_3.subStep = "6.1"
+        stepOrinalStep6_3.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_3.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_3.subStepTitle3 = "Tình trạng ghế"
+        listSteps.add(stepOrinalStep6_3)
+
+        var stepOrinalStep6_4 = StepOrinalModel()
+        stepOrinalStep6_4.step = "6"
+        stepOrinalStep6_4.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_4.subStep = "6.1"
+        stepOrinalStep6_4.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_4.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_4.subStepTitle3 = "Tình trạng dây an toàn"
+        listSteps.add(stepOrinalStep6_4)
+
+        var stepOrinalStep6_5 = StepOrinalModel()
+        stepOrinalStep6_5.step = "6"
+        stepOrinalStep6_5.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_5.subStep = "6.1"
+        stepOrinalStep6_5.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_5.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_5.subStepTitle3 = "Các chức năng và thông số trên taplo"
+        listSteps.add(stepOrinalStep6_5)
+
+        var stepOrinalStep6_6 = StepOrinalModel()
+        stepOrinalStep6_6.step = "6"
+        stepOrinalStep6_6.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_6.subStep = "6.1"
+        stepOrinalStep6_6.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_6.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_6.subStepTitle3 = "Hệ thống điều hòa không khí"
+        listSteps.add(stepOrinalStep6_6)
+
+        var stepOrinalStep6_7 = StepOrinalModel()
+        stepOrinalStep6_7.step = "6"
+        stepOrinalStep6_7.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_7.subStep = "6.1"
+        stepOrinalStep6_7.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_7.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_7.subStepTitle3 = "Hoạt động của đèn xe"
+        listSteps.add(stepOrinalStep6_7)
+
+        var stepOrinalStep6_8 = StepOrinalModel()
+        stepOrinalStep6_8.step = "6"
+        stepOrinalStep6_8.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_8.subStep = "6.1"
+        stepOrinalStep6_8.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_8.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_8.subStepTitle3 = "Hoạt động còi xe"
+        listSteps.add(stepOrinalStep6_8)
+
+        var stepOrinalStep6_9 = StepOrinalModel()
+        stepOrinalStep6_9.step = "6"
+        stepOrinalStep6_9.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_9.subStep = "6.1"
+        stepOrinalStep6_9.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_9.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_9.subStepTitle3 = "Sàn xe"
+        listSteps.add(stepOrinalStep6_9)
+
+        var stepOrinalStep6_10 = StepOrinalModel()
+        stepOrinalStep6_10.step = "6"
+        stepOrinalStep6_10.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_10.subStep = "6.1"
+        stepOrinalStep6_10.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_10.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_10.subStepTitle3 = "Tấm trần"
+        listSteps.add(stepOrinalStep6_10)
+
+        var stepOrinalStep6_11 = StepOrinalModel()
+        stepOrinalStep6_11.step = "6"
+        stepOrinalStep6_11.stepTitle = "Kiểm tra bên trong xe"
+        stepOrinalStep6_11.subStep = "6.1"
+        stepOrinalStep6_11.subStepTitle1 = "Bên trong xe"
+        stepOrinalStep6_11.subStepTitle2 = "Chức năng"
+        stepOrinalStep6_11.subStepTitle3 = "Mặt trong nắp cốp"
+        listSteps.add(stepOrinalStep6_11)
+
+
 
         return listSteps
     }

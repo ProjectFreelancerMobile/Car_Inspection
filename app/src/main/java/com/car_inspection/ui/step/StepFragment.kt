@@ -239,12 +239,12 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     }
 
     private fun updateProgressStep(step: Int) {
-        val percent = (step + 1) * 1f / 8
+        val percent = (step + 1) * 1f / 17
         pgStep.setMaximumPercentage(percent)
         pgStep.useRoundedRectangleShape(20.0f)
         pgStep.setProgressColor(resources.getColor(R.color.blue_500))
         pgStep.setProgressBackgroundColor(resources.getColor(R.color.blue_200))
-        pgStep.text = "${(step + 1) * 100 / 8}%"
+        pgStep.text = "${(step + 1) * 100 / 17}%"
         pgStep.textSize = 14f
         pgStep.setTextColor(Color.WHITE)
         pgStep.gravity = Gravity.CENTER
@@ -264,7 +264,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
         updateProgressStep(step)
 
-        val stepTitle = "Bước ${items[0].step}: ${items[0].stepTitle}"
+        val stepTitle = "Bước ${step}: ${items[0].stepTitle}"
         val content = SpannableString(stepTitle)
         content.setSpan(UnderlineSpan(), 0, stepTitle.length, 0)
         tvStep.text = content
@@ -282,39 +282,13 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
                     stepModifyModel.subStepTitle1 = stepOrinalModel.subStepTitle1
                     stepModifyModel.subStepTitle2 = stepOrinalModel.subStepTitle2
                     stepModifyModel.subStepTitle3 = stepOrinalModel.subStepTitle3
+                    stepModifyModel.canIgnore = stepOrinalModel.canIgnore
                     stepModifyModels.add(stepModifyModel)
                 }
         }
         return stepModifyModels
     }
 
-    private fun initStepTestData(step: Int): List<StepModifyModel> {
-        val stepOrinalModels = ArrayList<StepOrinalModel>()
-        var size = 5
-        if (step % 2 == 0)
-            size = 4
-        if (step == 4) {
-            for (i in 1..size) {
-                var stepmodify = StepOrinalModel()
-                stepmodify.step = "$step"
-                stepmodify.stepTitle = "kiểm tra khoang động cơ"
-                stepmodify.subStepTitle3 = "bên ngoài cửa xe $step-$i"
-                stepOrinalModels.add(stepmodify)
-            }
-        } else
-            for (i in 1..size) {
-                val stepmodify = StepOrinalModel()
-                stepmodify.step = "$step"
-                stepmodify.stepTitle = "kiểm tra chung"
-                stepmodify.subStep = "$step." + i
-                stepmodify.subStepTitle1 = "bên ngoài xe"
-                stepmodify.subStepTitle2 = "bên trái trước"
-                stepmodify.subStepTitle3 = "bên ngoài cửa xe $step-$i"
-                stepOrinalModels.add(stepmodify)
-            }
-
-        return convertStepOrinalModelsToStepModifyModels(stepOrinalModels)
-    }
 
     fun autoScrollAfterCheckComplete() {
         rvSubStep.post { rvSubStep.smoothScrollBy(0, stepAdapter.heightItem) }
@@ -346,7 +320,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
             }
         }
         if (stepAdapter.isFinishCheckItem()) {
-            if (currentStep < 7) {
+            if (currentStep < 15) {
                 if (layoutContinue.visibility == View.GONE)
                     layoutContinue.visibility = View.VISIBLE
             } else {

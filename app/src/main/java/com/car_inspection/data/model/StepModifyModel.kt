@@ -13,4 +13,5 @@ open class StepModifyModel: RealmObject(){
     var note: String? = null
     var imagepaths: RealmList<String> = RealmList()
     var rating: String? = null // value = G,P or F
+    var canIgnore = false
 }
