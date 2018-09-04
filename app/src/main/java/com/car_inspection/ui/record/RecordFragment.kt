@@ -23,19 +23,22 @@ import com.car_inspection.data.model.FrameToRecord
 import com.car_inspection.data.model.RecordModel
 import com.car_inspection.library.CameraHelper
 import com.car_inspection.library.MiscUtils
+import com.car_inspection.library.youtube.util.Utils
 import com.car_inspection.listener.CameraRecordListener
 import com.car_inspection.ui.base.BaseFragment
-import com.car_inspection.utils.Constanst
-import com.car_inspection.utils.createFolderPicture
-import com.car_inspection.utils.listenToViews
-import com.car_inspection.utils.overlay
+import com.car_inspection.utils.*
 import com.github.florent37.camerafragment.CameraFragment
 import com.github.florent37.camerafragment.configuration.Configuration
 import com.github.florent37.camerafragment.listeners.CameraFragmentResultAdapter
 import com.orhanobut.logger.Logger
 import com.toan_itc.core.utils.addFragment
 import com.toan_itc.core.utils.removeFragment
+import google.com.carinspection.DisposableImpl
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.record_fragment.*
+import kotlinx.android.synthetic.main.record_otg_fragment.*
 import org.bytedeco.javacpp.avcodec
 import org.bytedeco.javacpp.avutil
 import org.bytedeco.javacv.FFmpegFrameFilter
@@ -49,8 +52,9 @@ import java.nio.ShortBuffer
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.TimeUnit
 
-class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.OnClickListener, CameraRecordListener {
+class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.OnClickListener, CameraRecordListener {
     private val LOG_TAG = RecordOTGFragment::class.java.simpleName
 
     private val REQUEST_PERMISSIONS = 1
@@ -88,9 +92,25 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
     private val frameRate = 30
     private val frameDepth = Frame.DEPTH_UBYTE
     private val frameChannels = 2
-    private var takeFragment : CameraFragment?= null
+    private var takeFragment: CameraFragment? = null
     // Workaround for https://code.google.com/p/android/issues/detail?id=190966
     private var doAfterAllPermissionsGranted: Runnable? = null
+
+    private var timerRecord = 0
+
+    fun startTimer() {
+        Observable.interval(1, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableImpl<Long>() {
+                    override fun onNext(t: Long) {
+                        if (mRecording) {
+                            timerRecord++
+                            tvTimerRecord.text = formatTime(timerRecord)
+                        }
+                    }
+                })
+    }
 
     override fun onSurfaceTextureSizeChanged(p0: SurfaceTexture?, p1: Int, p2: Int) {
 
@@ -114,7 +134,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
     }
 
     override fun onClick(view: View?) {
-        when(view?.id){
+        when (view?.id) {
             R.id.mBtnReset -> {
                 pauseRecording()
                 object : ProgressDialogTask<Void, Int, Void>(R.string.please_wait) {
@@ -132,7 +152,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
                 Logger.e("1111")
                 mRecordFragments?.apply {
                     // check video length
-                    Logger.e("recordedTime="+calculateTotalRecordedTime(this) +"MIN_VIDEO_LENGTH="+MIN_VIDEO_LENGTH)
+                    Logger.e("recordedTime=" + calculateTotalRecordedTime(this) + "MIN_VIDEO_LENGTH=" + MIN_VIDEO_LENGTH)
                     if (calculateTotalRecordedTime(this) < MIN_VIDEO_LENGTH) {
                         Toast.makeText(context, R.string.video_too_short, Toast.LENGTH_SHORT).show()
                         return
@@ -147,7 +167,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
                     resumeRecording()
                 }
             }
-            R.id.mBtnSwitchCamera ->{
+            R.id.mBtnSwitchCamera -> {
                 cameraPreview?.apply {
                     val surfaceTexture = surfaceTexture
                     object : ProgressDialogTask<Void, Int, Void>(R.string.please_wait) {
@@ -164,13 +184,13 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
                     }.execute()
                 }
             }
-            R.id.mBtnTake ->{
+            R.id.mBtnTake -> {
                 if (takeFragment != null) {
                     createFolderPicture(Constanst.getFolderPicturePath())
                     takeFragment?.takePhotoOrCaptureVideo(object : CameraFragmentResultAdapter() {
                         override fun onPhotoTaken(bytes: ByteArray, filePath: String) {
                             Logger.e("file images----------@@@@@@@@@@@@@@   $filePath")
-                           // stepAdapter.items?.get(currentPosition)?.imagepaths?.add(filePath)
+                            // stepAdapter.items?.get(currentPosition)?.imagepaths?.add(filePath)
                             //showLayoutVideo()
                             showSnackBar("Save picture path：$filePath")
                             overlay(activity!!, filePath, currentSubStepName)
@@ -194,7 +214,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
 
     }
 
-    private fun initRecord(){
+    private fun initRecord() {
         mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT
         setPreviewSize(mPreviewWidth, mPreviewHeight)
         cameraPreview.setCroppedSizeWeight(videoWidth, videoHeight)
@@ -204,7 +224,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
         // At most recycle 2 Frame
         mRecycledFrameQueue = LinkedBlockingQueue(2)
         mRecordFragments = Stack()
-        listenToViews(mBtnReset,mBtnDone,mBtnResumeOrPause,mBtnSwitchCamera,mBtnTake)
+        listenToViews(mBtnReset, mBtnDone, mBtnResumeOrPause, mBtnSwitchCamera, mBtnTake)
     }
 
     override fun onDestroy() {
@@ -362,7 +382,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
                                 var frameToRecord: FrameToRecord? = mRecycledFrameQueue?.poll()
                                 if (frameToRecord != null) {
                                     frame = frameToRecord.frame
-                                    frameToRecord.timestamp= timestamp
+                                    frameToRecord.timestamp = timestamp
                                 } else {
                                     frame = Frame(mPreviewWidth, mPreviewHeight, frameDepth, frameChannels)
                                     frameToRecord = FrameToRecord(timestamp, frame)
@@ -469,6 +489,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
     }
 
     private fun startRecording() {
+        startTimer()
         Logger.e("startRecording")
         mAudioRecordThread = AudioRecordThread()
         mAudioRecordThread?.start()
@@ -479,13 +500,13 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
     private fun stopRecording() {
         try {
             mAudioRecordThread?.apply {
-                if(isRunning)
+                if (isRunning)
                     stopRunning()
                 join()
                 mAudioRecordThread = null
             }
             mVideoRecordThread?.apply {
-                if(isRunning)
+                if (isRunning)
                     stopRunning()
                 join()
                 mVideoRecordThread = null
@@ -544,6 +565,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
     internal inner class AudioRecordThread : RunningThread() {
         private var mAudioRecord: AudioRecord? = null
         private val audioData: ShortBuffer
+
         init {
             val bufferSize = AudioRecord.getMinBufferSize(sampleAudioRateInHz,
                     AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT)
@@ -565,7 +587,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
                             val bufferReadResult = read(audioData.array(), 0, audioData.capacity())
                             audioData.limit(bufferReadResult)
                             if (bufferReadResult > 0) {
-                               // Log.v(LOG_TAG, "bufferReadResult: $bufferReadResult")
+                                // Log.v(LOG_TAG, "bufferReadResult: $bufferReadResult")
                                 try {
                                     recordSamples(audioData)
                                 } catch (e: Exception) {
@@ -765,7 +787,7 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
             stopRecording()
             stopRecorder()
             releaseRecorder(false)
-            RecordOTGFragment.cameraCallbackListener.uploadYoutube(mVideo?.path?:"")
+            RecordOTGFragment.cameraCallbackListener.uploadYoutube(mVideo?.path ?: "")
             return null
         }
 
@@ -773,9 +795,10 @@ class RecordFragment: BaseFragment() , TextureView.SurfaceTextureListener, View.
 
     override fun recordEvent(isTake: Boolean, step: Int, subStep: String) {
         activity?.apply {
-            if(!isFinishing){
-                when(isTake){
-                    true ->{
+            tvTitleStep.text = subStep
+            if (!isFinishing) {
+                when (isTake) {
+                    true -> {
                         Logger.e("RecordEvent")
                         currentStep = step
                         currentSubStepName = subStep

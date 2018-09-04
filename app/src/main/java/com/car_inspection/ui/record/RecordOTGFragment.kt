@@ -25,18 +25,18 @@ import com.serenegiant.usb.widget.CameraViewInterface
 import kotlinx.android.synthetic.main.record_otg_fragment.*
 import java.util.*
 
-class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, CameraViewInterface.Callback, View.OnClickListener, CameraRecordListener{
+class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, CameraViewInterface.Callback, View.OnClickListener, CameraRecordListener {
 
     private var mCameraHelper: UVCCameraHelper? = null
     private var mUVCCameraView: CameraViewInterface? = null
     private var isRequest: Boolean = false
     private var isPreview: Boolean = false
-    private var currentSubStepName :String = ""
+    private var currentSubStepName: String = ""
     private var currentStep = 2
 
     companion object {
         lateinit var cameraCallbackListener: CameraDefaultListener
-        fun newInstance(cameraRecord: CameraDefaultListener) :RecordOTGFragment{
+        fun newInstance(cameraRecord: CameraDefaultListener): RecordOTGFragment {
             cameraCallbackListener = cameraRecord
             return RecordOTGFragment()
         }
@@ -77,11 +77,12 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
 
         override fun onDisConnectDev(device: UsbDevice) {
             activity?.apply {
-                if(!isFinishing)
+                if (!isFinishing)
                     showSnackBar("disconnecting")
             }
         }
     }
+
     override fun initViews() {
         initUVCCameraHelper()
     }
@@ -90,10 +91,10 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
 
 
     override fun initData() {
-        listenToViews(mBtnRecord,btnTakePicture)
+        listenToViews(mBtnRecord, btnTakePicture)
     }
 
-    private fun initUVCCameraHelper(){
+    private fun initUVCCameraHelper() {
         try {
             Logger.e("initUVCCameraHelper")
             // step.1 initialize UVCCameraHelper
@@ -114,19 +115,19 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
                     setModelValue(UVCCameraHelper.MODE_CONTRAST, 60)
                 }
             }
-        }catch (e:IllegalStateException){
+        } catch (e: IllegalStateException) {
             e.printStackTrace()
         }
     }
 
     @SuppressLint("SetTextI18n")
     override fun onClick(v: View?) {
-        when(v?.id){
+        when (v?.id) {
             R.id.btnTakePicture -> {
                 mCameraHelper?.apply {
-                    if(isCameraOpened){
-                        com.blankj.utilcode.util.FileUtils.createOrExistsDir(Constanst.getFolderPicturePath()+ "Step$currentStep")
-                        val picPath = Constanst.getFolderPicturePath() + "Step$currentStep/$currentSubStepName"+ UVCCameraHelper.SUFFIX_JPEG
+                    if (isCameraOpened) {
+                        com.blankj.utilcode.util.FileUtils.createOrExistsDir(Constanst.getFolderPicturePath() + "Step$currentStep")
+                        val picPath = Constanst.getFolderPicturePath() + "Step$currentStep/$currentSubStepName" + UVCCameraHelper.SUFFIX_JPEG
                         capturePicture(picPath) { path ->
                             showSnackBar("Save picture path：$path")
                             overlay(activity!!, path, currentSubStepName)
@@ -136,14 +137,14 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
             }
             R.id.mBtnRecord -> {
                 mCameraHelper?.apply {
-                    if(isCameraOpened){
+                    if (isCameraOpened) {
                         if (!isPushing) {
-                           // val videoPath = UVCCameraHelper.ROOT_PATH + System.currentTimeMillis()
-                           // FileUtils.createfile(FileUtils.ROOT_PATH + "test666.h264")
+                            // val videoPath = UVCCameraHelper.ROOT_PATH + System.currentTimeMillis()
+                            // FileUtils.createfile(FileUtils.ROOT_PATH + "test666.h264")
                             createFolderPicture(Constanst.getFolderVideoPath())
                             // if you want to record,please create RecordParams like this
                             val params = RecordParams()
-                            params.recordPath =  Constanst.getFolderVideoPath() + System.currentTimeMillis()
+                            params.recordPath = Constanst.getFolderVideoPath() + System.currentTimeMillis()
                             params.recordDuration = 0                        // 设置为0，不分割保存
                             params.isVoiceClose = false    // is close voice
                             startPusher(params, object : AbstractUVCCameraHandler.OnEncodeResultListener {
@@ -176,13 +177,14 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
                     }
                 }
             }
-           /* R.id.mBtnRes -> {
-                Toast.makeText(context, getResolutionList().toString(), Toast.LENGTH_LONG).show()
-                Logger.e("getResolutionList="+getResolutionList().toString())
-            }
-            R.id.mBtnFocus -> mCameraHelper?.startCameraFoucs()*/
+            /* R.id.mBtnRes -> {
+                 Toast.makeText(context, getResolutionList().toString(), Toast.LENGTH_LONG).show()
+                 Logger.e("getResolutionList="+getResolutionList().toString())
+             }
+             R.id.mBtnFocus -> mCameraHelper?.startCameraFoucs()*/
         }
     }
+
     private fun getResolutionList(): List<String>? {
         var resolutions: MutableList<String>? = null
         mCameraHelper?.apply {
@@ -248,9 +250,10 @@ class RecordOTGFragment: BaseFragment() , CameraDialog.CameraDialogParent, Camer
 
     override fun recordEvent(isTake: Boolean, step: Int, subStep: String) {
         activity?.apply {
-            if(!isFinishing){
-                when(isTake){
-                    true ->{
+            if (!isFinishing) {
+                tvTitleStep.text = subStep
+                when (isTake) {
+                    true -> {
                         this@RecordOTGFragment.currentStep = step
                         this@RecordOTGFragment.currentSubStepName = subStep
                         mBtnRecord?.isGone = true
