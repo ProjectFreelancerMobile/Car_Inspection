@@ -98,12 +98,12 @@ class CheckInfoFragment : BaseFragment() {
     }
 
     private fun updateProgressStep(step: Int) {
-        val percent = step * 1f / 8
+        val percent = step * 1f / 17
         pgStep.setMaximumPercentage(percent)
         pgStep.useRoundedRectangleShape(20.0f)
         pgStep.setProgressColor(resources.getColor(R.color.blue_500))
         pgStep.setProgressBackgroundColor(resources.getColor(R.color.blue_200))
-        pgStep.text = "${step * 100 / 8}%"
+        pgStep.text = "${step * 100 / 17}%"
         pgStep.textSize = 14f
         pgStep.setTextColor(Color.WHITE)
         pgStep.gravity = Gravity.CENTER

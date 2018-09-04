@@ -11,4 +11,5 @@ open class StepOrinalModel: RealmObject() {
     var subStepTitle1:String? = null //bên ngoài xe
     var subStepTitle2:String? = null //bên trái trước
     var subStepTitle3:String? = null //phía ngoài cửa xe
+    var canIgnore = false
 }
