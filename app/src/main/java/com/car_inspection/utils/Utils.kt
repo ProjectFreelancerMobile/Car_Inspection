@@ -62,6 +62,26 @@ fun formatTimeNumber(number: Int): String {
         number.toString() + ""
 }
 
+fun formatTime(timeInSeconds: Int): String {
+    var result = ""
+    var seconds = timeInSeconds
+    var hours = 0
+    var minutes = 0
+    if (seconds > 3600) {
+        hours = seconds / 3600
+        seconds = seconds - hours * 3600
+    }
+    if (seconds > 60) {
+        minutes = seconds / 60
+        seconds = seconds - minutes * 60
+    }
+    if (hours > 0)
+        result = "${formatTimeNumber(hours)}:"
+    result = result + formatTimeNumber(minutes) +":"+ formatTimeNumber(seconds)
+
+    return result
+}
+
 fun createFolderPicture(path: String) {
     var folder = File(path)
     if (!folder.exists())
@@ -245,4 +265,3 @@ private fun store(bm: Bitmap, imageFile: File) {
     }
 
 }
-
