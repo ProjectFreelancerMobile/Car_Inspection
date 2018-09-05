@@ -99,6 +99,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     internal val AUDIO_AAC = MIMETYPE_AUDIO_AAC // H.264 Advanced Audio Coding
     private var timerRecord = 0
     private var mRecording = false
+    private var filePath :File? =null
 
     companion object {
         fun newInstance() = StepFragment()
@@ -416,10 +417,10 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
                 return
             }
             createFolderPicture(Constanst.getFolderVideoPath())
-            val file = FileUtils.getFileByPath(Constanst.getFolderVideoPath() + System.currentTimeMillis()+".mp4")
+            filePath = FileUtils.getFileByPath(Constanst.getFolderVideoPath() + System.currentTimeMillis()+".mp4")
             audio?.apply {
-                Logger.e( "Create recorder with :$video \n $this\n $file")
-                mRecorder = newRecorder(mediaProjection, video, this, file)
+                Logger.e( "Create recorder with :$video \n $this\n $filePath")
+                mRecorder = newRecorder(mediaProjection, video, this, filePath!!)
                 if (hasPermissions()) {
                     startRecorder()
                 } else {
@@ -443,7 +444,9 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     }
 
     override fun uploadYoutube(path: String) {
-        uploadVideo(getImageContentUri(context, path))
+        filePath?.path?.apply {
+            uploadVideo(getImageContentUri(context, this))
+        }
     }
 
     interface Callbacks {
