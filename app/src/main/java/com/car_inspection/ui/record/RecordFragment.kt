@@ -38,7 +38,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.record_fragment.*
-import kotlinx.android.synthetic.main.record_otg_fragment.*
 import org.bytedeco.javacpp.avcodec
 import org.bytedeco.javacpp.avutil
 import org.bytedeco.javacv.FFmpegFrameFilter
@@ -97,8 +96,11 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
     private var doAfterAllPermissionsGranted: Runnable? = null
 
     private var timerRecord = 0
+    private var isStartTimer = false
 
     fun startTimer() {
+        if (isStartTimer)
+            return
         Observable.interval(1, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -110,6 +112,7 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
                         }
                     }
                 })
+        isStartTimer = true
     }
 
     override fun onSurfaceTextureSizeChanged(p0: SurfaceTexture?, p1: Int, p2: Int) {
@@ -470,7 +473,7 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
 
     private fun startRecorder() {
         try {
-           // mFrameRecorder?.start()
+            // mFrameRecorder?.start()
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -824,11 +827,10 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
                             removeFragment(this)
                         }
 
-                                        btnExit.visibility = View.GONE
-                                        tvTitleStep.visibility = View.GONE
-                                        Logger.e("${tvTitleStep.text} ************************************")
-                                    }
-                                })
+                        btnExit.visibility = View.GONE
+                        tvTitleStep.visibility = View.GONE
+                        Logger.e("${tvTitleStep.text} ************************************")
+
 
                     }
                 }

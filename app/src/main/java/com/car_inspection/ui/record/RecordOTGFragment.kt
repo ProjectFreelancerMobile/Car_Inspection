@@ -106,7 +106,7 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
 
 
     override fun initData() {
-        listenToViews(mBtnRecord, btnTakePicture)
+        listenToViews(mBtnRecord, btnTakePicture,btnExit)
     }
 
     private fun initUVCCameraHelper() {
