@@ -100,7 +100,7 @@ class App : Application(), HasActivityInjector {
     private fun initCrash(){
         CrashUtils.init{crashInfo, _->
             Logger.e(crashInfo)
-            //AppUtils.relaunchApp()
+            AppUtils.relaunchApp()
         }
     }
 
@@ -110,6 +110,7 @@ class App : Application(), HasActivityInjector {
         PreferenceManager.initialize(this, Constants.APP_NAME)
         Realm.init(this)
         Fabric.with(this, Crashlytics())
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
     }
 
     private fun setupTest() {

@@ -25,7 +25,10 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:screenOrientation="portrait">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <service
             android:name=".library.youtube.UploadService"
@@ -33,10 +36,7 @@
         <activity android:name=".ui.activity.StepActivity"
             android:screenOrientation="landscape"
             android:configChanges="screenLayout|orientation|screenSize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
         <activity

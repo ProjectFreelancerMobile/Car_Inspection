@@ -29,6 +29,7 @@ import com.car_inspection.library.MiscUtils
 import com.car_inspection.library.youtube.util.Utils
 import com.car_inspection.listener.CameraRecordListener
 import com.car_inspection.ui.base.BaseFragment
+import com.car_inspection.ui.step.StepFragment
 import com.car_inspection.utils.*
 import com.github.florent37.camerafragment.CameraFragment
 import com.github.florent37.camerafragment.configuration.Configuration
@@ -43,6 +44,7 @@ import org.bytedeco.javacv.FFmpegFrameFilter
 import org.bytedeco.javacv.FFmpegFrameRecorder
 import org.bytedeco.javacv.Frame
 import org.bytedeco.javacv.FrameFilter
+import pyxis.uzuki.live.richutilskt.utils.runDelayedOnUiThread
 import java.io.File
 import java.io.IOException
 import java.nio.ByteBuffer
@@ -117,7 +119,7 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
 
     override fun onClick(view: View?) {
         when (view?.id) {
-            R.id.btnExit -> recordEvent()
+            R.id.btnExit1 -> recordEvent()
             R.id.mBtnReset -> {
                 pauseRecording()
                 object : ProgressDialogTask<Void, Int, Void>(R.string.please_wait) {
@@ -151,21 +153,7 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
                 }
             }
             R.id.mBtnSwitchCamera -> {
-                cameraPreview?.apply {
-                    val surfaceTexture = surfaceTexture
-                    object : ProgressDialogTask<Void, Int, Void>(R.string.please_wait) {
-                        override fun doInBackground(vararg params: Void): Void? {
-                            stopRecording()
-                            stopPreview()
-                            releaseCamera()
-                            mCameraId = (mCameraId + 1) % 2
-                            acquireCamera()
-                            startPreview(surfaceTexture)
-                            startRecording()
-                            return null
-                        }
-                    }.execute()
-                }
+                startPreview()
             }
             R.id.mBtnTake -> {
                 if (takeFragment != null) {
@@ -198,7 +186,7 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
     }
 
     private fun initRecord() {
-        mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT
+        mCameraId = Camera.CameraInfo.CAMERA_FACING_BACK
         setPreviewSize(mPreviewWidth, mPreviewHeight)
         cameraPreview.setCroppedSizeWeight(videoWidth, videoHeight)
         cameraPreview.surfaceTextureListener = this
@@ -207,7 +195,25 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
         // At most recycle 2 Frame
         mRecycledFrameQueue = LinkedBlockingQueue(2)
         mRecordFragments = Stack()
-        listenToViews(mBtnReset, mBtnDone, mBtnResumeOrPause, mBtnSwitchCamera, mBtnTake, btnExit)
+        listenToViews(mBtnReset, mBtnDone, mBtnResumeOrPause, mBtnSwitchCamera, mBtnTake, btnExit1)
+    }
+
+    private fun startPreview(){
+        cameraPreview?.apply {
+            val surfaceTexture = surfaceTexture
+            object : ProgressDialogTask<Void, Int, Void>(R.string.please_wait) {
+                override fun doInBackground(vararg params: Void): Void? {
+                    stopRecording()
+                    stopPreview()
+                    releaseCamera()
+                    //mCameraId = (mCameraId + 1) % 2
+                    acquireCamera()
+                    startPreview(surfaceTexture)
+                    startRecording()
+                    return null
+                }
+            }.execute()
+        }
     }
 
     override fun onDestroy() {
@@ -437,7 +443,7 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
     }
 
     private fun releaseRecorder(deleteFile: Boolean) {
-        mFrameRecorder?.apply {
+        /*mFrameRecorder?.apply {
             try {
                 release()
             } catch (e: Exception) {
@@ -447,7 +453,7 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
             if (deleteFile) {
                 mVideo?.delete()
             }
-        }
+        }*/
     }
 
     private fun startRecorder() {
@@ -460,7 +466,7 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
     }
 
     private fun stopRecorder() {
-        mFrameRecorder?.apply {
+        /*mFrameRecorder?.apply {
             try {
                 //stop()
             } catch (e: Exception) {
@@ -468,12 +474,12 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
             }
         }
         mRecordFragments?.clear()
-        activity?.runOnUiThread { mBtnReset?.visibility = View.INVISIBLE }
+        activity?.runOnUiThread { mBtnReset?.visibility = View.INVISIBLE }*/
     }
 
     private fun startRecording() {
-       /* //TODO
-        Logger.e("startRecording")
+        //TODO
+       /* Logger.e("startRecording")
         mAudioRecordThread = AudioRecordThread()
         mAudioRecordThread?.start()
         mVideoRecordThread = VideoRecordThread()
@@ -482,7 +488,7 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
 
     private fun stopRecording() {
         //TODO
-        try {
+        /*try {
             mAudioRecordThread?.apply {
                 if (isRunning)
                     stopRunning()
@@ -499,34 +505,34 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
             mRecycledFrameQueue?.clear()
         } catch (e: InterruptedException) {
             e.printStackTrace()
-        }
+        }*/
     }
 
     private fun resumeRecording() {
         //TODO
-        if (!mRecording) {
+        /*if (!mRecording) {
             val recordModel = RecordModel()
             recordModel.startTimestamp = System.currentTimeMillis()
             mRecordFragments?.push(recordModel)
-            /*activity?.runOnUiThread {
+            *//*activity?.runOnUiThread {
                 mBtnReset.visibility = View.VISIBLE
                 mBtnSwitchCamera.visibility = View.INVISIBLE
                 mBtnResumeOrPause.setText(R.string.pause)
-            }*/
+            }*//*
             mRecording = true
-        }
+        }*/
     }
 
     private fun pauseRecording() {
         //TODO
-        if (mRecording) {
+        /*if (mRecording) {
             mRecordFragments?.peek()?.endTimestamp = System.currentTimeMillis()
-            /*activity?.runOnUiThread(Runnable {
+            *//*activity?.runOnUiThread(Runnable {
                 mBtnSwitchCamera.visibility = View.VISIBLE
                 mBtnResumeOrPause.setText(R.string.resume)
-            })*/
+            })*//*
             mRecording = false
-        }
+        }*/
     }
 
     private fun calculateTotalRecordedTime(recordModel: Stack<RecordModel>?): Long {
@@ -785,33 +791,39 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
             if (!isFinishing) {
                 when (isTake) {
                     true -> {
+                        StepFragment.mRecording = false
                         Logger.e("RecordEvent")
                         currentStep = step
                         currentSubStepName = subStep
                         mBtnTake.isVisible = true
-                        btnExit.isVisible = true
+                        btnExit1.visibility =View.VISIBLE
                         tvTitleStep.isVisible = true
-                        pauseRecording()
-                        val builder = Configuration.Builder()
-                        builder.setCamera(Configuration.CAMERA_FACE_FRONT)
-                                .setFlashMode(Configuration.FLASH_MODE_OFF)
-                                .setMediaAction(Configuration.MEDIA_ACTION_PHOTO)
-                        takeFragment = CameraFragment.newInstance(builder.build())
-                        activity?.addFragment(takeFragment!!, R.id.fragmentCapture)
+                        stopRecording()
+                        stopPreview()
+                        releaseCamera()
+                        runDelayedOnUiThread({
+                            val builder = Configuration.Builder()
+                            builder.setCamera(mCameraId)
+                                   .setFlashMode(Configuration.FLASH_MODE_OFF)
+                                   .setMediaAction(Configuration.MEDIA_ACTION_PHOTO)
+                            takeFragment = CameraFragment.newInstance(builder.build())
+                            activity?.addFragment(takeFragment!!, R.id.fragmentCapture)
+                        },1000)
                         Logger.e("${tvTitleStep.text} ************************************")
                     }
                     false -> {
+                        StepFragment.mRecording = true
                         Logger.e("RecordEvent11111")
                         mBtnTake.isGone = true
-                        btnExit.isGone = true
+                        btnExit1.visibility =View.GONE
                         tvTitleStep.isGone = true
                         takeFragment?.apply {
                             removeFragment(this)
                         }
-                        resumeRecording()
+                        runDelayedOnUiThread({
+                            startPreview()
+                        },1000)
                         Logger.e("${tvTitleStep.text} ************************************")
-
-
                     }
                 }
             }

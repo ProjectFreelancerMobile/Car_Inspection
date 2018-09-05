@@ -14,6 +14,36 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <TextView
+        android:id="@+id/tvTitleStep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mBtnTake"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="15sp" />
+
+    <ImageView
+        android:id="@+id/mBtnTake"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/ic_camera_white"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/btnExit1"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="10dp"
+        app:srcCompat="@drawable/ic_close"
+        android:visibility="invisible"/>
+
     <LinearLayout
         android:id="@+id/layoutCapture"
         android:layout_width="match_parent"
@@ -63,37 +93,5 @@
             android:text="@string/done"
             android:textSize="10sp" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tvTitleStep"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/mBtnTake"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:text=""
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        android:visibility="invisible"/>
-
-    <ImageView
-        android:id="@+id/mBtnTake"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:src="@drawable/ic_camera_white"
-        android:visibility="invisible" />
-
-    <ImageView
-        android:id="@+id/btnExit"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="10dp"
-        app:srcCompat="@drawable/ic_close"
-        android:visibility="invisible"/>
-
 
 </RelativeLayout>

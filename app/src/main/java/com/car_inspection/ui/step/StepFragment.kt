@@ -98,10 +98,10 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     internal val VIDEO_AVC = MIMETYPE_VIDEO_AVC // H.264 Advanced Video Coding
     internal val AUDIO_AAC = MIMETYPE_AUDIO_AAC // H.264 Advanced Audio Coding
     private var timerRecord = 0
-    private var mRecording = false
     private var filePath :File? =null
 
     companion object {
+        var mRecording = false
         fun newInstance() = StepFragment()
     }
 
