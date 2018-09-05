@@ -6,18 +6,16 @@ import android.annotation.TargetApi
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.*
-import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.graphics.Color
-import android.media.MediaCodecInfo
 import android.media.MediaFormat.MIMETYPE_AUDIO_AAC
 import android.media.MediaFormat.MIMETYPE_VIDEO_AVC
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
 import android.net.Uri
-import android.os.*
+import android.os.Build
 import android.os.Build.VERSION_CODES.M
+import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
@@ -26,9 +24,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.RadioGroup
-import android.widget.SpinnerAdapter
 import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -43,8 +39,10 @@ import com.car_inspection.binding.FragmentDataBindingComponent
 import com.car_inspection.data.model.StepModifyModel
 import com.car_inspection.data.model.StepOrinalModel
 import com.car_inspection.databinding.StepFragmentBinding
-import com.car_inspection.library.record.*
-import com.car_inspection.library.record.view.NamedSpinner
+import com.car_inspection.library.record.AudioEncodeConfig
+import com.car_inspection.library.record.Notifications
+import com.car_inspection.library.record.ScreenRecorder
+import com.car_inspection.library.record.VideoEncodeConfig
 import com.car_inspection.library.youtube.UploadService
 import com.car_inspection.library.youtube.util.VideoData
 import com.car_inspection.listener.CameraDefaultListener
@@ -60,7 +58,6 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.plus.Plus
 import com.orhanobut.logger.Logger
-import com.serenegiant.usb.encoder.RecordParams
 import com.toan_itc.core.architecture.autoCleared
 import com.toan_itc.core.utils.addFragment
 import google.com.carinspection.DisposableImpl
@@ -70,7 +67,6 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.step_fragment.*
 import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
 import java.io.File
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -101,6 +97,8 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     private var mNotifications: Notifications? = null
     internal val VIDEO_AVC = MIMETYPE_VIDEO_AVC // H.264 Advanced Video Coding
     internal val AUDIO_AAC = MIMETYPE_AUDIO_AAC // H.264 Advanced Audio Coding
+    private var timerRecord = 0
+    private var mRecording = false
 
     companion object {
         fun newInstance() = StepFragment()
@@ -206,6 +204,20 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
             hasPermissions() -> startCaptureIntent()
             Build.VERSION.SDK_INT >= M -> requestPermissions()
         }
+    }
+
+    private fun startTimer() {
+        Observable.interval(1, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableImpl<Long>() {
+                    override fun onNext(t: Long) {
+                        if (mRecording) {
+                            timerRecord++
+                            tvTimerRecord.text = formatTime(timerRecord)
+                        }
+                    }
+                })
     }
 
     private fun setProfileInfo() {
@@ -503,7 +515,9 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
         if (mRecorder == null) return
         mRecorder?.start()
         context?.apply {
+            mRecording = true
             registerReceiver(mStopActionReceiver, IntentFilter(Constants.ACTION_STOP))
+            startTimer()
             //activity?.moveTaskToBack(true)
         }
     }
@@ -512,6 +526,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
         mNotifications?.clear()
         mRecorder?.quit()
         mRecorder = null
+        mRecording = false
         try {
             context?.unregisterReceiver(mStopActionReceiver)
         } catch (e: Exception) {
@@ -576,8 +591,8 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     private fun hasPermissions(): Boolean {
         var granted = 0
         context?.apply {
-            val pm = getPackageManager()
-            val packageName = getPackageName()
+            val pm = packageManager
+            val packageName = packageName
             granted = (if (true) pm.checkPermission(RECORD_AUDIO, packageName) else PackageManager.PERMISSION_GRANTED) or pm.checkPermission(WRITE_EXTERNAL_STORAGE, packageName)
         }
 

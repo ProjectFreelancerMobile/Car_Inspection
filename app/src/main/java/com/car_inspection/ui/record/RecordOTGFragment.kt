@@ -35,8 +35,7 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
     private var isPreview: Boolean = false
     private var currentSubStepName: String = ""
     private var currentStep = 2
-    private var timerRecord = 0
-    private var mRecording = false
+
     companion object {
         lateinit var cameraCallbackListener: CameraDefaultListener
         fun newInstance(cameraRecord: CameraDefaultListener): RecordOTGFragment {
@@ -44,19 +43,7 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
             return RecordOTGFragment()
         }
     }
-    fun startTimer() {
-        Observable.interval(1, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableImpl<Long>() {
-                    override fun onNext(t: Long) {
-                        if (mRecording) {
-                            timerRecord++
-                            tvTimerRecord.text = formatTime(timerRecord)
-                        }
-                    }
-                })
-    }
+
     private val listener = object : UVCCameraHelper.OnMyDevConnectListener {
 
         override fun onAttachDev(device: UsbDevice) {
