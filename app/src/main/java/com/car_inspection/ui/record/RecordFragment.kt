@@ -472,8 +472,7 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
     }
 
     private fun startRecording() {
-        //TODO
-        /*startTimer()
+       /* //TODO
         Logger.e("startRecording")
         mAudioRecordThread = AudioRecordThread()
         mAudioRecordThread?.start()
@@ -483,7 +482,7 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
 
     private fun stopRecording() {
         //TODO
-        /*try {
+        try {
             mAudioRecordThread?.apply {
                 if (isRunning)
                     stopRunning()
@@ -500,34 +499,34 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
             mRecycledFrameQueue?.clear()
         } catch (e: InterruptedException) {
             e.printStackTrace()
-        }*/
+        }
     }
 
     private fun resumeRecording() {
         //TODO
-        /*if (!mRecording) {
+        if (!mRecording) {
             val recordModel = RecordModel()
             recordModel.startTimestamp = System.currentTimeMillis()
             mRecordFragments?.push(recordModel)
-            activity?.runOnUiThread {
+            /*activity?.runOnUiThread {
                 mBtnReset.visibility = View.VISIBLE
                 mBtnSwitchCamera.visibility = View.INVISIBLE
                 mBtnResumeOrPause.setText(R.string.pause)
-            }
+            }*/
             mRecording = true
-        }*/
+        }
     }
 
     private fun pauseRecording() {
         //TODO
-        /*if (mRecording) {
+        if (mRecording) {
             mRecordFragments?.peek()?.endTimestamp = System.currentTimeMillis()
-            activity?.runOnUiThread(Runnable {
+            /*activity?.runOnUiThread(Runnable {
                 mBtnSwitchCamera.visibility = View.VISIBLE
                 mBtnResumeOrPause.setText(R.string.resume)
-            })
+            })*/
             mRecording = false
-        }*/
+        }
     }
 
     private fun calculateTotalRecordedTime(recordModel: Stack<RecordModel>?): Long {
@@ -806,10 +805,10 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
                         mBtnTake.isGone = true
                         btnExit.isGone = true
                         tvTitleStep.isGone = true
-                        resumeRecording()
                         takeFragment?.apply {
                             removeFragment(this)
                         }
+                        resumeRecording()
                         Logger.e("${tvTitleStep.text} ************************************")
 
 

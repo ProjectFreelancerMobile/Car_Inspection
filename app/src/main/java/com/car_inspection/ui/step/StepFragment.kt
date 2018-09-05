@@ -310,7 +310,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
         updateProgressStep(step)
 
-        val stepTitle = "Bước ${step}: ${items[0].stepTitle}"
+        val stepTitle = "Bước $step: ${items[0].stepTitle}"
         val content = SpannableString(stepTitle)
         content.setSpan(UnderlineSpan(), 0, stepTitle.length, 0)
         tvStep.text = content
@@ -444,9 +444,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     }
 
     override fun uploadYoutube(path: String) {
-        filePath?.path?.apply {
-            uploadVideo(getImageContentUri(context, this))
-        }
+        uploadVideo(getImageContentUri(context, path))
     }
 
     interface Callbacks {
@@ -535,7 +533,6 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
         } catch (e: Exception) {
             //ignored
         }
-
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -564,6 +561,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
             if (Constants.ACTION_STOP == intent.action) {
                 stopRecorder()
             }
+            uploadYoutube(file.path)
             showSnackBar("Recorder stopped!\n Saved file $file")
         }
     }
