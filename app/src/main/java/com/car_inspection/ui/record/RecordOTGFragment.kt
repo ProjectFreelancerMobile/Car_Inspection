@@ -10,6 +10,7 @@ import com.car_inspection.R
 import com.car_inspection.listener.CameraDefaultListener
 import com.car_inspection.listener.CameraRecordListener
 import com.car_inspection.ui.base.BaseFragment
+import com.car_inspection.ui.step.StepFragment
 import com.car_inspection.utils.*
 import com.jiangdg.usbcamera.UVCCameraHelper
 import com.jiangdg.usbcamera.utils.FileUtils
@@ -90,7 +91,6 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
     }
 
     override fun setLayoutResourceID(): Int = R.layout.record_otg_fragment
-
 
     override fun initData() {
         listenToViews(mBtnRecord, btnTakePicture,btnExit)
@@ -257,6 +257,7 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
             if (!isFinishing) {
                 when (isTake) {
                     true -> {
+                        StepFragment.mRecording = false
                         this@RecordOTGFragment.currentStep = step
                         this@RecordOTGFragment.currentSubStepName = subStep
                         btnTakePicture?.isVisible = true
@@ -264,6 +265,7 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
                         btnExit?.isVisible = true
                     }
                     false -> {
+                        StepFragment.mRecording = true
                         btnTakePicture?.isGone = true
                         tvTitleStep?.isGone = true
                         btnExit?.isGone = true
