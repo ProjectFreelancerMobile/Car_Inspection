@@ -255,21 +255,18 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
         tvTitleStep.text = subStep
         activity?.apply {
             if (!isFinishing) {
-
                 when (isTake) {
                     true -> {
                         this@RecordOTGFragment.currentStep = step
                         this@RecordOTGFragment.currentSubStepName = subStep
-                        mBtnRecord?.isGone = true
                         btnTakePicture?.isVisible = true
                         tvTitleStep?.isVisible = true
-                        btnExit.visibility = View.VISIBLE
+                        btnExit?.isVisible = true
                     }
                     false -> {
-                        mBtnRecord?.isVisible = true
                         btnTakePicture?.isGone = true
                         tvTitleStep?.isGone = true
-                        btnExit.visibility = View.GONE
+                        btnExit?.isGone = true
                     }
                 }
             }

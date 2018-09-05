@@ -803,9 +803,9 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
                     }
                     false -> {
                         Logger.e("RecordEvent11111")
-                        mBtnTake.isInvisible = true
-                        btnExit.isInvisible = true
-                        tvTitleStep.isInvisible = true
+                        mBtnTake.isGone = true
+                        btnExit.isGone = true
+                        tvTitleStep.isGone = true
                         resumeRecording()
                         takeFragment?.apply {
                             removeFragment(this)
