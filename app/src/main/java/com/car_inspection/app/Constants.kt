@@ -11,4 +11,5 @@ object Constants {
     const val DB_Realm = "CarInspection.realm"
     const val RealmVersion: Long = 1
     const val BLANK = ""
+    const val ACTION_STOP = "com.car_inspection.action.STOP"
 }

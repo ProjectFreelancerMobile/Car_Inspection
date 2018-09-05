@@ -160,7 +160,7 @@ ext.deps = deps
 
 def build_versions = [:]
 build_versions.appId       = "com.car_inspection"
-build_versions.minSdk       = 19
+build_versions.minSdk       = 21
 build_versions.compileSdk   = 28
 build_versions.targetSdk    = 28
 build_versions.versionCode  = 1
