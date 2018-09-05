@@ -135,6 +135,7 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
 
     override fun onClick(view: View?) {
         when (view?.id) {
+            R.id.btnExit -> recordEvent()
             R.id.mBtnReset -> {
                 pauseRecording()
                 object : ProgressDialogTask<Void, Int, Void>(R.string.please_wait) {
@@ -224,7 +225,7 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
         // At most recycle 2 Frame
         mRecycledFrameQueue = LinkedBlockingQueue(2)
         mRecordFragments = Stack()
-        listenToViews(mBtnReset, mBtnDone, mBtnResumeOrPause, mBtnSwitchCamera, mBtnTake)
+        listenToViews(mBtnReset, mBtnDone, mBtnResumeOrPause, mBtnSwitchCamera, mBtnTake, btnExit)
     }
 
     override fun onDestroy() {
@@ -794,8 +795,8 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
     }
 
     override fun recordEvent(isTake: Boolean, step: Int, subStep: String) {
+        tvTitleStep.text = subStep
         activity?.apply {
-            tvTitleStep.text = subStep
             if (!isFinishing) {
                 when (isTake) {
                     true -> {
@@ -809,6 +810,12 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
                                 .setMediaAction(Configuration.MEDIA_ACTION_PHOTO)
                         takeFragment = CameraFragment.newInstance(builder.build())
                         activity?.addFragment(takeFragment!!, R.id.fragmentCapture)
+                        btnExit.visibility = View.VISIBLE
+                        tvTitleStep.visibility = View.VISIBLE
+
+                        Logger.e("${tvTitleStep.text} ************************************")
+
+
                     }
                     false -> {
                         Logger.e("RecordEvent11111")
@@ -816,6 +823,13 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
                         takeFragment?.apply {
                             removeFragment(this)
                         }
+
+                                        btnExit.visibility = View.GONE
+                                        tvTitleStep.visibility = View.GONE
+                                        Logger.e("${tvTitleStep.text} ************************************")
+                                    }
+                                })
+
                     }
                 }
             }

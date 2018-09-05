@@ -10,10 +10,7 @@ import com.car_inspection.R
 import com.car_inspection.listener.CameraDefaultListener
 import com.car_inspection.listener.CameraRecordListener
 import com.car_inspection.ui.base.BaseFragment
-import com.car_inspection.utils.Constanst
-import com.car_inspection.utils.createFolderPicture
-import com.car_inspection.utils.listenToViews
-import com.car_inspection.utils.overlay
+import com.car_inspection.utils.*
 import com.jiangdg.usbcamera.UVCCameraHelper
 import com.jiangdg.usbcamera.utils.FileUtils
 import com.orhanobut.logger.Logger
@@ -22,8 +19,13 @@ import com.serenegiant.usb.USBMonitor
 import com.serenegiant.usb.common.AbstractUVCCameraHandler
 import com.serenegiant.usb.encoder.RecordParams
 import com.serenegiant.usb.widget.CameraViewInterface
+import google.com.carinspection.DisposableImpl
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.record_otg_fragment.*
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, CameraViewInterface.Callback, View.OnClickListener, CameraRecordListener {
 
@@ -33,7 +35,8 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
     private var isPreview: Boolean = false
     private var currentSubStepName: String = ""
     private var currentStep = 2
-
+    private var timerRecord = 0
+    private var mRecording = false
     companion object {
         lateinit var cameraCallbackListener: CameraDefaultListener
         fun newInstance(cameraRecord: CameraDefaultListener): RecordOTGFragment {
@@ -41,7 +44,19 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
             return RecordOTGFragment()
         }
     }
-
+    fun startTimer() {
+        Observable.interval(1, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableImpl<Long>() {
+                    override fun onNext(t: Long) {
+                        if (mRecording) {
+                            timerRecord++
+                            tvTimerRecord.text = formatTime(timerRecord)
+                        }
+                    }
+                })
+    }
     private val listener = object : UVCCameraHelper.OnMyDevConnectListener {
 
         override fun onAttachDev(device: UsbDevice) {
@@ -123,6 +138,7 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
     @SuppressLint("SetTextI18n")
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.btnExit -> recordEvent()
             R.id.btnTakePicture -> {
                 mCameraHelper?.apply {
                     if (isCameraOpened) {
@@ -249,9 +265,10 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
     }
 
     override fun recordEvent(isTake: Boolean, step: Int, subStep: String) {
+        tvTitleStep.text = subStep
         activity?.apply {
             if (!isFinishing) {
-                tvTitleStep.text = subStep
+
                 when (isTake) {
                     true -> {
                         this@RecordOTGFragment.currentStep = step
@@ -259,11 +276,13 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
                         mBtnRecord?.isGone = true
                         btnTakePicture?.isVisible = true
                         tvTitleStep?.isVisible = true
+                        btnExit.visibility = View.VISIBLE
                     }
                     false -> {
                         mBtnRecord?.isVisible = true
                         btnTakePicture?.isGone = true
                         tvTitleStep?.isGone = true
+                        btnExit.visibility = View.GONE
                     }
                 }
             }

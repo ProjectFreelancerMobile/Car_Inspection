@@ -55,6 +55,8 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.step_fragment.*
 import nl.bravobit.ffmpeg.ExecuteBinaryResponseHandler
 import nl.bravobit.ffmpeg.FFmpeg
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import pyxis.uzuki.live.richutilskt.utils.runDelayed
 import java.io.File
 import java.io.FileOutputStream
@@ -311,7 +313,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
     override fun onRadioGroupCheckChangeListner(group: RadioGroup, checkId: Int, position: Int) {
         currentPosition = position
-        screenShot(layoutStep)
+//        screenShot(layoutStep)
         currentSubStepName = stepAdapter.items?.get(position)?.subStepTitle3!!
         when (checkId) {
             R.id.cbG -> {
