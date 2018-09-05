@@ -12,4 +12,9 @@
         <attr name="android:textColorHint" />
         <attr name="android:inputType" />
     </declare-styleable>
+    <declare-styleable name="NamedSpinner">
+        <attr name="android:name" format="string|reference" />
+        <attr name="android:textAppearance" format="reference" />
+        <attr name="android:entries" format="reference" />
+    </declare-styleable>
 </resources>

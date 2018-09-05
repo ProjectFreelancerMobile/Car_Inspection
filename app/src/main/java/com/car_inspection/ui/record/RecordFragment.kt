@@ -470,7 +470,7 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
 
     private fun startRecorder() {
         try {
-            mFrameRecorder?.start()
+           // mFrameRecorder?.start()
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -480,7 +480,7 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
     private fun stopRecorder() {
         mFrameRecorder?.apply {
             try {
-                stop()
+                //stop()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
