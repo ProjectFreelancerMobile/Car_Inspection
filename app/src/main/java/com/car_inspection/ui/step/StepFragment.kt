@@ -268,7 +268,13 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
                             }
                         })
             }
-            R.id.btnFinish -> saveDataStep(currentStep)
+            R.id.btnFinish -> {
+                saveDataStep(currentStep)
+                val file = File(mRecorder?.savedPath)
+                stopRecorder()
+                uploadYoutube(file.path)
+                showSnackBar("Recorder stopped!\n Saved file $file")
+            }
             R.id.btnRecordContinues -> {
 
             }
@@ -509,7 +515,6 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     override fun onDestroy() {
         super.onDestroy()
         stopRecorder()
-        mNotifications?.stopAction()
     }
 
     private fun startCaptureIntent() {
@@ -529,6 +534,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     }
 
     private fun stopRecorder() {
+        mNotifications?.stopAction()
         mNotifications?.clear()
         mRecorder?.quit()
         mRecorder = null

@@ -109,7 +109,11 @@ class App : Application(), HasActivityInjector {
         Utils.init(this)
         PreferenceManager.initialize(this, Constants.APP_NAME)
         Realm.init(this)
-        Fabric.with(this, Crashlytics())
+        val fabric = Fabric.Builder(this)
+                .kits(Crashlytics())
+                .debuggable(true)
+                .build()
+        Fabric.with(fabric)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
     }
 

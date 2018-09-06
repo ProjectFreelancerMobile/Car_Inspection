@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "263196624467",
-    "firebase_url": "https://carinspection-b356f.firebaseio.com",
-    "project_id": "carinspection-b356f",
-    "storage_bucket": "carinspection-b356f.appspot.com"
+    "project_number": "511185225457",
+    "firebase_url": "https://carinspection-a8a95.firebaseio.com",
+    "project_id": "carinspection-a8a95",
+    "storage_bucket": "carinspection-a8a95.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:263196624467:android:66f36b03f44bdb8c",
+        "mobilesdk_app_id": "1:511185225457:android:66f36b03f44bdb8c",
         "android_client_info": {
           "package_name": "com.car_inspection"
         }
       },
       "oauth_client": [
         {
-          "client_id": "263196624467-plcbmp0gbpurrar1d1bo1if85cu86ge4.apps.googleusercontent.com",
+          "client_id": "511185225457-nc25f5ds2625kaheadmrpo22751oiifi.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.car_inspection",
@@ -23,13 +23,13 @@
           }
         },
         {
-          "client_id": "263196624467-en9pj3vp34lp7ok0qoeig9cpkj7vfb4r.apps.googleusercontent.com",
+          "client_id": "511185225457-r1aogsgcvno931oequfodfjhu8eklv5c.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDrXQeJqxVI3BvwP0RqyqURxMYgPrG9PCg"
+          "current_key": "AIzaSyBFqqeFUjZCEcXPiOXDATwWFUbfWS3ZPHI"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "263196624467-en9pj3vp34lp7ok0qoeig9cpkj7vfb4r.apps.googleusercontent.com",
+              "client_id": "511185225457-r1aogsgcvno931oequfodfjhu8eklv5c.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
