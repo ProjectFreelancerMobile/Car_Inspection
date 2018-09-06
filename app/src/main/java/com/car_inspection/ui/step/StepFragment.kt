@@ -353,7 +353,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
     override fun onRadioGroupCheckChangeListner(group: RadioGroup, checkId: Int, position: Int) {
         currentPosition = position
-        screenShot(layoutStep)
+//        screenShot(layoutStep)
         currentSubStepName = stepAdapter.items?.get(position)?.subStepTitle3!!
         when (checkId) {
             R.id.cbG -> {
