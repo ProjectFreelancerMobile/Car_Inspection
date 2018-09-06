@@ -347,7 +347,7 @@ class StepActivity : CoreBaseActivity(), HasSupportFragmentInjector,StepFragment
 
 
     override fun initData() {
-        Crashlytics().crash()
+        
     }
 
     fun pushFragment(fragment: Fragment) {
