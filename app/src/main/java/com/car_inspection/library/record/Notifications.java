@@ -92,7 +92,7 @@ public class Notifications extends ContextWrapper {
         getNotificationManager().createNotificationChannel(channel);
     }
 
-    private Notification.Action stopAction() {
+    public Notification.Action stopAction() {
         if (mStopAction == null) {
             Intent intent = new Intent(Constants.ACTION_STOP).setPackage(getPackageName());
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1,

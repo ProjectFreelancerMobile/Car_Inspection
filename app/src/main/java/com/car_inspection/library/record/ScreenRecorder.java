@@ -455,6 +455,13 @@ public class ScreenRecorder {
         }
 
     }
+    private void pauseScreenRecord() {
+
+    }
+
+    private void resumeScreenRecord() {
+
+    }
 
     private void release() {
         if (mMediaProjection != null) {

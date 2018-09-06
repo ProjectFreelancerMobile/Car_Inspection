@@ -190,7 +190,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
         setProfileInfo()
         loadAccount()
         rvSubStep.layoutManager = LinearLayoutManager(activity)
-        listenToViews(btnSave, btnContinue, btnFinish)
+        listenToViews(btnSave, btnContinue, btnFinish, btnRecordContinues, btnRecordPause)
         addFragmentRecord()
     }
 
@@ -268,7 +268,10 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
                         })
             }
             R.id.btnFinish -> saveDataStep(currentStep)
-            R.id.btnTakePicture -> {
+            R.id.btnRecordContinues -> {
+
+            }
+            R.id.btnRecordPause -> {
 
             }
         }
@@ -505,6 +508,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     override fun onDestroy() {
         super.onDestroy()
         stopRecorder()
+        mNotifications?.stopAction()
     }
 
     private fun startCaptureIntent() {

@@ -32,36 +32,65 @@
                     android:id="@+id/fragmentRecord"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/black"/>
+                    android:background="@color/black" />
 
                 <FrameLayout
                     android:id="@+id/fragmentRecordDefault"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/black"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tvTimerRecord"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
                     android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
                     android:layout_margin="@dimen/small_12"
                     android:text="00:00"
                     android:textColor="@color/color_red"
                     android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.car_inspection.library.commonview.CButtonState
+                        android:id="@+id/btnRecordContinues"
+                        android:layout_width="70dp"
+                        android:layout_height="35dp"
+                        android:text="@string/continues"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        app:setActive="true" />
+
+                    <com.car_inspection.library.commonview.CButtonState
+                        android:id="@+id/btnRecordPause"
+                        android:layout_width="70dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/stop"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        app:setActive="true" />
+                </LinearLayout>
+
             </RelativeLayout>
 
         </FrameLayout>
 
         <RelativeLayout
-            android:background="@color/white"
             android:id="@+id/layoutStep"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@color/white">
 
             <com.car_inspection.library.commonview.CustomProgress
                 android:id="@+id/pgStep"
