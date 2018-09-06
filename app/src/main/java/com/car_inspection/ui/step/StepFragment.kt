@@ -54,6 +54,7 @@ import com.car_inspection.ui.inputtext.SuggestTextActivity
 import com.car_inspection.ui.record.RecordFragment
 import com.car_inspection.ui.record.RecordOTGFragment
 import com.car_inspection.utils.*
+import com.github.florent37.camerafragment.internal.utils.Utils
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.plus.Plus
@@ -98,7 +99,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     internal val VIDEO_AVC = MIMETYPE_VIDEO_AVC // H.264 Advanced Video Coding
     internal val AUDIO_AAC = MIMETYPE_AUDIO_AAC // H.264 Advanced Audio Coding
     private var timerRecord = 0
-    private var filePath :File? =null
+    private var filePath: File? = null
 
     companion object {
         var mRecording = false
@@ -337,7 +338,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
 
     fun autoScrollAfterCheckComplete() {
-        rvSubStep.post { rvSubStep.smoothScrollBy(0, stepAdapter.heightItem) }
+        rvSubStep.post { rvSubStep.smoothScrollBy(0, stepAdapter.heightItem + Utils.convertDipToPixels(activity!!, 10)) }
     }
 
     override fun onTextNoteClickListener(v: View, position: Int) {
@@ -377,8 +378,8 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
         //else layoutFinishCheck.visibility = View.GONE
 
-//        if (position < stepAdapter.itemCount - 3)
-//            autoScrollAfterCheckComplete()
+        if (stepAdapter.isAllItemBeforeChecked(position) && position < stepAdapter.itemCount - 3)
+            autoScrollAfterCheckComplete()
     }
 
 
@@ -399,7 +400,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
                 val position = data.getIntExtra("position", 0)
                 items[position].note = data.getStringExtra("note")
             }
-        }else if (requestCode == REQUEST_MEDIA_PROJECTION) {
+        } else if (requestCode == REQUEST_MEDIA_PROJECTION) {
             // NOTE: Should pass this result data into a Service to run ScreenRecorder.
             // The following codes are merely exemplary.
 
@@ -417,9 +418,9 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
                 return
             }
             createFolderPicture(Constanst.getFolderVideoPath())
-            filePath = FileUtils.getFileByPath(Constanst.getFolderVideoPath() + System.currentTimeMillis()+".mp4")
+            filePath = FileUtils.getFileByPath(Constanst.getFolderVideoPath() + System.currentTimeMillis() + ".mp4")
             audio?.apply {
-                Logger.e( "Create recorder with :$video \n $this\n $filePath")
+                Logger.e("Create recorder with :$video \n $this\n $filePath")
                 mRecorder = newRecorder(mediaProjection, video, this, filePath!!)
                 if (hasPermissions()) {
                     startRecorder()
@@ -499,7 +500,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
     private fun createVideoConfig(): VideoEncodeConfig? {
         //val codec = getSelectedVideoCodec() ?: // no selected codec ?? return null
-        return VideoEncodeConfig(1080, 1920, 800000, 15, 1,"OMX.Exynos.AVC.Encoder", VIDEO_AVC,null)
+        return VideoEncodeConfig(1080, 1920, 800000, 15, 1, "OMX.Exynos.AVC.Encoder", VIDEO_AVC, null)
     }
 
     override fun onDestroy() {

@@ -36,6 +36,13 @@ class StepAdapter(var context: Context) : RecyclerView.Adapter<StepAdapter.StepV
         return StepViewHolder(view)
     }
 
+    fun isAllItemBeforeChecked(position: Int): Boolean {
+        for (i in 0..(position - 1))
+            if (TextUtils.isEmpty(items?.get(i)?.rating))
+                return false
+        return true
+    }
+
     override fun getItemCount(): Int {
         return if (items != null) items!!.size else 0
     }
