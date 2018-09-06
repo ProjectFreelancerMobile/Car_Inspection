@@ -96,8 +96,8 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     private var mMediaProjectionManager: MediaProjectionManager? = null
     private var mRecorder: ScreenRecorder? = null
     private var mNotifications: Notifications? = null
-    internal val VIDEO_AVC = MIMETYPE_VIDEO_AVC // H.264 Advanced Video Coding
-    internal val AUDIO_AAC = MIMETYPE_AUDIO_AAC // H.264 Advanced Audio Coding
+    private val VIDEO_AVC = MIMETYPE_VIDEO_AVC // H.264 Advanced Video Coding
+    private val AUDIO_AAC = MIMETYPE_AUDIO_AAC // H.264 Advanced Audio Coding
     private var timerRecord = 0
     private var filePath: File? = null
 
@@ -340,7 +340,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     }
 
 
-    fun autoScrollAfterCheckComplete() {
+    private fun autoScrollAfterCheckComplete() {
         rvSubStep.post { rvSubStep.smoothScrollBy(0, stepAdapter.heightItem + Utils.convertDipToPixels(activity!!, 10)) }
     }
 

@@ -15,12 +15,15 @@ import android.view.Menu
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.android.volley.toolbox.ImageLoader
+import com.blankj.utilcode.util.CrashUtils
 import com.car_inspection.R
 import com.car_inspection.library.youtube.Auth
 import com.car_inspection.library.youtube.Constants
 import com.car_inspection.library.youtube.util.Utils
 import com.car_inspection.library.youtube.util.VideoData
 import com.car_inspection.ui.step.StepFragment
+import com.crashlytics.android.Crashlytics
+import com.crashlytics.android.core.CrashlyticsCore
 import com.google.android.gms.common.GooglePlayServicesUtil
 import com.google.android.gms.common.Scopes
 import com.google.api.client.extensions.android.http.AndroidHttp
@@ -35,6 +38,7 @@ import com.google.api.services.youtube.YouTubeScopes
 import com.toan_itc.core.base.CoreBaseActivity
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import io.fabric.sdk.android.Fabric
 import java.io.IOException
 import java.util.*
 import javax.inject.Inject
@@ -343,7 +347,7 @@ class StepActivity : CoreBaseActivity(), HasSupportFragmentInjector,StepFragment
 
 
     override fun initData() {
-
+        Crashlytics().crash()
     }
 
     fun pushFragment(fragment: Fragment) {
