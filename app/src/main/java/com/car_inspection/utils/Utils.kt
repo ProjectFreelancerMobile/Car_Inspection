@@ -1,11 +1,13 @@
 package com.car_inspection.utils
 
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.*
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -77,7 +79,7 @@ fun formatTime(timeInSeconds: Int): String {
     }
     if (hours > 0)
         result = "${formatTimeNumber(hours)}:"
-    result = result + formatTimeNumber(minutes) +":"+ formatTimeNumber(seconds)
+    result = result + formatTimeNumber(minutes) + ":" + formatTimeNumber(seconds)
 
     return result
 }
@@ -264,4 +266,23 @@ private fun store(bm: Bitmap, imageFile: File) {
         e.printStackTrace()
     }
 
+}
+
+fun getWidthScreen(activity: Activity): Int {
+    val displaymetrics = DisplayMetrics()
+    activity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics)
+    return displaymetrics.widthPixels
+}
+
+fun getHeightScreen(activity: Activity): Int {
+    val displaymetrics = DisplayMetrics()
+    activity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics)
+    return displaymetrics.heightPixels
+}
+fun dpToPx(dp: Int): Float {
+    return (dp * Resources.getSystem().getDisplayMetrics().density)
+}
+
+fun pxToDp(px: Int): Float {
+    return (px / Resources.getSystem().getDisplayMetrics().density)
 }

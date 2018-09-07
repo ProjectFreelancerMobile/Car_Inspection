@@ -5,6 +5,10 @@ import android.content.pm.ActivityInfo
 import androidx.fragment.app.Fragment
 import com.car_inspection.R
 import com.car_inspection.ui.login.LoginFragment
+import com.car_inspection.utils.Constanst.Companion.heightScreen
+import com.car_inspection.utils.Constanst.Companion.widthScreen
+import com.car_inspection.utils.getHeightScreen
+import com.car_inspection.utils.getWidthScreen
 import com.toan_itc.core.base.CoreBaseActivity
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -24,11 +28,14 @@ class MainActivity : CoreBaseActivity(), HasSupportFragmentInjector {
 
     @NeedsPermission(Manifest.permission.RECORD_AUDIO, Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.GET_ACCOUNTS)
-    fun startFragment() {}
+    fun startFragment() {
+    }
 
-    override fun initViews(){
+    override fun initViews() {
         startFragmentWithPermissionCheck()
         pushFragment(LoginFragment.newInstance())
+        widthScreen = getWidthScreen(this)
+        heightScreen = getHeightScreen(this)
     }
 
     override fun initData() {
