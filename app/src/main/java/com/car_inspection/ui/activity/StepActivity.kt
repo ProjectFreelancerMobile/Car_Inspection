@@ -328,8 +328,7 @@ class StepActivity : CoreBaseActivity(), HasSupportFragmentInjector,StepFragment
     }
 
     private fun chooseAccount() {
-        startActivityForResult(credential.newChooseAccountIntent(),
-                REQUEST_ACCOUNT_PICKER)
+        startActivityForResult(credential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER)
     }
 
     private inner class UploadBroadcastReceiver : BroadcastReceiver() {

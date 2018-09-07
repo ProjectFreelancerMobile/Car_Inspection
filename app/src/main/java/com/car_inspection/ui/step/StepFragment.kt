@@ -65,6 +65,7 @@ import google.com.carinspection.DisposableImpl
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.record_otg_fragment.*
 import kotlinx.android.synthetic.main.step_fragment.*
 import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
 import java.io.File
@@ -191,7 +192,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
         setProfileInfo()
         loadAccount()
         rvSubStep.layoutManager = LinearLayoutManager(activity)
-        listenToViews(btnSave, btnContinue, btnFinish, btnRecordContinues, btnRecordPause)
+        listenToViews(btnSave, btnContinue, btnFinish, btnRecordPause, btnExit)
         addFragmentRecord()
     }
 
@@ -275,8 +276,17 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
                 uploadYoutube(file.path)
                 showSnackBar("Recorder stopped!\n Saved file $file")
             }
-            R.id.btnRecordContinues -> mRecorder?.resumeScreenRecord()
-            R.id.btnRecordPause -> mRecorder?.pauseScreenRecord()
+            R.id.btnRecordPause -> {
+                mRecorder?.apply {
+                    pauseOrResumeScreenRecord()
+                    if(isRecord){
+                        btnRecordPause.text = getString(R.string.stop)
+                    }else{
+                        btnRecordPause.text = getString(R.string.continues)
+                    }
+                }
+            }
+            R.id.btnExit -> showLayoutVideo()
         }
     }
 
@@ -347,6 +357,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     }
 
     override fun onTextNoteClickListener(v: View, position: Int) {
+        mRecorder?.pauseOrResumeScreenRecord()
         val intent = Intent(activity, SuggestTextActivity::class.java)
         intent.putExtra("position", position)
         intent.putExtra("note", items.get(position).note)
@@ -389,11 +400,17 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
 
     private fun showLayoutTakepicture() {
+        mRecorder?.pauseOrResumeScreenRecord()
+        btnExit.isVisible = true
+        btnRecordPause.isGone = true
         cameraRecordListener?.recordEvent(true, currentStep, currentSubStepName)
         isTakePicture = true
     }
 
     private fun showLayoutVideo() {
+        mRecorder?.pauseOrResumeScreenRecord()
+        btnExit.isGone = true
+        btnRecordPause.isVisible = true
         cameraRecordListener?.recordEvent()
         isTakePicture = false
     }
@@ -401,6 +418,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_SUGGEST_TEST) {
+            mRecorder?.pauseOrResumeScreenRecord()
             if (resultCode == Activity.RESULT_OK) {
                 val position = data.getIntExtra("position", 0)
                 items[position].note = data.getStringExtra("note")

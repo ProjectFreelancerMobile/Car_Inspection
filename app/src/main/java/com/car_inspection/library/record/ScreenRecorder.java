@@ -28,6 +28,8 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
+import com.orhanobut.logger.Logger;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
@@ -49,6 +51,7 @@ public class ScreenRecorder {
     private int mHeight;
     private int mDpi;
     private String mDstPath;
+    private boolean isRecord = true;
     private MediaProjection mMediaProjection;
     private VideoEncoder mVideoEncoder;
     private MicRecorder mAudioEncoder;
@@ -209,7 +212,7 @@ public class ScreenRecorder {
 
     private void muxVideo(int index, MediaCodec.BufferInfo buffer) {
         if (!mIsRunning.get()) {
-            Log.w(TAG, "muxVideo: Already stopped!");
+            Log.e(TAG, "muxVideo: Already stopped!");
             return;
         }
         if (!mMuxerStarted || mVideoTrackIndex == INVALID_INDEX) {
@@ -231,8 +234,9 @@ public class ScreenRecorder {
 
 
     private void muxAudio(int index, MediaCodec.BufferInfo buffer) {
+        Log.e(TAG, "muxAudio");
         if (!mIsRunning.get()) {
-            Log.w(TAG, "muxAudio: Already stopped!");
+            Log.e(TAG, "muxAudio: Already stopped!");
             return;
         }
         if (!mMuxerStarted || mAudioTrackIndex == INVALID_INDEX) {
@@ -276,11 +280,11 @@ public class ScreenRecorder {
                 Log.d(TAG, "[" + Thread.currentThread().getId() + "] Got buffer, track=" + track
                         + ", info: size=" + buffer.size
                         + ", presentationTimeUs=" + buffer.presentationTimeUs);
-            if (!eos && mCallback != null) {
+            if (!eos && mCallback != null && isRecord) {
                 mCallback.onRecording(buffer.presentationTimeUs);
             }
         }
-        if (encodedData != null) {
+        if (encodedData != null && isRecord) {
             encodedData.position(buffer.offset);
             encodedData.limit(buffer.offset + buffer.size);
             mMuxer.writeSampleData(track, encodedData, buffer);
@@ -454,14 +458,13 @@ public class ScreenRecorder {
         }
 
     }
-    public void pauseScreenRecord() {
-        mIsRunning.set(false);
+    public void pauseOrResumeScreenRecord() {
+        isRecord = !isRecord;
     }
 
-    public void resumeScreenRecord() {
-        mIsRunning.set(true);
+    public boolean isRecord(){
+        return isRecord;
     }
-
     private void release() {
         if (mMediaProjection != null) {
             mMediaProjection.unregisterCallback(mProjectionCallback);
@@ -505,7 +508,7 @@ public class ScreenRecorder {
     }
 
     @Override
-    protected void finalize() throws Throwable {
+    protected void finalize() {
         if (mMediaProjection != null) {
             Log.e(TAG, "release() not called!");
             release();

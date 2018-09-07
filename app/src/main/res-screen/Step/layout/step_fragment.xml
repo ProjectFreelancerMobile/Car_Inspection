@@ -27,7 +27,6 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/rectangle_black">
 
-
                 <FrameLayout
                     android:id="@+id/fragmentRecord"
                     android:layout_width="match_parent"
@@ -52,33 +51,26 @@
                     android:textColor="@color/color_red"
                     android:textSize="15sp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <com.car_inspection.library.commonview.CButtonState
+                    android:id="@+id/btnRecordPause"
+                    android:layout_width="80dp"
+                    android:layout_height="38dp"
                     android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginBottom="5dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:text="@string/stop"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    app:setActive="true" />
 
-                    <com.car_inspection.library.commonview.CButtonState
-                        android:id="@+id/btnRecordContinues"
-                        android:layout_width="70dp"
-                        android:layout_height="35dp"
-                        android:text="@string/continues"
-                        android:textColor="@color/white"
-                        android:textSize="10sp"
-                        app:setActive="true" />
-
-                    <com.car_inspection.library.commonview.CButtonState
-                        android:id="@+id/btnRecordPause"
-                        android:layout_width="70dp"
-                        android:layout_height="35dp"
-                        android:layout_marginStart="5dp"
-                        android:text="@string/stop"
-                        android:textColor="@color/white"
-                        android:textSize="10sp"
-                        app:setActive="true" />
-                </LinearLayout>
+                <ImageView
+                    android:id="@+id/btnExit"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_margin="10dp"
+                    android:visibility="invisible"
+                    app:srcCompat="@drawable/ic_close" />
 
             </RelativeLayout>
 

@@ -120,7 +120,6 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
 
     override fun onClick(view: View?) {
         when (view?.id) {
-            R.id.btnExit1 -> recordEvent()
             R.id.mBtnReset -> {
                 pauseRecording()
                 object : ProgressDialogTask<Void, Int, Void>(R.string.please_wait) {
@@ -203,7 +202,7 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
         // At most recycle 2 Frame
         mRecycledFrameQueue = LinkedBlockingQueue(2)
         mRecordFragments = Stack()
-        listenToViews(mBtnReset, mBtnDone, mBtnResumeOrPause, mBtnSwitchCamera, mBtnTake, btnExit1)
+        listenToViews(mBtnReset, mBtnDone, mBtnResumeOrPause, mBtnSwitchCamera, mBtnTake)
     }
 
     private fun startPreview() {
@@ -804,33 +803,36 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
                         currentStep = step
                         currentSubStepName = subStep
                         mBtnTake.isVisible = true
-                        btnExit1.visibility = View.VISIBLE
                         tvTitleStep.isVisible = true
                         stopRecording()
                         stopPreview()
                         releaseCamera()
-                        runDelayedOnUiThread({
-                            val builder = Configuration.Builder()
-                            builder.setCamera(mCameraId)
-                                    .setFlashMode(Configuration.FLASH_MODE_OFF)
-                                    .setMediaAction(Configuration.MEDIA_ACTION_PHOTO)
-                            takeFragment = CameraFragment.newInstance(builder.build())
-                            activity?.addFragment(takeFragment!!, R.id.fragmentCapture)
-                        }, 1000)
+                        if(takeFragment == null) {
+                            runDelayedOnUiThread({
+                                val builder = Configuration.Builder()
+                                builder.setCamera(mCameraId)
+                                        .setFlashMode(Configuration.FLASH_MODE_OFF)
+                                        .setMediaAction(Configuration.MEDIA_ACTION_PHOTO)
+                                takeFragment = CameraFragment.newInstance(builder.build())
+                                activity?.addFragment(takeFragment!!, R.id.fragmentCapture)
+                            }, 1000)
+                        }
                         Logger.e("${tvTitleStep.text} ************************************")
                     }
                     false -> {
                         StepFragment.mRecording = true
                         Logger.e("RecordEvent11111")
                         mBtnTake.isGone = true
-                        btnExit1.visibility = View.GONE
                         tvTitleStep.isGone = true
-                        takeFragment?.apply {
-                            removeFragment(this)
+                        if(takeFragment !=null) {
+                            takeFragment?.apply {
+                                removeFragment(this)
+                            }
+                            takeFragment = null
+                            runDelayedOnUiThread({
+                                startPreview()
+                            }, 1000)
                         }
-                        runDelayedOnUiThread({
-                            startPreview()
-                        }, 1000)
                         Logger.e("${tvTitleStep.text} ************************************")
                     }
                 }

@@ -37,15 +37,6 @@
         android:src="@drawable/ic_camera_white"
         android:visibility="gone" />
 
-    <ImageView
-        android:id="@+id/btnExit1"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="10dp"
-        app:srcCompat="@drawable/ic_close"
-        android:visibility="invisible"/>
-
     <LinearLayout
         android:id="@+id/layoutCapture"
         android:layout_width="match_parent"
