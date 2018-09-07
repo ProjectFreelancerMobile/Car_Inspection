@@ -4,6 +4,10 @@ import com.jiangdg.usbcamera.UVCCameraHelper
 
 class Constanst {
     companion object {
+        var widthScreen  = 0
+        var heightScreen = 0
+
+
         val MAX_KEYWORD_LENGTH = 30
         val DEFAULT_KEYWORD = "ytdl"
         val SAVE_PATH: String = UVCCameraHelper.ROOT_PATH + "CarInspection"

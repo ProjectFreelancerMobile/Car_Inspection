@@ -9,11 +9,13 @@ import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaRecorder
 import android.os.AsyncTask
+import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.Surface
 import android.view.TextureView
 import android.view.View
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
@@ -26,7 +28,6 @@ import com.car_inspection.data.model.FrameToRecord
 import com.car_inspection.data.model.RecordModel
 import com.car_inspection.library.CameraHelper
 import com.car_inspection.library.MiscUtils
-import com.car_inspection.library.youtube.util.Utils
 import com.car_inspection.listener.CameraRecordListener
 import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.ui.step.StepFragment
@@ -87,8 +88,8 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
     private var mPreviewWidth = PREFERRED_PREVIEW_WIDTH
     private var mPreviewHeight = PREFERRED_PREVIEW_HEIGHT
     // Output video size
-    private val videoWidth = 320
-    private val videoHeight = 240
+    private var videoWidth = 320
+    private var videoHeight = 320
     private val frameRate = 30
     private val frameDepth = Frame.DEPTH_UBYTE
     private val frameChannels = 2
@@ -175,6 +176,13 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
     }
 
     override fun initViews() {
+        videoWidth = pxToDp(Constanst.heightScreen / 2).toInt()
+        videoHeight = pxToDp(Constanst.widthScreen).toInt()
+
+        var params = fragmentCapture.layoutParams
+        params.height = Constanst.widthScreen
+        params.width = Constanst.heightScreen/2
+        fragmentCapture.setLayoutParams(params)
         initRecord()
     }
 
@@ -197,7 +205,7 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
         listenToViews(mBtnReset, mBtnDone, mBtnResumeOrPause, mBtnSwitchCamera, mBtnTake)
     }
 
-    private fun startPreview(){
+    private fun startPreview() {
         cameraPreview?.apply {
             val surfaceTexture = surfaceTexture
             object : ProgressDialogTask<Void, Int, Void>(R.string.please_wait) {
@@ -478,11 +486,11 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
 
     private fun startRecording() {
         //TODO
-       /* Logger.e("startRecording")
-        mAudioRecordThread = AudioRecordThread()
-        mAudioRecordThread?.start()
-        mVideoRecordThread = VideoRecordThread()
-        mVideoRecordThread?.start()*/
+        /* Logger.e("startRecording")
+         mAudioRecordThread = AudioRecordThread()
+         mAudioRecordThread?.start()
+         mVideoRecordThread = VideoRecordThread()
+         mVideoRecordThread?.start()*/
     }
 
     private fun stopRecording() {
