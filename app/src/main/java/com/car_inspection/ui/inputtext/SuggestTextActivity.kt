@@ -23,9 +23,9 @@ class SuggestTextActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.suggest_text_activity)
 
-        position = getIntent().getExtras().getInt("position")
-        if (!TextUtils.isEmpty(getIntent().getExtras().getString("note")))
-            note = getIntent().getExtras().getString("note")
+        position = intent.extras.getInt("position")
+        if (!TextUtils.isEmpty(intent.extras.getString("note")))
+            note = intent.extras.getString("note")
 
         initViews()
         addTextSuggest()
@@ -35,7 +35,7 @@ class SuggestTextActivity : AppCompatActivity() {
     fun initViews() {
         edtNote.requestFocus()
         edtNote.setText(note)
-        edtNote.setSelection(edtNote.getText().length)
+        edtNote.setSelection(edtNote.text.length)
         edtNote.setHandleDismissingKeyboard { returnResult() }
         edtNote.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -71,7 +71,7 @@ class SuggestTextActivity : AppCompatActivity() {
 
             textView.setOnClickListener {
                 edtNote.setText(edtNote.text.toString() + textView.text.toString())
-                edtNote.setSelection(edtNote.getText().length)
+                edtNote.setSelection(edtNote.text.length)
             }
             flowLayoutSuggest.addView(textView)
         }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <com.serenegiant.usb.widget.UVCCameraTextureView
         android:id="@+id/cameraView"
@@ -26,7 +26,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
         android:src="@drawable/ic_camera_white"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/tvTitleStep"
@@ -35,9 +35,10 @@
         android:layout_above="@+id/btnTakePicture"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
+        android:gravity="center"
         android:text=""
         android:textColor="@color/white"
         android:textSize="15sp"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
 </RelativeLayout>

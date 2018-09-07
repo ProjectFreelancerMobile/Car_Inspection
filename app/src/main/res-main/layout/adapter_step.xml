@@ -13,7 +13,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="35dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/rectangle_black">
 
@@ -36,10 +36,10 @@
                 android:padding="1dp"
                 android:text="G" />
 
-            <LinearLayout
+            <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/black"></LinearLayout>
+                android:background="@color/black"/>
 
             <RadioButton
                 android:id="@+id/cbP"
@@ -52,10 +52,10 @@
                 android:padding="1dp"
                 android:text="P" />
 
-            <LinearLayout
+            <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/black"></LinearLayout>
+                android:background="@color/black"/>
 
             <RadioButton
                 android:id="@+id/cbF"
@@ -68,10 +68,10 @@
                 android:padding="1dp"
                 android:text="F" />
 
-            <LinearLayout
+            <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/black"></LinearLayout>
+                android:background="@color/black"/>
         </RadioGroup>
 
         <TextView
