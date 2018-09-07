@@ -275,12 +275,8 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
                 uploadYoutube(file.path)
                 showSnackBar("Recorder stopped!\n Saved file $file")
             }
-            R.id.btnRecordContinues -> {
-
-            }
-            R.id.btnRecordPause -> {
-
-            }
+            R.id.btnRecordContinues -> mRecorder?.resumeScreenRecord()
+            R.id.btnRecordPause -> mRecorder?.pauseScreenRecord()
         }
     }
 

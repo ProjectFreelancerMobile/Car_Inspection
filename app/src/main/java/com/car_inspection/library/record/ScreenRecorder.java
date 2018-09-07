@@ -52,7 +52,6 @@ public class ScreenRecorder {
     private MediaProjection mMediaProjection;
     private VideoEncoder mVideoEncoder;
     private MicRecorder mAudioEncoder;
-
     private MediaFormat mVideoOutputFormat = null, mAudioOutputFormat = null;
     private int mVideoTrackIndex = INVALID_INDEX, mAudioTrackIndex = INVALID_INDEX;
     private MediaMuxer mMuxer;
@@ -455,12 +454,12 @@ public class ScreenRecorder {
         }
 
     }
-    private void pauseScreenRecord() {
-
+    public void pauseScreenRecord() {
+        mIsRunning.set(false);
     }
 
-    private void resumeScreenRecord() {
-
+    public void resumeScreenRecord() {
+        mIsRunning.set(true);
     }
 
     private void release() {
