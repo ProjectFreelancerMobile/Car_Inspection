@@ -93,7 +93,7 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
     override fun setLayoutResourceID(): Int = R.layout.record_otg_fragment
 
     override fun initData() {
-        listenToViews(mBtnRecord, btnTakePicture,btnExit)
+        listenToViews(mBtnRecord, btnTakePicture)
     }
 
     private fun initUVCCameraHelper() {
@@ -125,7 +125,6 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
     @SuppressLint("SetTextI18n")
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.btnExit -> recordEvent()
             R.id.btnTakePicture -> {
                 mCameraHelper?.apply {
                     if (isCameraOpened) {
@@ -262,13 +261,11 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
                         this@RecordOTGFragment.currentSubStepName = subStep
                         btnTakePicture?.isVisible = true
                         tvTitleStep?.isVisible = true
-                        btnExit?.isVisible = true
                     }
                     false -> {
                         StepFragment.mRecording = true
                         btnTakePicture?.isGone = true
                         tvTitleStep?.isGone = true
-                        btnExit?.isGone = true
                     }
                 }
             }

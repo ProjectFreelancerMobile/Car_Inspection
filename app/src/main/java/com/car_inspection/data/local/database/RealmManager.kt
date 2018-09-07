@@ -260,6 +260,7 @@ fun dataStep2(): MutableList<StepOrinalModel> {
         listSteps.add(stepOrinalStep2_6)
         return listSteps
     }
+
     fun dataStep5(): MutableList<StepOrinalModel> {
         var listSteps = mutableListOf<StepOrinalModel>()
 

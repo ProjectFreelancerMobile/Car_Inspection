@@ -40,14 +40,4 @@
         android:textSize="15sp"
         android:visibility="invisible"/>
 
-
-    <ImageView
-        android:id="@+id/btnExit"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="10dp"
-        app:srcCompat="@drawable/ic_close"
-        android:visibility="invisible"/>
-
 </RelativeLayout>
