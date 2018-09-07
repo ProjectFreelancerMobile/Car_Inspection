@@ -280,10 +280,10 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
                 mRecorder?.apply {
                     pauseOrResumeScreenRecord()
                     if(isRecord){
-                        mRecording = false
+                        mRecording = true
                         btnRecordPause.text = getString(R.string.stop)
                     }else{
-                        mRecording = true
+                        mRecording = false
                         btnRecordPause.text = getString(R.string.continues)
                     }
                 }
