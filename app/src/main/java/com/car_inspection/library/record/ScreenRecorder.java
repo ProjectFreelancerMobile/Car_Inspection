@@ -234,7 +234,6 @@ public class ScreenRecorder {
 
 
     private void muxAudio(int index, MediaCodec.BufferInfo buffer) {
-        Log.e(TAG, "muxAudio");
         if (!mIsRunning.get()) {
             Log.e(TAG, "muxAudio: Already stopped!");
             return;

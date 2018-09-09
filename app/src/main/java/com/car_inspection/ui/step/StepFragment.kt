@@ -61,11 +61,12 @@ import com.google.android.gms.plus.Plus
 import com.orhanobut.logger.Logger
 import com.toan_itc.core.architecture.autoCleared
 import com.toan_itc.core.utils.addFragment
+import com.toan_itc.core.utils.removeFragment
+import com.toan_itc.core.utils.switchFragment
 import google.com.carinspection.DisposableImpl
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.record_otg_fragment.*
 import kotlinx.android.synthetic.main.step_fragment.*
 import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
 import java.io.File
@@ -82,6 +83,8 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     private var isTakePicture = false
     private var currentPosition = 0
     private var currentStep = 2
+    private var recordFragment : RecordFragment? = null
+    private var recordOTGFragment : RecordOTGFragment? = null
     private var cameraRecordListener: CameraRecordListener? = null
     private var binding by autoCleared<StepFragmentBinding>()
     private var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
@@ -192,7 +195,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
         setProfileInfo()
         loadAccount()
         rvSubStep.layoutManager = LinearLayoutManager(activity)
-        listenToViews(btnSave, btnContinue, btnFinish, btnRecordPause, btnExit)
+        listenToViews(btnSave, btnContinue, btnFinish, btnRecordPause, btnExit, btnRecordType)
         addFragmentRecord()
     }
 
@@ -288,14 +291,24 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
                     }
                 }
             }
+            R.id.btnRecordType ->{
+                if(recordFragment !=null && fragmentRecord.isGone){
+                    recordFragment?.apply {
+                        activity?.removeFragment(this)
+                    }
+                    recordFragment = null
+                    addFragmentRecord()
+                }else if(recordOTGFragment !=null && fragmentRecordDefault.isGone){
+                    recordOTGFragment?.apply {
+                        Logger.e("removeFragment:recordOTGFragment")
+                        activity?.removeFragment(this)
+                    }
+                    recordOTGFragment = null
+                    showCameraDefault()
+                }
+            }
             R.id.btnExit -> showLayoutVideo()
         }
-    }
-
-    private fun addFragmentRecord() {
-        val fragment = RecordOTGFragment.newInstance(this)
-        cameraRecordListener = fragment
-        activity?.addFragment(fragment, R.id.fragmentRecord)
     }
 
     private fun saveDataStep(step: Int) {
@@ -456,15 +469,30 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
         }
     }
 
+    private fun addFragmentRecord() {
+        btnRecordType.text = getString(R.string.camera_otg)
+        fragmentRecord.isVisible = true
+        fragmentRecordDefault.isGone = true
+        recordOTGFragment = RecordOTGFragment.newInstance(this)
+        recordOTGFragment?.let {fragment->
+            Logger.e("addFragmentRecord")
+            cameraRecordListener = fragment
+            activity?.addFragment(fragment, R.id.fragmentRecord)
+        }
+    }
+
     override fun showCameraDefault() {
         activity?.apply {
             if (!isFinishing) {
+                btnRecordType.text = getString(R.string.camera_default)
                 fragmentRecord.isGone = true
                 fragmentRecordDefault.isVisible = true
-                Logger.e("onCameraDefaultEventonCameraDefaultEvent")
-                val fragment = RecordFragment.newInstance()
-                cameraRecordListener = fragment
-                activity?.addFragment(fragment, R.id.fragmentRecordDefault)
+                recordFragment = RecordFragment.newInstance()
+                recordFragment?.let {fragment->
+                    Logger.e("showCameraDefault")
+                    cameraRecordListener = fragment
+                    addFragment(fragment, R.id.fragmentRecordDefault)
+                }
             }
         }
     }

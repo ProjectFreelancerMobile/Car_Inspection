@@ -75,6 +75,8 @@
     <string name="finish">Kết thúc</string>
     <string name="stop">Tạm dừng</string>
 
+    <string name="camera_otg">OTG</string>
+    <string name="camera_default">Default</string>
     <string name="app_title">Chương trình kiểm tra xe</string>
 
     <!--RECORD -->

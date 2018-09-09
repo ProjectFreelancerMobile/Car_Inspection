@@ -100,7 +100,7 @@ class App : Application(), HasActivityInjector {
     private fun initCrash(){
         CrashUtils.init{crashInfo, _->
             Logger.e(crashInfo)
-            AppUtils.relaunchApp()
+            //AppUtils.relaunchApp()
         }
     }
 

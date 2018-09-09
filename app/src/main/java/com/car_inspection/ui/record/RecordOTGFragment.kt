@@ -25,6 +25,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.record_otg_fragment.*
+import pyxis.uzuki.live.richutilskt.utils.runDelayedOnUiThread
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -237,17 +238,13 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
         mCameraHelper?.registerUSB()
     }
 
-    override fun onStop() {
-        super.onStop()
-        // step.3 unregister USB event broadcast
+    override fun onDestroyView() {
         mCameraHelper?.unregisterUSB()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
         FileUtils.releaseFile()
         // step.4 release uvc camera resources
+        Logger.e("onDestroy")
         mCameraHelper?.release()
+        super.onDestroyView()
     }
 
     override fun recordEvent(isTake: Boolean, step: Int, subStep: String) {
