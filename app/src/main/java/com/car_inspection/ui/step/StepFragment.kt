@@ -470,23 +470,27 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     }
 
     private fun addFragmentRecord() {
-        btnRecordType.text = getString(R.string.camera_otg)
-        fragmentRecord.isVisible = true
-        fragmentRecordDefault.isGone = true
-        recordOTGFragment = RecordOTGFragment.newInstance(this)
-        recordOTGFragment?.let {fragment->
-            Logger.e("addFragmentRecord")
-            cameraRecordListener = fragment
-            activity?.addFragment(fragment, R.id.fragmentRecord)
+        activity?.apply {
+            if (!isFinishing) {
+                btnRecordType?.text = getString(R.string.camera_otg)
+                fragmentRecord?.isVisible = true
+                fragmentRecordDefault?.isGone = true
+                recordOTGFragment = RecordOTGFragment.newInstance(this@StepFragment)
+                recordOTGFragment?.let {fragment->
+                    Logger.e("addFragmentRecord")
+                    cameraRecordListener = fragment
+                    addFragment(fragment, R.id.fragmentRecord)
+                }
+            }
         }
     }
 
     override fun showCameraDefault() {
         activity?.apply {
             if (!isFinishing) {
-                btnRecordType.text = getString(R.string.camera_default)
-                fragmentRecord.isGone = true
-                fragmentRecordDefault.isVisible = true
+                btnRecordType?.text = getString(R.string.camera_default)
+                fragmentRecord?.isGone = true
+                fragmentRecordDefault?.isVisible = true
                 recordFragment = RecordFragment.newInstance()
                 recordFragment?.let {fragment->
                     Logger.e("showCameraDefault")
@@ -508,7 +512,6 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
         fun onConnected(connectedAccountName: String)
     }
-
 
     //Screen Record
 
