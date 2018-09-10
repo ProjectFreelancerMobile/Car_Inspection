@@ -458,7 +458,8 @@ public class ScreenRecorder {
 
     }
     public void pauseOrResumeScreenRecord() {
-        isRecord = !isRecord;
+        //TODO:TEST
+        //isRecord = !isRecord;
     }
 
     public boolean isRecord(){
