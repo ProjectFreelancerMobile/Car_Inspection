@@ -1,20 +1,10 @@
 package com.car_inspection.ui.step
 
-import android.Manifest.permission.RECORD_AUDIO
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-import android.annotation.TargetApi
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.*
-import android.content.pm.PackageManager
 import android.graphics.Color
-import android.media.MediaFormat.MIMETYPE_AUDIO_AAC
-import android.media.MediaFormat.MIMETYPE_VIDEO_AVC
-import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
 import android.net.Uri
-import android.os.Build
-import android.os.Build.VERSION_CODES.M
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.SpannableString
@@ -32,21 +22,16 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.toolbox.ImageLoader
-import com.blankj.utilcode.util.FileUtils
 import com.car_inspection.R
-import com.car_inspection.app.Constants
 import com.car_inspection.binding.FragmentDataBindingComponent
 import com.car_inspection.data.model.StepModifyModel
 import com.car_inspection.data.model.StepOrinalModel
 import com.car_inspection.databinding.StepFragmentBinding
-import com.car_inspection.library.record.AudioEncodeConfig
-import com.car_inspection.library.record.Notifications
-import com.car_inspection.library.record.ScreenRecorder
-import com.car_inspection.library.record.VideoEncodeConfig
 import com.car_inspection.library.youtube.UploadService
 import com.car_inspection.library.youtube.util.VideoData
 import com.car_inspection.listener.CameraDefaultListener
 import com.car_inspection.listener.CameraRecordListener
+import com.car_inspection.service.ScreenRecorderService
 import com.car_inspection.ui.activity.StepActivity
 import com.car_inspection.ui.adapter.StepAdapter
 import com.car_inspection.ui.base.BaseDataFragment
@@ -62,13 +47,12 @@ import com.orhanobut.logger.Logger
 import com.toan_itc.core.architecture.autoCleared
 import com.toan_itc.core.utils.addFragment
 import com.toan_itc.core.utils.removeFragment
-import com.toan_itc.core.utils.switchFragment
 import google.com.carinspection.DisposableImpl
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.step_fragment.*
-import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
+import pyxis.uzuki.live.richutilskt.utils.runDelayedOnUiThread
 import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -95,15 +79,8 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     private var mCallbacks: Callbacks? = null
 
     //Screen Record
-    private val REQUEST_MEDIA_PROJECTION = 1
-    private val REQUEST_PERMISSIONS = 2
-    private var mMediaProjectionManager: MediaProjectionManager? = null
-    private var mRecorder: ScreenRecorder? = null
-    private var mNotifications: Notifications? = null
-    private val VIDEO_AVC = MIMETYPE_VIDEO_AVC // H.264 Advanced Video Coding
-    private val AUDIO_AAC = MIMETYPE_AUDIO_AAC // H.264 Advanced Audio Coding
+    private var mReceiver: MyBroadcastReceiver? = null
     private var timerRecord = 0
-    private var filePath: File? = null
 
     companion object {
         var mRecording = false
@@ -166,15 +143,29 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
 
     override fun onResume() {
-        super.onResume()
         mGoogleApiClient?.connect()
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(ScreenRecorderService.ACTION_QUERY_STATUS_RESULT)
+        context?.registerReceiver(mReceiver, intentFilter)
+        queryRecordingStatus()
+        super.onResume()
     }
 
     override fun onPause() {
-        super.onPause()
         mGoogleApiClient?.disconnect()
+        mReceiver?.apply {
+            context?.unregisterReceiver(mReceiver)
+        }
+        super.onPause()
     }
 
+    override fun onDestroy() {
+        mReceiver?.apply {
+            context?.unregisterReceiver(mReceiver)
+        }
+        stopScreenRecord()
+        super.onDestroy()
+    }
     override fun setLayoutResourceID() = R.layout.step_fragment
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -202,14 +193,11 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     override fun initData() {
         loadDataStep(currentStep)
         updateProgressStep(currentStep)
-        mMediaProjectionManager = context?.getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
-        mNotifications = Notifications(context)
         createFolderPicture(Constanst.getFolderVideoPath())
-        when {
-            mRecorder != null -> stopRecorder()
-            hasPermissions() -> startCaptureIntent()
-            Build.VERSION.SDK_INT >= M -> requestPermissions()
+        if (mReceiver == null) {
+            mReceiver = MyBroadcastReceiver()
         }
+        startScreenRecord()
     }
 
     private fun startTimer() {
@@ -236,22 +224,24 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     }
 
     private fun uploadVideo(uri: Uri?) {
-        loadAccount()
-        if (mChosenAccountName == null) {
-            return
-        }
-        // if a video is picked or recorded.
-        if (uri != null) {
-            val uploadIntent = Intent(activity, UploadService::class.java)
-            uploadIntent.data = uri
-            uploadIntent.putExtra(StepActivity.ACCOUNT_KEY, mChosenAccountName)
-            activity?.startService(uploadIntent)
-            activity?.runOnUiThread {
-                showSnackBar(getString(R.string.youtube_upload_started))
+        runDelayedOnUiThread({
+            loadAccount()
+            if (mChosenAccountName == null) {
+                return@runDelayedOnUiThread
             }
-            Logger.e("uploadYoutube=$uri")
-            // Go back to MainActivity after upload
-        }
+            // if a video is picked or recorded.
+            if (uri != null) {
+                val uploadIntent = Intent(activity, UploadService::class.java)
+                uploadIntent.data = uri
+                uploadIntent.putExtra(StepActivity.ACCOUNT_KEY, mChosenAccountName)
+                activity?.startService(uploadIntent)
+                activity?.runOnUiThread {
+                    showSnackBar(getString(R.string.youtube_upload_started))
+                }
+                Logger.e("uploadYoutube=$uri")
+                // Go back to MainActivity after upload
+            }
+        },1000)
     }
 
     override fun onClick(v: View?) {
@@ -273,22 +263,27 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
                         })
             }
             R.id.btnFinish -> {
-                saveDataStep(currentStep)
-                val file = File(mRecorder?.savedPath)
-                stopRecorder()
-                uploadYoutube(file.path)
-                showSnackBar("Recorder stopped!\n Saved file $file")
+                try {
+                    saveDataStep(currentStep)
+                    if(ScreenRecorderService().outputPath.isNotEmpty()) {
+                        val file = File(ScreenRecorderService().outputPath)
+                        showSnackBar("Recorder stopped!\n Saved file $file")
+                        stopScreenRecord()
+                        uploadYoutube(file.path)
+                    }
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
             }
             R.id.btnRecordPause -> {
-                mRecorder?.apply {
-                    pauseOrResumeScreenRecord()
-                    if(isRecord){
-                        mRecording = true
-                        btnRecordPause.text = getString(R.string.stop)
-                    }else{
-                        mRecording = false
-                        btnRecordPause.text = getString(R.string.continues)
-                    }
+                if(mRecording){
+                    pauseScreenRecord()
+                    mRecording = false
+                    btnRecordPause.text = getString(R.string.continues)
+                }else{
+                    resumeScreenRecord()
+                    mRecording = true
+                    btnRecordPause.text = getString(R.string.stop)
                 }
             }
             R.id.btnRecordType ->{
@@ -372,7 +367,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     }
 
     override fun onTextNoteClickListener(v: View, position: Int) {
-        mRecorder?.pauseOrResumeScreenRecord()
+        pauseScreenRecord()
         val intent = Intent(activity, SuggestTextActivity::class.java)
         intent.putExtra("position", position)
         intent.putExtra("note", items.get(position).note)
@@ -415,17 +410,19 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
 
     private fun showLayoutTakepicture() {
-        mRecorder?.pauseOrResumeScreenRecord()
+        pauseScreenRecord()
         btnExit.isVisible = true
         btnRecordPause.isGone = true
+        btnRecordType.isGone = true
         cameraRecordListener?.recordEvent(true, currentStep, currentSubStepName)
         isTakePicture = true
     }
 
     private fun showLayoutVideo() {
-        mRecorder?.pauseOrResumeScreenRecord()
+        resumeScreenRecord()
         btnExit.isGone = true
         btnRecordPause.isVisible = true
+        btnRecordType.isVisible = true
         cameraRecordListener?.recordEvent()
         isTakePicture = false
     }
@@ -433,39 +430,18 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_SUGGEST_TEST) {
-            mRecorder?.pauseOrResumeScreenRecord()
+            resumeScreenRecord()
             if (resultCode == Activity.RESULT_OK) {
                 val position = data.getIntExtra("position", 0)
                 items[position].note = data.getStringExtra("note")
             }
-        } else if (requestCode == REQUEST_MEDIA_PROJECTION) {
-            // NOTE: Should pass this result data into a Service to run ScreenRecorder.
-            // The following codes are merely exemplary.
-
-            val mediaProjection = mMediaProjectionManager?.getMediaProjection(resultCode, data)
-            if (mediaProjection == null) {
-                Log.e("@@", "media projection is null")
+        }else if (ScreenRecorderService.REQUEST_CODE_SCREEN_RECORD == requestCode) {
+            if (resultCode != Activity.RESULT_OK) {
+                // when no permission
+                showSnackBar("permission denied")
                 return
             }
-
-            val video = createVideoConfig()
-            val audio = createAudioConfig() // audio can be null
-            if (video == null) {
-                showSnackBar("Create ScreenRecorder failure")
-                mediaProjection.stop()
-                return
-            }
-            createFolderPicture(Constanst.getFolderVideoPath())
-            filePath = FileUtils.getFileByPath(Constanst.getFolderVideoPath() + System.currentTimeMillis() + ".mp4")
-            audio?.apply {
-                Logger.e("Create recorder with :$video \n $this\n $filePath")
-                mRecorder = newRecorder(mediaProjection, video, this, filePath!!)
-                if (hasPermissions()) {
-                    startRecorder()
-                } else {
-                    cancelRecorder()
-                }
-            }
+            startScreenRecorder(resultCode, data)
         }
     }
 
@@ -515,147 +491,63 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
     //Screen Record
 
-    private fun newRecorder(mediaProjection: MediaProjection, video: VideoEncodeConfig,
-                            audio: AudioEncodeConfig, output: File): ScreenRecorder {
-        val r = ScreenRecorder(video, audio, 1, mediaProjection, output.absolutePath)
-        r.setCallback(object : ScreenRecorder.Callback {
-            var startTime: Long = 0
-
-            override fun onStop(error: Throwable?) {
-                runOnUiThread { stopRecorder() }
-                if (error != null) {
-                    showSnackBar("Recorder error ! See logcat for more details")
-                    error.printStackTrace()
-                    output.delete()
-                } else {
-                    val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-                            .addCategory(Intent.CATEGORY_DEFAULT)
-                            .setData(Uri.fromFile(output))
-                    context?.sendBroadcast(intent)
-                }
-            }
-
-            override fun onStart() {
-                mNotifications?.recording(0)
-            }
-
-            override fun onRecording(presentationTimeUs: Long) {
-                if (startTime <= 0) {
-                    startTime = presentationTimeUs
-                }
-                val time = (presentationTimeUs - startTime) / 1000
-                mNotifications?.recording(time)
-            }
-        })
-        return r
+    private fun startScreenRecord(){
+        val manager = context?.getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager?
+        val permissionIntent = manager!!.createScreenCaptureIntent()
+        startActivityForResult(permissionIntent, ScreenRecorderService.REQUEST_CODE_SCREEN_RECORD)
+        mRecording = true
+        startTimer()
     }
 
-    private fun createAudioConfig(): AudioEncodeConfig? {
-        return AudioEncodeConfig("OMX.google.aac.encoder", AUDIO_AAC, 80000, 44100, 1, 1)
-    }
-
-    private fun createVideoConfig(): VideoEncodeConfig? {
-        //val codec = getSelectedVideoCodec() ?: // no selected codec ?? return null
-        return VideoEncodeConfig(1080, 1920, 800000, 15, 1, "OMX.Exynos.AVC.Encoder", VIDEO_AVC, null)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        stopRecorder()
-    }
-
-    private fun startCaptureIntent() {
-        val captureIntent = mMediaProjectionManager?.createScreenCaptureIntent()
-        startActivityForResult(captureIntent, REQUEST_MEDIA_PROJECTION)
-    }
-
-    private fun startRecorder() {
-        if (mRecorder == null) return
-        mRecorder?.start()
-        context?.apply {
-            mRecording = true
-            registerReceiver(mStopActionReceiver, IntentFilter(Constants.ACTION_STOP))
-            startTimer()
-            //activity?.moveTaskToBack(true)
-        }
-    }
-
-    private fun stopRecorder() {
-        mNotifications?.stopAction()
-        mNotifications?.clear()
-        mRecorder?.quit()
-        mRecorder = null
+    private fun stopScreenRecord(){
         mRecording = false
-        try {
-            context?.unregisterReceiver(mStopActionReceiver)
-        } catch (e: Exception) {
-            //ignored
+        val intent = Intent(context, ScreenRecorderService::class.java)
+        intent.action = ScreenRecorderService.ACTION_STOP
+        context?.startService(intent)
+    }
+
+    private fun queryRecordingStatus() {
+        val intent = Intent(context, ScreenRecorderService::class.java)
+        intent.action = ScreenRecorderService.ACTION_QUERY_STATUS
+        context?.startService(intent)
+    }
+
+    private fun pauseScreenRecord(){
+        if(mRecording) {
+            runDelayedOnUiThread({
+                val intent = Intent(context, ScreenRecorderService::class.java)
+                intent.action = ScreenRecorderService.ACTION_PAUSE
+                context?.startService(intent)
+            }, 1000)
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        if (requestCode == REQUEST_PERMISSIONS) {
-            var granted = PackageManager.PERMISSION_GRANTED
-            for (r in grantResults) {
-                granted = granted or r
-            }
-            if (granted == PackageManager.PERMISSION_GRANTED) {
-                startCaptureIntent()
-            } else {
-                showSnackBar("No Permission!")
-            }
+    private fun resumeScreenRecord(){
+        if(!mRecording) {
+            val intent = Intent(context, ScreenRecorderService::class.java)
+            intent.action = ScreenRecorderService.ACTION_RESUME
+            context?.startService(intent)
         }
     }
 
-    private fun cancelRecorder() {
-        if (mRecorder == null) return
-        showSnackBar("Permission denied! Screen recorder is cancel")
-        stopRecorder()
+    private fun startScreenRecorder(resultCode: Int, data: Intent) {
+        val intent = Intent(context, ScreenRecorderService::class.java)
+        intent.action = ScreenRecorderService.ACTION_START
+        intent.putExtra(ScreenRecorderService.EXTRA_RESULT_CODE, resultCode)
+        intent.putExtras(data)
+        context?.startService(intent)
     }
 
-    private val mStopActionReceiver = object : BroadcastReceiver() {
+    private inner class MyBroadcastReceiver() : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            val file = File(mRecorder?.savedPath)
-            if (Constants.ACTION_STOP == intent.action) {
-                stopRecorder()
+            val action = intent.action
+            if (ScreenRecorderService.ACTION_QUERY_STATUS_RESULT.equals(action)) {
+                mRecording = when(intent.getBooleanExtra(ScreenRecorderService.EXTRA_QUERY_RESULT_PAUSING, false)){
+                    true -> false
+                    else -> true
+                }
             }
-            uploadYoutube(file.path)
-            showSnackBar("Recorder stopped!\n Saved file $file")
         }
-    }
-
-    @TargetApi(M)
-    private fun requestPermissions() {
-        val permissions = if (true)// audio enable
-            arrayOf(WRITE_EXTERNAL_STORAGE, RECORD_AUDIO)
-        else
-            arrayOf<String>(WRITE_EXTERNAL_STORAGE)
-        var showRationale = false
-        for (perm in permissions) {
-            showRationale = showRationale or shouldShowRequestPermissionRationale(perm)
-        }
-        if (!showRationale) {
-            requestPermissions(permissions, REQUEST_PERMISSIONS)
-            return
-        }
-        AlertDialog.Builder(context)
-                .setMessage("Using your mic to record audio and your sd card to save video file")
-                .setCancelable(false)
-                .setPositiveButton(android.R.string.ok) { dialog, which -> requestPermissions(permissions, REQUEST_PERMISSIONS) }
-                .setNegativeButton(android.R.string.cancel, null)
-                .create()
-                .show()
-    }
-
-    private fun hasPermissions(): Boolean {
-        var granted = 0
-        context?.apply {
-            val pm = packageManager
-            val packageName = packageName
-            granted = (if (true) pm.checkPermission(RECORD_AUDIO, packageName) else PackageManager.PERMISSION_GRANTED) or pm.checkPermission(WRITE_EXTERNAL_STORAGE, packageName)
-        }
-
-        return granted == PackageManager.PERMISSION_GRANTED
     }
 
 }

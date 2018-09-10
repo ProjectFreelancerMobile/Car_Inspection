@@ -50,11 +50,17 @@ class FixedRatioCroppedTextureView : TextureView {
     }
 
     private fun widthToHeight(width: Int): Int {
-        return width * mCroppedHeightWeight / mCroppedWidthWeight
+        return if(mCroppedWidthWeight !=0 && mCroppedHeightWeight !=0)
+            width * mCroppedHeightWeight / mCroppedWidthWeight
+        else
+            640
     }
 
     private fun heightToWidth(height: Int): Int {
-        return height * mCroppedWidthWeight / mCroppedHeightWeight
+        return if(mCroppedWidthWeight !=0 && mCroppedHeightWeight !=0)
+            height * mCroppedWidthWeight / mCroppedHeightWeight
+        else
+            720
     }
 
     override fun layout(l: Int, t: Int, r: Int, b: Int) {

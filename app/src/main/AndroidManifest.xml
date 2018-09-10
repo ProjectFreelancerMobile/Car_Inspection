@@ -21,6 +21,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:hardwareAccelerated="true"
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
@@ -35,6 +36,12 @@
         <service
             android:name=".library.youtube.UploadService"
             android:exported="true" />
+
+        <service
+            android:name=".service.ScreenRecorderService"
+            android:enabled="true"
+            android:exported="false" >
+        </service>
 
         <activity android:name=".ui.activity.StepActivity"
             android:screenOrientation="landscape"
@@ -64,6 +71,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
+
     </application>
 
 </manifest>

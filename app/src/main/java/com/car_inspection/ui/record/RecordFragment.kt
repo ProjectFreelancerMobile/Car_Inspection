@@ -820,9 +820,9 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
                                         .setMediaAction(Configuration.MEDIA_ACTION_PHOTO)
                                 takeFragment = CameraFragment.newInstance(builder.build())
                                 activity?.addFragment(takeFragment!!, R.id.fragmentCapture)
+                                Logger.e("${tvTitleStep.text} ************************************")
                             }, 1000)
                         }
-                        Logger.e("${tvTitleStep.text} ************************************")
                     }
                     false -> {
                         StepFragment.mRecording = true
@@ -837,8 +837,8 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
                             runDelayedOnUiThread({
                                 startPreview()
                             }, 1000)
+                            Logger.e("${tvTitleStep.text} ************************************")
                         }
-                        Logger.e("${tvTitleStep.text} ************************************")
                     }
                 }
             }
