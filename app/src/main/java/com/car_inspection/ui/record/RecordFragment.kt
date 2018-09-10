@@ -425,28 +425,33 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
     }
 
     private fun initRecorder() {
-        Log.i(LOG_TAG, "init mFrameRecorder")
+        try {
+            Log.i(LOG_TAG, "init mFrameRecorder")
 
-        val recordedTime = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        mVideo = CameraHelper.getOutputMediaFile(recordedTime, CameraHelper.MEDIA_TYPE_VIDEO)
-        Log.i(LOG_TAG, "Output Video: $mVideo")
+            val recordedTime = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+            mVideo = CameraHelper.getOutputMediaFile(recordedTime, CameraHelper.MEDIA_TYPE_VIDEO)
+            Log.i(LOG_TAG, "Output Video: $mVideo")
 
-        mFrameRecorder = FFmpegFrameRecorder(mVideo, videoWidth, videoHeight, 1)
-        mFrameRecorder?.apply {
-            format = "mp4"
-            sampleRate = sampleAudioRateInHz
-            frameRate = frameRate
-            videoCodec = avcodec.AV_CODEC_ID_H264
-            setVideoOption("crf", "28")
-            setVideoOption("tune", "zerolatency")
-            setVideoOption("preset", "superfast")
-            // See: https://trac.ffmpeg.org/wiki/Encode/H.264#crf
-            /*
+            mFrameRecorder = FFmpegFrameRecorder(mVideo, videoWidth, videoHeight, 1)
+            mFrameRecorder?.apply {
+                format = "mp4"
+                sampleRate = sampleAudioRateInHz
+                frameRate = frameRate
+                videoCodec = avcodec.AV_CODEC_ID_H264
+                setVideoOption("crf", "28")
+                setVideoOption("tune", "zerolatency")
+                setVideoOption("preset", "superfast")
+                // See: https://trac.ffmpeg.org/wiki/Encode/H.264#crf
+                /*
              * The range of the quantizer scale is 0-51: where 0 is lossless, 23 is default, and 51 is worst possible. A lower value is a higher quality and a subjectively sane range is 18-28. Consider 18 to be visually lossless or nearly so: it should look the same or nearly the same as the input but it isn't technically lossless.
              * The range is exponential, so increasing the CRF value +6 is roughly half the bitrate while -6 is roughly twice the bitrate. General usage is to choose the highest CRF value that still provides an acceptable quality. If the output looks good, then try a higher value and if it looks bad then choose a lower value.
              */
+            }
+            Log.i(LOG_TAG, "mFrameRecorder initialize success")
+        }catch (e: UnsatisfiedLinkError){
+            showSnackBar("Không tìm thấy camera!")
+            e.printStackTrace()
         }
-        Log.i(LOG_TAG, "mFrameRecorder initialize success")
     }
 
     private fun releaseRecorder(deleteFile: Boolean) {
