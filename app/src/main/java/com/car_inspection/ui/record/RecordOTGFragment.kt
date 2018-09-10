@@ -114,12 +114,12 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
                         cameraCallbackListener.showCameraDefault()
                         return
                     }
-                    try {
+                    /*try {
                         setModelValue(UVCCameraHelper.MODE_BRIGHTNESS, 80)
                         setModelValue(UVCCameraHelper.MODE_CONTRAST, 60)
                     }catch (e:Exception){
                         e.printStackTrace()
-                    }
+                    }*/
                 }
             }
         } catch (e: IllegalStateException) {
