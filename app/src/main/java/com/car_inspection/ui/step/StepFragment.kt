@@ -160,12 +160,10 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     }
 
     override fun onDestroy() {
-        mReceiver?.apply {
-            context?.unregisterReceiver(mReceiver)
-        }
         stopScreenRecord()
         super.onDestroy()
     }
+
     override fun setLayoutResourceID() = R.layout.step_fragment
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

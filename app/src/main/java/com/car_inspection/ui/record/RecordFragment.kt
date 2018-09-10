@@ -809,6 +809,8 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
                         currentSubStepName = subStep
                         mBtnTake.isVisible = true
                         tvTitleStep.isVisible = true
+                        fragmentCapture.isVisible = true
+                        cameraPreview.isGone = true
                         stopRecording()
                         stopPreview()
                         releaseCamera()
@@ -829,6 +831,8 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
                         Logger.e("RecordEvent11111")
                         mBtnTake.isGone = true
                         tvTitleStep.isGone = true
+                        fragmentCapture.isGone = true
+                        cameraPreview.isVisible = true
                         if(takeFragment !=null) {
                             takeFragment?.apply {
                                 removeFragment(this)

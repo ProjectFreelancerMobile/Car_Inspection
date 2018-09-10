@@ -841,7 +841,7 @@ public abstract class AbstractUVCCameraHandler extends Handler {
                 }
                 try {
                     if (fos != null)
-                        bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                        bmp.compress(Bitmap.CompressFormat.JPEG, 70, fos);
                 }catch (NullPointerException e){
                     e.printStackTrace();
                 }
