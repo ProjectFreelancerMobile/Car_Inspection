@@ -368,7 +368,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
 
     private fun autoScrollAfterCheckComplete() {
-        rvSubStep.post { rvSubStep.smoothScrollBy(0, stepAdapter.heightItem + Utils.convertDipToPixels(activity!!, 10)) }
+        rvSubStep.post { rvSubStep.smoothScrollBy(0, stepAdapter.heightItem + Utils.convertDipToPixels(activity!!, 5)) }
     }
 
     override fun onTextNoteClickListener(v: View, position: Int) {
