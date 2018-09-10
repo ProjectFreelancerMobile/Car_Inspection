@@ -398,7 +398,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
             }
         }
         if (stepAdapter.isFinishCheckItem()) {
-            if (currentStep < 3) {
+            if (currentStep < 15) {
                 if (layoutContinue.isGone)
                     layoutContinue.isVisible = true
             } else {
