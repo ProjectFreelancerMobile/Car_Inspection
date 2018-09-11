@@ -38,7 +38,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class MediaMuxerWrapper {
-	private static final boolean DEBUG = false;	// TODO set false on release
+	private static final boolean DEBUG = true;	// TODO set false on release
 	private static final String TAG = MediaMuxerWrapper.class.getSimpleName();
 
 	private String mOutputPath;

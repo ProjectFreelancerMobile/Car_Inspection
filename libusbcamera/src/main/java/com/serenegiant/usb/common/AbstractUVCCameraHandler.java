@@ -840,20 +840,18 @@ public abstract class AbstractUVCCameraHandler extends Handler {
                     e.printStackTrace();
                 }
                 try {
-                    if (fos != null)
+                    if (fos != null) {
                         bmp.compress(Bitmap.CompressFormat.JPEG, 70, fos);
-                }catch (NullPointerException e){
+                        fos.flush();
+                        fos.close();
+                    }
+                }catch (NullPointerException | IOException e){
                     e.printStackTrace();
                 }
-                try {
-                    fos.flush();
-                    fos.close();
+                if(bmp!=null)
                     bmp.recycle();
-                    if (mCaptureListener != null) {
-                        mCaptureListener.onCaptureResult(path);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (mCaptureListener != null) {
+                    mCaptureListener.onCaptureResult(path);
                 }
             }
             try {

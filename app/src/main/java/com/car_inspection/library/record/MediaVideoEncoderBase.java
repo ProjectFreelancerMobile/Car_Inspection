@@ -29,11 +29,13 @@ import android.media.MediaFormat;
 import android.util.Log;
 import android.view.Surface;
 
+import com.orhanobut.logger.Logger;
+
 import java.io.IOException;
 
 
 public abstract class MediaVideoEncoderBase extends MediaEncoder {
-	private static final boolean DEBUG = false;	// TODO set false on release
+	private static final boolean DEBUG = true;	// TODO set false on release
 	private static final String TAG = MediaVideoEncoderBase.class.getSimpleName();
 
 	// parameters for recording
@@ -91,7 +93,7 @@ public abstract class MediaVideoEncoderBase extends MediaEncoder {
 
 	protected int calcBitRate(final int frameRate) {
 		final int bitrate = (int)(BPP * frameRate * mWidth * mHeight);
-		Log.i(TAG, String.format("bitrate=%5.2f[Mbps]", bitrate / 1024f / 1024f));
+		Logger.e(TAG+ String.format("bitrate=%5.2f[Mbps]", bitrate / 1024f / 1024f));
 		return bitrate;
 	}
 

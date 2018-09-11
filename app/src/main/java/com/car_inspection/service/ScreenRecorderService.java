@@ -46,13 +46,14 @@ import com.car_inspection.library.record.MediaScreenEncoder;
 import com.car_inspection.ui.activity.MainActivity;
 import com.jiangdg.usbcamera.utils.BuildCheck;
 import com.jiangdg.usbcamera.utils.FileUtils;
+import com.orhanobut.logger.Logger;
 
 import java.io.IOException;
 
 import androidx.annotation.Nullable;
 
 public class ScreenRecorderService extends Service {
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 	private static final String TAG = "ScreenRecorderService";
 	private static final String APP_DIR_NAME = "ScreenRecorder";
 	public static final int REQUEST_CODE_SCREEN_RECORD = 1;
@@ -172,14 +173,11 @@ public class ScreenRecorderService extends Service {
 						width = (int)(width / scale);
 						height = (int)(height / scale);
 					}
-					if (DEBUG) Log.v(TAG, String.format("startRecording:(%d,%d)(%d,%d)", metrics.widthPixels, metrics.heightPixels, width, height));
+					if (DEBUG) Logger.e(TAG+ String.format("startRecording:(%d,%d)(%d,%d)", metrics.widthPixels, metrics.heightPixels, width, height));
 					try {
 						sMuxer = new MediaMuxerWrapper(this, ".mp4");	// if you record audio only, ".m4a" is also OK.
-						if (true) {
-							// for screen capturing
-							new MediaScreenEncoder(sMuxer, mMediaEncoderListener,
-								projection, width, height, metrics.densityDpi, 800 * 1024, 15);
-						}
+                        new MediaScreenEncoder(sMuxer, mMediaEncoderListener,
+                                projection, width, height, metrics.densityDpi, 800 * 5024, 50);
 						if (true) {
 							// for audio capturing
 							new MediaAudioEncoder(sMuxer, mMediaEncoderListener);

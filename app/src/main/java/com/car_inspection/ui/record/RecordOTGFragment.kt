@@ -130,7 +130,7 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
                         com.blankj.utilcode.util.FileUtils.createOrExistsDir(Constanst.getFolderPicturePath() + "Step$currentStep")
                         val picPath = Constanst.getFolderPicturePath() + "Step$currentStep/$currentSubStepName" + UVCCameraHelper.SUFFIX_JPEG
                         capturePicture(picPath) { path ->
-                            showSnackBar("Save picture path：$path")
+                            //showSnackBar("Save picture path：$path")
                             overlay(activity!!, path, currentSubStepName)
                         }
                     }
@@ -140,8 +140,6 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
                 mCameraHelper?.apply {
                     if (isCameraOpened) {
                         if (!isPushing) {
-                            // val videoPath = UVCCameraHelper.ROOT_PATH + System.currentTimeMillis()
-                            // FileUtils.createfile(FileUtils.ROOT_PATH + "test666.h264")
                             createFolderPicture(Constanst.getFolderVideoPath())
                             // if you want to record,please create RecordParams like this
                             val params = RecordParams()
@@ -251,7 +249,7 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
             if (!isFinishing) {
                 when (isTake) {
                     true -> {
-                        StepFragment.mRecording = false
+                        StepFragment.mRecording = true
                         this@RecordOTGFragment.currentStep = step
                         this@RecordOTGFragment.currentSubStepName = subStep
                         btnTakePicture?.isVisible = true

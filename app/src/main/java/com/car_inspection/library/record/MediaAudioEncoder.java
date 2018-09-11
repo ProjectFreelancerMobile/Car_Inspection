@@ -35,7 +35,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class MediaAudioEncoder extends MediaEncoder {
-	private static final boolean DEBUG = false;	// TODO set false on release
+	private static final boolean DEBUG = true;	// TODO set false on release
 	private static final String TAG = MediaAudioEncoder.class.getSimpleName();
 
 	private static final String MIME_TYPE = "audio/mp4a-latm";

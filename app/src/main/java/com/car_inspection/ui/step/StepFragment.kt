@@ -83,7 +83,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     private var timerRecord = 0
 
     companion object {
-        var mRecording = false
+        var mRecording = true
         fun newInstance() = StepFragment()
     }
 
@@ -511,21 +511,21 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     }
 
     private fun pauseScreenRecord(){
-        if(mRecording) {
+        /*if(mRecording) {
             runDelayedOnUiThread({
                 val intent = Intent(context, ScreenRecorderService::class.java)
                 intent.action = ScreenRecorderService.ACTION_PAUSE
                 context?.startService(intent)
             }, 1000)
-        }
+        }*/
     }
 
     private fun resumeScreenRecord(){
-        if(!mRecording) {
+        /*if(!mRecording) {
             val intent = Intent(context, ScreenRecorderService::class.java)
             intent.action = ScreenRecorderService.ACTION_RESUME
             context?.startService(intent)
-        }
+        }*/
     }
 
     private fun startScreenRecorder(resultCode: Int, data: Intent) {

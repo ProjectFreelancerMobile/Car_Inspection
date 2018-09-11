@@ -41,7 +41,7 @@ import com.serenegiant.usb.common.GLDrawer2D;
 import java.io.IOException;
 
 public class MediaScreenEncoder extends MediaVideoEncoderBase {
-	private static final boolean DEBUG = false;	// TODO set false on release
+	private static final boolean DEBUG = true;	// TODO set false on release
 	private static final String TAG = MediaScreenEncoder.class.getSimpleName();
 
 	private static final String MIME_TYPE = MediaFormat.MIMETYPE_VIDEO_AVC;
@@ -61,7 +61,7 @@ public class MediaScreenEncoder extends MediaVideoEncoderBase {
 		super(muxer, listener, width, height);
 		mMediaProjection = projection;
 		mDensity = density;
-		fps = (_fps > 0 && _fps <= 30) ? _fps : FRAME_RATE;
+		fps = (_fps > 0 && _fps <= 50) ? _fps : FRAME_RATE;
 		bitrate = (_bitrate > 0) ? _bitrate : calcBitRate(_fps);
 		final HandlerThread thread = new HandlerThread(TAG);
 		thread.start();
