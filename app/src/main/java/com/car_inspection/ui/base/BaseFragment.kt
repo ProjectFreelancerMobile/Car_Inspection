@@ -1,21 +1,12 @@
 package com.car_inspection.ui.base
 
-import android.os.Build
-import android.view.Gravity
-import android.view.View
-import android.widget.TextView
-import com.car_inspection.R
-import com.google.android.material.snackbar.Snackbar
-import com.toan_itc.core.base.CoreBaseFragment
-import org.greenrobot.eventbus.EventBus
-import android.R.attr.gravity
-import android.widget.FrameLayout
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
-import com.yuvraj.livesmashbar.DURATION_LONG
+import com.car_inspection.R
+import com.toan_itc.core.base.CoreBaseFragment
 import com.yuvraj.livesmashbar.anim.AnimIconBuilder
 import com.yuvraj.livesmashbar.enums.GravityView
 import com.yuvraj.livesmashbar.view.LiveSmashBar
+import pyxis.uzuki.live.richutilskt.utils.runOnUiThread
 
 
 /**
@@ -45,14 +36,16 @@ abstract class BaseFragment : CoreBaseFragment() {
 
     fun showSnackBar(message: String) {
         context?.apply {
-            LiveSmashBar.Builder(activity!!)
-                    .icon(R.mipmap.ic_launcher)
-                    .iconAnimation(AnimIconBuilder(this).pulse())
-                    .title(message)
-                    .titleColor(ContextCompat.getColor(this, R.color.white))
-                    .gravity(GravityView.TOP)
-                    .duration(3000)
-                    .show()
+            runOnUiThread {
+                LiveSmashBar.Builder(activity!!)
+                        .icon(R.mipmap.ic_launcher)
+                        .iconAnimation(AnimIconBuilder(this).pulse())
+                        .title(message)
+                        .titleColor(ContextCompat.getColor(this, R.color.white))
+                        .gravity(GravityView.TOP)
+                        .duration(2000)
+                        .show()
+            }
         }
     }
 

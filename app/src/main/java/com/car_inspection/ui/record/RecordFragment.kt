@@ -815,8 +815,7 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
                         if(takeFragment == null) {
                             runDelayedOnUiThread({
                                 val builder = Configuration.Builder()
-                                builder.setCamera(mCameraId)
-                                        .setFlashMode(Configuration.FLASH_MODE_OFF)
+                                builder.setFlashMode(Configuration.FLASH_MODE_OFF)
                                         .setMediaAction(Configuration.MEDIA_ACTION_PHOTO)
                                 takeFragment = CameraFragment.newInstance(builder.build())
                                 activity?.addFragment(takeFragment!!, R.id.fragmentCapture)
