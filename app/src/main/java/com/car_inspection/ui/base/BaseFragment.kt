@@ -8,6 +8,15 @@ import com.car_inspection.R
 import com.google.android.material.snackbar.Snackbar
 import com.toan_itc.core.base.CoreBaseFragment
 import org.greenrobot.eventbus.EventBus
+import android.R.attr.gravity
+import android.widget.FrameLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
+import com.yuvraj.livesmashbar.DURATION_LONG
+import com.yuvraj.livesmashbar.anim.AnimIconBuilder
+import com.yuvraj.livesmashbar.enums.GravityView
+import com.yuvraj.livesmashbar.view.LiveSmashBar
+
 
 /**
  * Created by ToanDev on 28/2/18.
@@ -35,17 +44,15 @@ abstract class BaseFragment : CoreBaseFragment() {
     }*/
 
     fun showSnackBar(message: String) {
-        view?.let {
-            val snackBar = Snackbar.make(it, message, Snackbar.LENGTH_LONG)
-            val view = snackBar.view
-            val tv = view.findViewById(R.id.snackbar_text) as TextView
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
-            } else {
-                tv.textAlignment = View.TEXT_ALIGNMENT_CENTER
-                tv.gravity = Gravity.CENTER_HORIZONTAL
-            }
-            snackBar.show()
+        context?.apply {
+            LiveSmashBar.Builder(activity!!)
+                    .icon(R.mipmap.ic_launcher)
+                    .iconAnimation(AnimIconBuilder(this).pulse())
+                    .title(message)
+                    .titleColor(ContextCompat.getColor(this, R.color.white))
+                    .gravity(GravityView.TOP)
+                    .duration(3000)
+                    .show()
         }
     }
 

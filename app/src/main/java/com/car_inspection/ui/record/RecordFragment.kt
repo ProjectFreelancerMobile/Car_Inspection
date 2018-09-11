@@ -163,10 +163,8 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
                             Logger.e("file images----------@@@@@@@@@@@@@@   $filePath")
                             // stepAdapter.items?.get(currentPosition)?.imagepaths?.add(filePath)
                             //showLayoutVideo()
-                            showSnackBar("Save picture path：$filePath")
+                            showSnackBar("$currentSubStepName đã được lưu!")
                             overlay(activity!!, filePath, currentSubStepName)
-                            activity?.removeFragment(takeFragment!!)
-                            recordEvent()
                         }
                     }, Constanst.getFolderPicturePath(), "Step$currentStep/$currentSubStepName")
 

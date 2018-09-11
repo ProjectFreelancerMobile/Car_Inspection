@@ -130,7 +130,7 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
                         com.blankj.utilcode.util.FileUtils.createOrExistsDir(Constanst.getFolderPicturePath() + "Step$currentStep")
                         val picPath = Constanst.getFolderPicturePath() + "Step$currentStep/$currentSubStepName" + UVCCameraHelper.SUFFIX_JPEG
                         capturePicture(picPath) { path ->
-                            //showSnackBar("Save picture path：$path")
+                            showSnackBar("$currentSubStepName đã được lưu!")
                             overlay(activity!!, path, currentSubStepName)
                         }
                     }
