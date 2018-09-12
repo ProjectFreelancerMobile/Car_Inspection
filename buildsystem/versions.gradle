@@ -25,7 +25,7 @@ versions.okHttp             = "3.11.0"
 versions.okHttpLogging      = "2.0.7"
 versions.permisstion        = "4.0.0-alpha1"
 //Utils
-versions.utilcode           = "1.19.2"
+versions.utilcode           = "1.20.1"
 versions.rich               = "2.3.1"
 versions.realm_extensions   = "2.2.0"
 //Libraries: Development

@@ -5,10 +5,6 @@ import android.content.pm.ActivityInfo
 import androidx.fragment.app.Fragment
 import com.car_inspection.R
 import com.car_inspection.ui.login.LoginFragment
-import com.car_inspection.utils.Constanst.Companion.heightScreen
-import com.car_inspection.utils.Constanst.Companion.widthScreen
-import com.car_inspection.utils.getHeightScreen
-import com.car_inspection.utils.getWidthScreen
 import com.toan_itc.core.base.CoreBaseActivity
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -33,13 +29,10 @@ class MainActivity : CoreBaseActivity(), HasSupportFragmentInjector {
 
     override fun initViews() {
         startFragmentWithPermissionCheck()
-        pushFragment(LoginFragment.newInstance())
-        widthScreen = getWidthScreen(this)
-        heightScreen = getHeightScreen(this)
     }
 
     override fun initData() {
-
+        pushFragment(LoginFragment.newInstance())
     }
 
     fun pushFragment(fragment: Fragment) {

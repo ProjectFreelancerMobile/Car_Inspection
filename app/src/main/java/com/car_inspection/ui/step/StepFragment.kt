@@ -22,6 +22,8 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.toolbox.ImageLoader
+import com.blankj.utilcode.util.DeviceUtils
+import com.blankj.utilcode.util.SizeUtils
 import com.car_inspection.R
 import com.car_inspection.binding.FragmentDataBindingComponent
 import com.car_inspection.data.model.StepModifyModel
@@ -39,7 +41,6 @@ import com.car_inspection.ui.inputtext.SuggestTextActivity
 import com.car_inspection.ui.record.RecordFragment
 import com.car_inspection.ui.record.RecordOTGFragment
 import com.car_inspection.utils.*
-import com.github.florent37.camerafragment.internal.utils.Utils
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.plus.Plus
@@ -361,7 +362,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
 
     private fun autoScrollAfterCheckComplete() {
-        rvSubStep.post { rvSubStep.smoothScrollBy(0, stepAdapter.heightItem + Utils.convertDipToPixels(activity!!, 5)) }
+        rvSubStep.post { rvSubStep.smoothScrollBy(0, stepAdapter.heightItem + SizeUtils.dp2px(5f)) }
     }
 
     override fun onTextNoteClickListener(v: View, position: Int) {

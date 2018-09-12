@@ -11,7 +11,10 @@ import com.car_inspection.listener.CameraDefaultListener
 import com.car_inspection.listener.CameraRecordListener
 import com.car_inspection.ui.base.BaseFragment
 import com.car_inspection.ui.step.StepFragment
-import com.car_inspection.utils.*
+import com.car_inspection.utils.Constanst
+import com.car_inspection.utils.createFolderPicture
+import com.car_inspection.utils.listenToViews
+import com.car_inspection.utils.overlay
 import com.jiangdg.usbcamera.UVCCameraHelper
 import com.jiangdg.usbcamera.utils.FileUtils
 import com.orhanobut.logger.Logger
@@ -20,14 +23,8 @@ import com.serenegiant.usb.USBMonitor
 import com.serenegiant.usb.common.AbstractUVCCameraHandler
 import com.serenegiant.usb.encoder.RecordParams
 import com.serenegiant.usb.widget.CameraViewInterface
-import google.com.carinspection.DisposableImpl
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.record_otg_fragment.*
-import pyxis.uzuki.live.richutilskt.utils.runDelayedOnUiThread
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, CameraViewInterface.Callback, View.OnClickListener, CameraRecordListener {
 
@@ -176,11 +173,6 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
                     }
                 }
             }
-            /* R.id.mBtnRes -> {
-                 Toast.makeText(context, getResolutionList().toString(), Toast.LENGTH_LONG).show()
-                 Logger.e("getResolutionList="+getResolutionList().toString())
-             }
-             R.id.mBtnFocus -> mCameraHelper?.startCameraFoucs()*/
         }
     }
 
@@ -200,7 +192,7 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
         return resolutions
     }
 
-    override fun getUSBMonitor(): USBMonitor = mCameraHelper?.usbMonitor!!
+    override fun getUSBMonitor(): USBMonitor? = mCameraHelper?.usbMonitor
 
     override fun onDialogResult(canceled: Boolean) {
 

@@ -91,9 +91,9 @@ public class CameraDialog extends DialogFragment {
        if (mUSBMonitor == null)
         try {
     		mUSBMonitor = ((CameraDialogParent)activity).getUSBMonitor();
-        } catch (final ClassCastException e) {
-    	} catch (final NullPointerException e) {
-        }
+        } catch (final ClassCastException | NullPointerException e) {
+       	e.printStackTrace();
+    	}
 		if (mUSBMonitor == null) {
         	throw new ClassCastException(activity.toString() + " must implement CameraDialogParent#getUSBController");
 		}
