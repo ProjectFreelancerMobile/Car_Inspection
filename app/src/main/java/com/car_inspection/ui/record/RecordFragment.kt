@@ -313,90 +313,94 @@ class RecordFragment : BaseFragment(), TextureView.SurfaceTextureListener, View.
     }
 
     private fun startPreview(surfaceTexture: SurfaceTexture) {
-        if (mCamera == null) {
-            return
-        }
-        Logger.e("startPreview")
-        mCamera?.apply {
-            val parameters = parameters
-            val previewSizes = parameters.supportedPreviewSizes
-            val previewSize = CameraHelper.getOptimalSize(previewSizes,
-                    PREFERRED_PREVIEW_WIDTH, PREFERRED_PREVIEW_HEIGHT)
-            // if changed, reassign values and request layout
-            previewSize?.apply {
-                if (mPreviewWidth != width || mPreviewHeight != height) {
-                    mPreviewWidth = width
-                    mPreviewHeight = height
-                    setPreviewSize(mPreviewWidth, mPreviewHeight)
-                    cameraPreview?.requestLayout()
-                }
+        try {
+            if (mCamera == null) {
+                return
             }
-            parameters.setPreviewSize(mPreviewWidth, mPreviewHeight)
-            //        parameters.setPreviewFormat(ImageFormat.NV21);
-            setParameters(parameters)
+            Logger.e("startPreview")
+            mCamera?.apply {
+                val parameters = parameters
+                val previewSizes = parameters.supportedPreviewSizes
+                val previewSize = CameraHelper.getOptimalSize(previewSizes,
+                        PREFERRED_PREVIEW_WIDTH, PREFERRED_PREVIEW_HEIGHT)
+                // if changed, reassign values and request layout
+                previewSize?.apply {
+                    if (mPreviewWidth != width || mPreviewHeight != height) {
+                        mPreviewWidth = width
+                        mPreviewHeight = height
+                        setPreviewSize(mPreviewWidth, mPreviewHeight)
+                        cameraPreview?.requestLayout()
+                    }
+                }
+                parameters.setPreviewSize(mPreviewWidth, mPreviewHeight)
+                //        parameters.setPreviewFormat(ImageFormat.NV21);
+                setParameters(parameters)
 
-            setDisplayOrientation(CameraHelper.getCameraDisplayOrientation(activity!!, mCameraId))
+                setDisplayOrientation(CameraHelper.getCameraDisplayOrientation(activity!!, mCameraId))
 
-            // YCbCr_420_SP (NV21) format
-            val bufferByte = ByteArray(mPreviewWidth * mPreviewHeight * 3 / 2)
-            addCallbackBuffer(bufferByte)
-            setPreviewCallbackWithBuffer(object : Camera.PreviewCallback {
+                // YCbCr_420_SP (NV21) format
+                val bufferByte = ByteArray(mPreviewWidth * mPreviewHeight * 3 / 2)
+                addCallbackBuffer(bufferByte)
+                setPreviewCallbackWithBuffer(object : Camera.PreviewCallback {
 
-                private var lastPreviewFrameTime: Long = 0
+                    private var lastPreviewFrameTime: Long = 0
 
-                override fun onPreviewFrame(data: ByteArray, camera: Camera) {
-                    val thisPreviewFrameTime = System.currentTimeMillis()
-                    /*if (lastPreviewFrameTime > 0) {
+                    override fun onPreviewFrame(data: ByteArray, camera: Camera) {
+                        val thisPreviewFrameTime = System.currentTimeMillis()
+                        /*if (lastPreviewFrameTime > 0) {
                         Log.d(LOG_TAG, "Preview frame interval: " + (thisPreviewFrameTime - lastPreviewFrameTime) + "ms")
                     }*/
-                    lastPreviewFrameTime = thisPreviewFrameTime
+                        lastPreviewFrameTime = thisPreviewFrameTime
 
-                    // get video data
-                    if (mRecording) {
-                        mAudioRecordThread?.apply {
-                            if (mAudioRecordThread == null || !isRunning) {
-                                // wait for AudioRecord to init and start
-                                mRecordFragments?.peek()?.startTimestamp = System.currentTimeMillis()
-                            } else {
-                                // pop the current record fragment when calculate total recorded time
-                                val curFragment = mRecordFragments?.pop()
-                                val recordedTime = calculateTotalRecordedTime(mRecordFragments)
-                                // push it back after calculation
-                                mRecordFragments?.push(curFragment)
-                                val curRecordedTime = System.currentTimeMillis() - curFragment?.startTimestamp!! + recordedTime
-                                // check if exceeds time limit
-                                if (curRecordedTime > MAX_VIDEO_LENGTH) {
-                                    pauseRecording()
-                                    FinishRecordingTask().execute()
-                                    return
-                                }
-
-                                val timestamp = 1000 * curRecordedTime
-                                val frame: Frame?
-                                var frameToRecord: FrameToRecord? = mRecycledFrameQueue?.poll()
-                                if (frameToRecord != null) {
-                                    frame = frameToRecord.frame
-                                    frameToRecord.timestamp = timestamp
+                        // get video data
+                        if (mRecording) {
+                            mAudioRecordThread?.apply {
+                                if (mAudioRecordThread == null || !isRunning) {
+                                    // wait for AudioRecord to init and start
+                                    mRecordFragments?.peek()?.startTimestamp = System.currentTimeMillis()
                                 } else {
-                                    frame = Frame(mPreviewWidth, mPreviewHeight, frameDepth, frameChannels)
-                                    frameToRecord = FrameToRecord(timestamp, frame)
-                                }
-                                (frame?.image?.get(0)?.position(0) as? ByteBuffer)?.put(data)
-                                if (mFrameToRecordQueue?.offer(frameToRecord)!!) {
-                                    mFrameToRecordCount++
+                                    // pop the current record fragment when calculate total recorded time
+                                    val curFragment = mRecordFragments?.pop()
+                                    val recordedTime = calculateTotalRecordedTime(mRecordFragments)
+                                    // push it back after calculation
+                                    mRecordFragments?.push(curFragment)
+                                    val curRecordedTime = System.currentTimeMillis() - curFragment?.startTimestamp!! + recordedTime
+                                    // check if exceeds time limit
+                                    if (curRecordedTime > MAX_VIDEO_LENGTH) {
+                                        pauseRecording()
+                                        FinishRecordingTask().execute()
+                                        return
+                                    }
+
+                                    val timestamp = 1000 * curRecordedTime
+                                    val frame: Frame?
+                                    var frameToRecord: FrameToRecord? = mRecycledFrameQueue?.poll()
+                                    if (frameToRecord != null) {
+                                        frame = frameToRecord.frame
+                                        frameToRecord.timestamp = timestamp
+                                    } else {
+                                        frame = Frame(mPreviewWidth, mPreviewHeight, frameDepth, frameChannels)
+                                        frameToRecord = FrameToRecord(timestamp, frame)
+                                    }
+                                    (frame?.image?.get(0)?.position(0) as? ByteBuffer)?.put(data)
+                                    if (mFrameToRecordQueue?.offer(frameToRecord)!!) {
+                                        mFrameToRecordCount++
+                                    }
                                 }
                             }
                         }
+                        addCallbackBuffer(data)
                     }
-                    addCallbackBuffer(data)
+                })
+                try {
+                    setPreviewTexture(surfaceTexture)
+                } catch (ioe: IOException) {
+                    ioe.printStackTrace()
                 }
-            })
-            try {
-                setPreviewTexture(surfaceTexture)
-            } catch (ioe: IOException) {
-                ioe.printStackTrace()
+                startPreview()
             }
-            startPreview()
+        }catch (e:Exception){
+            e.printStackTrace()
         }
     }
 

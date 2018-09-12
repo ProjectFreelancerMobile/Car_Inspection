@@ -114,8 +114,8 @@ public class UVCCameraHelper {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        // 开启预览
-                        startPreview(mCamView);
+                        if(mCamView!=null)
+                            startPreview(mCamView);
                     }
                 }).start();
                 if(listener != null) {

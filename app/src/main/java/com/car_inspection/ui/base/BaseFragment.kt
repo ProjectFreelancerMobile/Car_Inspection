@@ -44,6 +44,7 @@ abstract class BaseFragment : CoreBaseFragment() {
                         .titleColor(ContextCompat.getColor(this, R.color.white))
                         .gravity(GravityView.TOP)
                         .duration(2000)
+                        .dismissOnTapOutside()
                         .show()
             }
         }
