@@ -164,9 +164,8 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
      * still image is ready to be saved.
      */
     private val onImageAvailableListener = ImageReader.OnImageAvailableListener {
-        Logger.e("onImageAvailableListener")
         createFolderPicture(Constanst.getFolderPicturePath())
-        file = FileUtils.getFileByPath(Constanst.getFolderPicturePath()+ "Step$currentStep/$currentSubStepName")
+        file = FileUtils.getFileByPath(Constanst.getFolderPicturePath()+ "Step$currentStep/$currentSubStepName.jpg")
         backgroundHandler?.post(ImageSaver(it.acquireNextImage(), file))
     }
 
@@ -401,7 +400,7 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
                 val largest = Collections.max(
                         Arrays.asList(*map.getOutputSizes(ImageFormat.JPEG)),
                         CompareSizesByArea())
-                imageReader = ImageReader.newInstance(largest.width, largest.height,
+                imageReader = ImageReader.newInstance(MAX_PREVIEW_WIDTH,MAX_PREVIEW_HEIGHT,
                         ImageFormat.JPEG, /*maxImages*/ 2).apply {
                     setOnImageAvailableListener(onImageAvailableListener, backgroundHandler)
                 }
