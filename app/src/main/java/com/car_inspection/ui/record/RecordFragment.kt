@@ -9,21 +9,17 @@ import android.hardware.camera2.*
 import android.media.ImageReader
 import android.os.Handler
 import android.os.HandlerThread
-import android.util.Log
 import android.util.Size
 import android.util.SparseIntArray
 import android.view.Surface
 import android.view.TextureView
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import com.blankj.utilcode.util.FileUtils
 import com.car_inspection.R
 import com.car_inspection.library.camera.ImageSaver
 import com.car_inspection.listener.CameraRecordListener
 import com.car_inspection.ui.base.BaseFragment
-import com.car_inspection.ui.step.StepFragment
 import com.car_inspection.utils.*
 import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.record_fragment.*
@@ -92,7 +88,7 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
         }
 
         override fun onSurfaceTextureSizeChanged(texture: SurfaceTexture, width: Int, height: Int) {
-            //configureTransform(width, height)
+            configureTransform(width, height)
         }
 
         override fun onSurfaceTextureDestroyed(texture: SurfaceTexture) = true
@@ -267,7 +263,7 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
     }
 
     override fun initViews() {
-        listenToViews(mBtnTake)
+
     }
 
     override fun setLayoutResourceID(): Int = R.layout.record_fragment
@@ -285,10 +281,10 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
         }
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         closeCamera()
         stopBackgroundThread()
-        super.onDestroy()
+        super.onDestroyView()
     }
 
     private fun requestCameraPermission() {
@@ -319,7 +315,7 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
                 return
             }
             setUpCameraOutputs(width, height)
-            //configureTransform(width, height)
+            configureTransform(width, height)
             val manager = activity?.getSystemService(Context.CAMERA_SERVICE) as CameraManager
             try {
                 // Wait for camera to open - 2.5 seconds is sufficient
@@ -327,7 +323,7 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
                     Logger.e("Time out waiting to lock camera opening.")
                 }
                 manager.openCamera(cameraId, stateCallback, backgroundHandler)
-            } catch (e: CameraAccessException) {
+            } catch (e: Exception) {
                 e.printStackTrace()
             } catch (e: InterruptedException) {
                 Logger.e("Interrupted while trying to lock camera opening.", e)
@@ -347,8 +343,8 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
             cameraDevice = null
             imageReader?.close()
             imageReader = null
-        } catch (e: InterruptedException) {
-            throw RuntimeException("Interrupted while trying to lock camera closing.", e)
+        } catch (e: Exception) {
+            Logger.e("Interrupted while trying to lock camera closing.", e)
         } finally {
             cameraOpenCloseLock.release()
         }
@@ -371,7 +367,7 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
             backgroundThread?.join()
             backgroundThread = null
             backgroundHandler = null
-        } catch (e: InterruptedException) {
+        } catch (e: Exception) {
            e.printStackTrace()
         }
     }
@@ -428,10 +424,8 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
 
                 // We fit the aspect ratio of TextureView to the size of preview we picked.
                 if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                    Logger.e("ORIENTATION_LANDSCAPE:width="+previewSize.width+"height="+previewSize.height)
                     textureView.setAspectRatio(previewSize.width, previewSize.height)
                 } else {
-                    Logger.e("ORIENTATION:height="+previewSize.height+"width="+previewSize.width)
                     textureView.setAspectRatio(previewSize.height, previewSize.width)
                 }
                 // Check if the flash is supported.
@@ -443,10 +437,8 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
                 // so we don't need to iterate through other available cameras.
                 return
             }
-        } catch (e: CameraAccessException) {
+        } catch (e: Exception) {
            e.printStackTrace()
-        } catch (e: NullPointerException) {
-            e.printStackTrace()
         }
     }
     private fun areDimensionsSwapped(displayRotation: Int): Boolean {
@@ -508,7 +500,7 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
                                 previewRequest = previewRequestBuilder.build()
                                 captureSession?.setRepeatingRequest(previewRequest,
                                         captureCallback, backgroundHandler)
-                            } catch (e: CameraAccessException) {
+                            } catch (e: Exception) {
                                 e.printStackTrace()
                             }
 
@@ -518,12 +510,13 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
                             showSnackBar("Kết nối Camera thất bại!")
                         }
                     }, null)
-        } catch (e: CameraAccessException) {
+        } catch (e: Exception) {
            e.printStackTrace()
         }
     }
 
     private fun configureTransform(viewWidth: Int, viewHeight: Int) {
+        if(!isDebug()) return
         activity ?: return
         val rotation = activity!!.windowManager.defaultDisplay.rotation
         val matrix = Matrix()
@@ -532,7 +525,6 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
         val centerX = viewRect.centerX()
         val centerY = viewRect.centerY()
         if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
-            showSnackBar("ROTATION_90")
             bufferRect.offset(centerX - bufferRect.centerX(), centerY - bufferRect.centerY())
             val scale = Math.max(
                     viewHeight.toFloat() / previewSize.height,
@@ -543,7 +535,6 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
                 postRotate((90 * (rotation - 2)).toFloat(), centerX, centerY)
             }
         } else if (Surface.ROTATION_180 == rotation) {
-            showSnackBar("ROTATION_180")
             matrix.postRotate(180f, centerX, centerY)
         }
         textureView.setTransform(matrix)
@@ -562,7 +553,7 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
             state = STATE_WAITING_PRECAPTURE
             captureSession?.capture(previewRequestBuilder.build(), captureCallback,
                     backgroundHandler)
-        } catch (e: CameraAccessException) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 
@@ -606,7 +597,7 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
                 abortCaptures()
                 capture(captureBuilder?.build()!!, captureCallback, null)
             }
-        } catch (e: CameraAccessException) {
+        } catch (e: Exception) {
            e.printStackTrace()
         }
     }
@@ -627,7 +618,7 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
             // Tell #captureCallback to wait for the lock.
             state = STATE_WAITING_LOCK
             captureSession?.capture(previewRequestBuilder.build(), captureCallback, backgroundHandler)
-        } catch (e: CameraAccessException) {
+        } catch (e: Exception) {
            e.printStackTrace()
         }
 
@@ -642,34 +633,21 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
             // After this, the camera will go back to the normal state of preview.
             state = STATE_PREVIEW
             captureSession?.setRepeatingRequest(previewRequest, captureCallback, backgroundHandler)
-        } catch (e: CameraAccessException) {
+        } catch (e: Exception) {
            e.printStackTrace()
         }
     }
 
     override fun recordEvent(isTake: Boolean, step: Int, subStep: String) {
-        tvTitleStep.text = subStep
-        activity?.apply {
-            if (!isFinishing) {
-                when (isTake) {
-                    true -> {
-                        StepFragment.mRecording = false
-                        Logger.e("RecordEvent")
-                        currentStep = step
-                        currentSubStepName = subStep
-                        mBtnTake.isVisible = true
-                        tvTitleStep.isVisible = true
-                    }
-                    false -> {
-                        StepFragment.mRecording = true
-                        Logger.e("RecordEvent11111")
-                        mBtnTake.isGone = true
-                        tvTitleStep.isGone = true
-                        Logger.e("${tvTitleStep.text} ************************************")
-                    }
-                }
-            }
+        if (isTake) {
+            Logger.e("RecordEvent")
+            currentStep = step
+            currentSubStepName = subStep
         }
+    }
+
+    override fun capture() {
+        lockFocus()
     }
 
     internal class CompareSizesByArea : Comparator<Size> {

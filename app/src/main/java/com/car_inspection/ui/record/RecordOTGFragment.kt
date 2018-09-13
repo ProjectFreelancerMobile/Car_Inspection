@@ -92,7 +92,7 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
     override fun setLayoutResourceID(): Int = R.layout.record_otg_fragment
 
     override fun initData() {
-        listenToViews(mBtnRecord, btnTakePicture)
+
     }
 
     private fun initUVCCameraHelper() {
@@ -135,7 +135,7 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
                     }
                 }
             }
-            R.id.mBtnRecord -> {
+            /*R.id.mBtnRecord -> {
                 mCameraHelper?.apply {
                     if (isCameraOpened) {
                         if (!isPushing) {
@@ -164,17 +164,15 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
                             })
                             // if you only want to push stream,please call like this
                             // mCameraHelper.startPusher(listener);
-                            mBtnRecord.text = "Stop Record"
                             showSnackBar("start record...")
                         } else {
-                            mBtnRecord.text = "Start Record"
                             showSnackBar("stop record...")
                             FileUtils.releaseFile()
                             stopPusher()
                         }
                     }
                 }
-            }
+            }*/
         }
     }
 
@@ -238,25 +236,27 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
     }
 
     override fun recordEvent(isTake: Boolean, step: Int, subStep: String) {
-        tvTitleStep.text = subStep
-        activity?.apply {
-            if (!isFinishing) {
-                when (isTake) {
-                    true -> {
-                        StepFragment.mRecording = true
-                        this@RecordOTGFragment.currentStep = step
-                        this@RecordOTGFragment.currentSubStepName = subStep
-                        btnTakePicture?.isVisible = true
-                        tvTitleStep?.isVisible = true
-                    }
-                    false -> {
-                        StepFragment.mRecording = true
-                        btnTakePicture?.isGone = true
-                        tvTitleStep?.isGone = true
-                    }
-                }
-            }
+        if (isTake) {
+            Logger.e("RecordEvent")
+            currentStep = step
+            currentSubStepName = subStep
         }
     }
 
+    override fun capture() {
+        try {
+            mCameraHelper?.apply {
+                if (isCameraOpened) {
+                    com.blankj.utilcode.util.FileUtils.createOrExistsDir(Constanst.getFolderPicturePath() + "Step$currentStep")
+                    val picPath = Constanst.getFolderPicturePath() + "Step$currentStep/$currentSubStepName" + UVCCameraHelper.SUFFIX_JPEG
+                    capturePicture(picPath) { path ->
+                        showSnackBar("$currentSubStepName đã được lưu!")
+                        overlay(activity!!, path, currentSubStepName)
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 }

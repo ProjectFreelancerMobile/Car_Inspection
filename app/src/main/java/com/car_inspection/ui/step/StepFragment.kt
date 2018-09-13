@@ -184,7 +184,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
         setProfileInfo()
         loadAccount()
         rvSubStep.layoutManager = LinearLayoutManager(activity)
-        listenToViews(btnSave, btnContinue, btnFinish, btnRecordPause, btnExit, btnRecordType)
+        listenToViews(btnSave, mBtnTake, btnContinue, btnFinish, btnRecordPause, btnExit, btnRecordType)
         addFragmentRecord()
     }
 
@@ -285,6 +285,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
                 }
             }
             R.id.btnRecordType ->{
+                Logger.e("recordFragment="+ (recordFragment !=null) +"fragmentRecord="+fragmentRecord.isGone)
                 if(recordFragment !=null && fragmentRecord.isGone){
                     recordFragment?.apply {
                         Logger.e("removeFragment:fragmentRecordDefault")
@@ -301,6 +302,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
                     showCameraDefault()
                 }
             }
+            R.id.mBtnTake -> cameraRecordListener?.capture()
             R.id.btnExit -> showLayoutVideo()
         }
     }
@@ -409,10 +411,14 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
 
 
     private fun showLayoutTakepicture() {
+        tvTitleStep.text = currentSubStepName
         pauseScreenRecord()
         btnExit.isVisible = true
+        mBtnTake.isVisible = true
+        tvTitleStep.isVisible = true
         btnRecordPause.isGone = true
         btnRecordType.isGone = true
+        mRecording = false
         cameraRecordListener?.recordEvent(true, currentStep, currentSubStepName)
         isTakePicture = true
     }
@@ -420,8 +426,11 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
     private fun showLayoutVideo() {
         resumeScreenRecord()
         btnExit.isGone = true
+        mBtnTake.isGone = true
+        tvTitleStep.isGone = true
         btnRecordPause.isVisible = true
         btnRecordType.isVisible = true
+        mRecording = true
         cameraRecordListener?.recordEvent()
         isTakePicture = false
     }

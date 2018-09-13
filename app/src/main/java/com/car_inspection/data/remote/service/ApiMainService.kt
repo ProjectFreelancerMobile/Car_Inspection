@@ -4,6 +4,7 @@ import com.car_inspection.data.model.inspection.ListInspection
 import com.car_inspection.data.model.inspectiondetails.InspectionDetails
 import com.car_inspection.data.model.login.Login
 import com.car_inspection.data.model.senddata.SendInSpection
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -17,11 +18,9 @@ interface ApiMainService {
     //////////////////////////////
     //YAHOO SERVICE
     //https://query.yahooapis.com/v1/public/yql?q=%s&format=json
-    @FormUrlEncoded
+
     @POST("login")
-    fun login(
-            @Field("email") username: String,
-            @Field("password") password: String): Call<Login>
+    fun login(@Body body: RequestBody): Call<Login>
 
     @GET("inspection")
     fun getListInspection(): Call<ListInspection>
@@ -29,7 +28,6 @@ interface ApiMainService {
     @GET("inspection/{id}")
     fun getInspectionDetails(@Path("id") id: String): Call<InspectionDetails>
 
-    @FormUrlEncoded
     @PUT("inspection/{id}")
     fun sendDetails(@Path("id") id: String): Call<SendInSpection>
 }

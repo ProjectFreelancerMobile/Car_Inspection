@@ -3,9 +3,13 @@ package com.car_inspection.data.remote.fetchdata
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.car_inspection.data.local.prefs.pref
+import com.car_inspection.data.model.query.LoginQuery
 import com.car_inspection.data.remote.service.ApiMainService
 import com.car_inspection.define.PrefDef
+import com.car_inspection.utils.returnBody
+import com.google.gson.Gson
 import com.toan_itc.core.architecture.*
+import retrofit2.http.Field
 
 /**
  * Created by ToanDev on 04/06/18.
@@ -19,7 +23,8 @@ internal constructor(private val apiService: ApiMainService, private var email: 
     override fun run() {
         liveData.postValue(Resource.loading(null))
         val newValue = try {
-            val response = apiService.login(email,password).execute()
+            val query = Gson().toJson(LoginQuery(email, password))
+            val response = apiService.login(returnBody(query)).execute()
             val apiResponse = ApiResponse.create(response)
             when (apiResponse) {
                 is ApiSuccessResponse -> {

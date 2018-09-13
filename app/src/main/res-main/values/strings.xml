@@ -85,8 +85,8 @@
     <string name="error_invalid_password">Mật khẩu không được để trống</string>
     <string name="error_incorrect_password">Mật khẩu quá ngắn </string>
     <string name="error_field_required">Không được để trống</string>
-    <string name="login_username">toan.dev@carmudi.vn</string>
-    <string name="login_password">123456</string>
+    <string name="login_username">inpector@carmudi.vn</string>
+    <string name="login_password">Zh0mGE2Rk1</string>
     <!--RECORD -->
     <string name="reset">Reset</string>
     <string name="switch_camera">Switch</string>
