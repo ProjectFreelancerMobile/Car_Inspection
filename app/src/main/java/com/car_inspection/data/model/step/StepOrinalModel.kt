@@ -1,4 +1,4 @@
-package com.car_inspection.data.model
+package com.car_inspection.data.model.step
 
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey

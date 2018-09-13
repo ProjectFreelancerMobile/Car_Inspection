@@ -1,4 +1,4 @@
-package com.car_inspection.data.model
+package com.car_inspection.data.model.step
 
 /**
  * Created by wanglei02 on 2016/1/22.

@@ -79,6 +79,14 @@
     <string name="camera_default">Default</string>
     <string name="app_title">Chương trình kiểm tra xe</string>
 
+    <!--LOGIN-->
+    <string name="error_invalid_email">Mời bạn nhập đúng Email</string>
+    <string name="error_invalid_rePass">Mật khẩu xác nhận chưa đúng</string>
+    <string name="error_invalid_password">Mật khẩu không được để trống</string>
+    <string name="error_incorrect_password">Mật khẩu quá ngắn </string>
+    <string name="error_field_required">Không được để trống</string>
+    <string name="login_username">toan.dev@carmudi.vn</string>
+    <string name="login_password">123456</string>
     <!--RECORD -->
     <string name="reset">Reset</string>
     <string name="switch_camera">Switch</string>

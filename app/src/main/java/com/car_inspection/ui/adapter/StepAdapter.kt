@@ -12,7 +12,7 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.RadioGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.car_inspection.R
-import com.car_inspection.data.model.StepModifyModel
+import com.car_inspection.data.model.step.StepModifyModel
 import kotlinx.android.synthetic.main.adapter_step.view.*
 
 

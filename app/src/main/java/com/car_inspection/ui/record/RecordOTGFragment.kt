@@ -23,6 +23,7 @@ import com.serenegiant.usb.USBMonitor
 import com.serenegiant.usb.common.AbstractUVCCameraHandler
 import com.serenegiant.usb.encoder.RecordParams
 import com.serenegiant.usb.widget.CameraViewInterface
+import com.toan_itc.core.utils.removeFragment
 import kotlinx.android.synthetic.main.record_otg_fragment.*
 import java.util.*
 
@@ -109,6 +110,7 @@ class RecordOTGFragment : BaseFragment(), CameraDialog.CameraDialogParent, Camer
                     if (mCameraHelper == null || mCameraHelper?.usbDeviceCount == 0) {
                         showSnackBar("check no usb camera")
                         cameraCallbackListener.showCameraDefault()
+                        activity?.removeFragment(this@RecordOTGFragment)
                         return
                     }
                 }

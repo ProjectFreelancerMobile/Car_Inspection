@@ -22,12 +22,11 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.toolbox.ImageLoader
-import com.blankj.utilcode.util.DeviceUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.car_inspection.R
 import com.car_inspection.binding.FragmentDataBindingComponent
-import com.car_inspection.data.model.StepModifyModel
-import com.car_inspection.data.model.StepOrinalModel
+import com.car_inspection.data.model.step.StepModifyModel
+import com.car_inspection.data.model.step.StepOrinalModel
 import com.car_inspection.databinding.StepFragmentBinding
 import com.car_inspection.library.youtube.UploadService
 import com.car_inspection.library.youtube.util.VideoData
@@ -288,6 +287,7 @@ class StepFragment : BaseDataFragment<StepViewModel>(), StepAdapter.StepAdapterL
             R.id.btnRecordType ->{
                 if(recordFragment !=null && fragmentRecord.isGone){
                     recordFragment?.apply {
+                        Logger.e("removeFragment:fragmentRecordDefault")
                         activity?.removeFragment(this)
                     }
                     recordFragment = null

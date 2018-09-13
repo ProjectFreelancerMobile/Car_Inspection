@@ -92,7 +92,7 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
         }
 
         override fun onSurfaceTextureSizeChanged(texture: SurfaceTexture, width: Int, height: Int) {
-            configureTransform(width, height)
+            //configureTransform(width, height)
         }
 
         override fun onSurfaceTextureDestroyed(texture: SurfaceTexture) = true
@@ -319,7 +319,7 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
                 return
             }
             setUpCameraOutputs(width, height)
-            configureTransform(width, height)
+            //configureTransform(width, height)
             val manager = activity?.getSystemService(Context.CAMERA_SERVICE) as CameraManager
             try {
                 // Wait for camera to open - 2.5 seconds is sufficient
@@ -428,8 +428,10 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
 
                 // We fit the aspect ratio of TextureView to the size of preview we picked.
                 if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    Logger.e("ORIENTATION_LANDSCAPE:width="+previewSize.width+"height="+previewSize.height)
                     textureView.setAspectRatio(previewSize.width, previewSize.height)
                 } else {
+                    Logger.e("ORIENTATION:height="+previewSize.height+"width="+previewSize.width)
                     textureView.setAspectRatio(previewSize.height, previewSize.width)
                 }
                 // Check if the flash is supported.
@@ -529,8 +531,8 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
         val bufferRect = RectF(0f, 0f, previewSize.height.toFloat(), previewSize.width.toFloat())
         val centerX = viewRect.centerX()
         val centerY = viewRect.centerY()
-
         if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
+            showSnackBar("ROTATION_90")
             bufferRect.offset(centerX - bufferRect.centerX(), centerY - bufferRect.centerY())
             val scale = Math.max(
                     viewHeight.toFloat() / previewSize.height,
@@ -541,6 +543,7 @@ class RecordFragment : BaseFragment(), View.OnClickListener, CameraRecordListene
                 postRotate((90 * (rotation - 2)).toFloat(), centerX, centerY)
             }
         } else if (Surface.ROTATION_180 == rotation) {
+            showSnackBar("ROTATION_180")
             matrix.postRotate(180f, centerX, centerY)
         }
         textureView.setTransform(matrix)

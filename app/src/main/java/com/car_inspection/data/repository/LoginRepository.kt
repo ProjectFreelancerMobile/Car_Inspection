@@ -1,8 +1,12 @@
 package com.car_inspection.data.repository
 
+import androidx.lifecycle.LiveData
 import com.car_inspection.data.local.database.RealmManager
+import com.car_inspection.data.model.login.Login
+import com.car_inspection.data.remote.fetchdata.FetchLoginTask
 import com.car_inspection.data.remote.service.ApiMainService
 import com.toan_itc.core.architecture.AppExecutors
+import com.toan_itc.core.architecture.Resource
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,6 +21,12 @@ class LoginRepository @Inject constructor(
         private val appExecutors: AppExecutors,
         private val apiService: ApiMainService
 ) {
+
+    fun login(userName: String, password: String): LiveData<Resource<Boolean>> {
+        val fetchLoginTask = FetchLoginTask(apiService, userName, password)
+        appExecutors.diskIO().execute(fetchLoginTask)
+        return fetchLoginTask.getLiveData()
+    }
 
     fun clearAll(){
         realmManager.clearAll()

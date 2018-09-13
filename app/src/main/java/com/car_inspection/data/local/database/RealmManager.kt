@@ -3,7 +3,7 @@ package com.car_inspection.data.local.database
 
 import com.car_inspection.app.Constants
 import com.car_inspection.data.local.prefs.PreferenceManager
-import com.car_inspection.data.model.StepOrinalModel
+import com.car_inspection.data.model.step.StepOrinalModel
 import com.orhanobut.logger.Logger
 import io.realm.Realm
 import io.realm.Realm.getDefaultInstance

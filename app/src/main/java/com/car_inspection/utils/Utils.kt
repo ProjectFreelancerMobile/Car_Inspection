@@ -1,13 +1,11 @@
 package com.car_inspection.utils
 
-import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.*
 import android.net.Uri
 import android.provider.MediaStore
-import android.util.DisplayMetrics
 import android.util.Log
 import android.util.Size
 import android.view.View
@@ -16,14 +14,8 @@ import android.widget.TextView
 import com.car_inspection.BuildConfig
 import com.car_inspection.R
 import com.car_inspection.app.Constants
-import com.car_inspection.data.model.PictureScreenShot
 import com.car_inspection.ui.record.RecordFragment
-import google.com.carinspection.DisposableImpl
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import pyxis.uzuki.live.richutilskt.utils.runAsync
@@ -31,10 +23,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
-import java.text.ParseException
-import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 /**

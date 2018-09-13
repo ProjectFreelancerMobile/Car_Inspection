@@ -61,11 +61,11 @@ android {
     productFlavors {
         uHotelDev {
             minSdkVersion build_versions.min_sdk
-            buildConfigField "String", "BASE_PATH", '"https://master-api.blendtv.net/api/v1.1.2/"'
+            buildConfigField "String", "BASE_PATH", '"https://inspector.carmudi.vn/api/v1/"'
             dimension "content"
         }
         uHotelRelease {
-            buildConfigField "String", "BASE_PATH", '"https://master-api.blendtv.net/api/v1.1.2/"'
+            buildConfigField "String", "BASE_PATH", '"https://inspector.carmudi.vn/api/v1/"'
             dimension "content"
         }
     }

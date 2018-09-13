@@ -1,6 +1,6 @@
 package com.car_inspection.data.local.database
 
-import com.car_inspection.data.model.StepOrinalModel
+import com.car_inspection.data.model.step.StepOrinalModel
 
 /**
  * Created by ToanDev on 28/2/18.
