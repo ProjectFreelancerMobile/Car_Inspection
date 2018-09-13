@@ -59,12 +59,11 @@ android {
 
     flavorDimensions "content"
     productFlavors {
-        uHotelDev {
-            minSdkVersion build_versions.min_sdk
+        CarDev {
             buildConfigField "String", "BASE_PATH", '"https://inspector.carmudi.vn/api/v1/"'
             dimension "content"
         }
-        uHotelRelease {
+        CarDemo {
             buildConfigField "String", "BASE_PATH", '"https://inspector.carmudi.vn/api/v1/"'
             dimension "content"
         }

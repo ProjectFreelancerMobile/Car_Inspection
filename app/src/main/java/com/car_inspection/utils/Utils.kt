@@ -41,7 +41,7 @@ fun textEmty(vararg view: TextView?) = view.forEach { it?.text = Constants.BLANK
 
 //fun hideView(vararg views: View) = views.forEach { it.hide() }
 
-fun isDebug(): Boolean = BuildConfig.BUILD_TYPE == Constants.DEBUG
+fun isDebug(): Boolean = BuildConfig.FLAVOR == Constants.DEBUG
 
 fun disposableAll(vararg disposable: Disposable?) = disposable.forEach { it?.dispose() }
 

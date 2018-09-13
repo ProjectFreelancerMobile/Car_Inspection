@@ -12,6 +12,7 @@ import com.car_inspection.databinding.LoginFragmentBinding
 import com.car_inspection.ui.activity.MainActivity
 import com.car_inspection.ui.base.BaseDataFragment
 import com.car_inspection.ui.home.HomeFragment
+import com.car_inspection.utils.isDebug
 import com.toan_itc.core.architecture.Status
 import com.toan_itc.core.architecture.autoCleared
 import com.toan_itc.core.architecture.observer
@@ -48,7 +49,10 @@ class LoginFragment : BaseDataFragment<LoginViewModel>() {
     }
 
     override fun initData() {
-
+        if(isDebug()){
+            edtUserName.text?.append(getString(R.string.login_username))
+            edtPass.text?.append(getString(R.string.login_password))
+        }
     }
 
     private fun checkLogin() {

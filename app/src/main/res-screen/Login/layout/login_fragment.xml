@@ -72,7 +72,6 @@
                     android:hint="@string/account"
                     android:inputType="textEmailAddress"
                     android:padding="5dp"
-                    android:text="@string/login_username"
                     android:textColor="@color/color_text_login"
                     android:textSize="14sp"
                     app:customFont="@string/font_opensans_italic" />
@@ -113,7 +112,6 @@
                     android:hint="@string/password"
                     android:inputType="textPassword"
                     android:padding="5dp"
-                    android:text="@string/login_password"
                     android:textColor="@color/color_text_login"
                     android:textSize="14sp"
                     app:customFont="@string/font_opensans_italic" />
